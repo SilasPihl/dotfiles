@@ -89,4 +89,9 @@ export PATH="$HOME/.cargo/bin:$PATH"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
-tmux
+# Powerlevel10k
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+if [ -z "$TMUX" ]; then
+  exec tmux new-session -A -s workspace
+fi
