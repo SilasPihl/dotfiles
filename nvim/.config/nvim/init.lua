@@ -352,7 +352,7 @@ require('lazy').setup({
         pickers = {
           find_files = {
             hidden = true,
-            file_ignore_patterns = { '^.git/', '^node_modules/' },
+            file_ignore_patterns = { '^.git/', '^node_modules/', '^.venv/' },
           },
         },
         extensions = {
@@ -567,7 +567,6 @@ require('lazy').setup({
         terraformls = {},
         azure_pipelines_ls = {},
         dockerls = {},
-        eslint = {},
         -- snyk_ls = {} # Requires authentication. Must be disabled in settings. See more: https://github.com/snyk/snyk-ls?tab=readme-ov-file#lsp-initialization-options
         tflint = {},
         yamlls = {},
@@ -581,7 +580,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         --
 
         lua_ls = {
@@ -892,7 +891,7 @@ require('lazy').setup({
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
-      -- Custom languags
+      -- Custom languages
       vim.treesitter.language.register('yaml', 'yml.tpl')
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:

@@ -52,6 +52,7 @@ return {
       markdownlint.args = {
         '--disable',
         'MD013',
+        'MD024',
         '--',
       }
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
