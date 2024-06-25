@@ -7,9 +7,7 @@
 ========         .----------------------.   | === |          ========
 ========         |.-""""""""""""""""""-.|   |-----|          ========
 ========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
+========         ||   KICKSTART.NVIM   ||   |-----|          ======== ========         ||                    ||   | === |          ======== ========         ||                    ||   |-----|          ========
 ========         ||:Tutor              ||   |:::::|          ========
 ========         |'-..................-'|   |____o|          ========
 ========         `"")----------------(""`   ___________      ========
@@ -19,7 +17,6 @@
 ========                                                     ========
 =====================================================================
 =====================================================================
-
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
@@ -91,7 +88,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -189,6 +186,10 @@ vim.keymap.set('n', '<c-h>', ':wincmd k<CR>', { desc = 'Move focus to the left w
 vim.keymap.set('n', '<c-l>', ':wincmd l<CR>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<c-j>', ':wimcmd j<CR>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<c-k>', ':wimcmd k<CR>', { desc = 'Move focus to the upper window' })
+
+-- Custom keybinds
+vim.keymap.set('n', '<c-d>', ':+10<CR>', { desc = 'Move down 10 lines' })
+vim.keymap.set('n', '<c-u>', ':-10<CR>', { desc = 'Move up 10 lines' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -571,13 +572,6 @@ require('lazy').setup({
         tflint = {},
         yamlls = {},
         typos_lsp = {},
-        harper_ls = {
-          settings = {
-            ['harper-ls'] = { -- Ensure correct naming for settings
-              diagnosticSeverity = 'error', -- Change this to 'hint', 'information', 'warning', or 'error' as needed
-            },
-          },
-        },
         ruff = {},
         bashls = {},
         tailwindcss = {}, -- rust_analyzer = {},
@@ -918,12 +912,12 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
