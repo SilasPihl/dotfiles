@@ -69,7 +69,7 @@ source ~/.zshrc-git
 
 # Aliases
 alias ls="eza --color=auto --long --no-filesize --icons=always --no-time --almost-all"
-alias vim='nvim'
+alias v='nvim'
 alias c='clear'
 alias cd='z'
 alias python='python3'

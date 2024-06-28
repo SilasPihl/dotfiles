@@ -16,16 +16,6 @@ edit = [
 	{ run = '${EDITOR:=vi} "$@"', desc = "$EDITOR", block = true },
 	{ run = 'code "$@"', orphan = true },
 ]
-play = [
-	{ run = 'mpv --force-window "$@"' },
-	{ run = 'iina --no-stdin "$@"' },
-	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read''', block = true, desc = "Show media info" }
-]
-archive = [
-	{ run = 'unar "$1"', desc = "Extract here" },
-	{ run = '/Applications/MacZip.app/Contents/MacOS/MacZip "$1"', orphan = true, desc = "MacZip" },
-]
-
 [open]
 rules = [
 	{ name = "*/", use = [ "open", "edit", "reveal" ] },
@@ -52,5 +42,6 @@ rules = [
 
 [plugin]
 prepend_previewers = [
-	{ mime = "audio/*", run = "exifaudio" },
+	{ name = "*.md", run = "glow" },
+	{ mime = "text/csv", run = "miller"},
 ]
