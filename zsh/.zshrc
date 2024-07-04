@@ -103,6 +103,12 @@ export NVM_DIR="$HOME/.nvm"
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# Go
+export GOPATH="$HOME/go"
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$GOROOT/bin"
+
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
