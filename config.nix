@@ -1,4 +1,4 @@
-{{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {} }:
 
 {
   packageOverrides = pkgs: {
@@ -14,3 +14,4 @@
       ];
     };
   };
+}
