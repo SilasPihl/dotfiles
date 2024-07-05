@@ -9,6 +9,7 @@
         yazi
         ripgrep
         bat
+        fzf
       ];
     };
   };
