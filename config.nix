@@ -1,10 +1,8 @@
-{ pkgs ? import <nixpkgs> {} }:
-
 {
-  packageOverrides = pkgs: {
+  packageOverrides = pkgs: with pkgs; {
     myPackages = pkgs.buildEnv {
-      name = "balle-tools";
-      paths = with pkgs; [
+      name = "tools";
+      paths = [
         stow
         neovim
         tmux
