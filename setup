@@ -1,10 +1,15 @@
 #!/bin/bash
 
-export XDG_CONFIG_HOME="$HOME"/.config
+# Set up XDG_CONFIG_HOME
+export XDG_CONFIG_HOME="$HOME/.config"
 mkdir -p "$XDG_CONFIG_HOME"
-mkdir -p "$XDG_CONFIG_HOME"/nixpkgs
+mkdir -p "$XDG_CONFIG_HOME/nixpkgs"
 
-nix-env -iA nixpkgs.myPackages
+# Link the config.nix file to the Nix configuration directory
+ln -sf "$PWD/config.nix" "$XDG_CONFIG_HOME/nixpkgs/config.nix"
+
+# Install Nix packages from config.nix
+nix-env -f "$XDG_CONFIG_HOME/nixpkgs/config.nix" -iA env
 
 # Verify stow installation
 if ! command -v stow &> /dev/null
@@ -14,7 +19,7 @@ then
 fi
 
 # Use stow to create symlinks
-cd "$(HOME)/dotfiles"
+cd "$PWD"
 
 stow tmux
 stow zsh
