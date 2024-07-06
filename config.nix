@@ -11,6 +11,7 @@ let
       pkgs.ripgrep
       pkgs.bat
       pkgs.fzf
+      pkgs.zsh
     ];
   };
 in
