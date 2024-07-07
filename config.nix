@@ -14,6 +14,7 @@ let
       pkgs.zsh
       pkgs.eza
       pkgs.zoxide
+      pkgs.markdownlint-cli
     ];
   };
 in
