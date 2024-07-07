@@ -24,6 +24,8 @@ fi
 # Use stow to create symlinks
 cd "$PWD"
 
+rm .zshrc
+
 stow tmux
 stow zsh
 stow bat
