@@ -12,6 +12,8 @@ let
       pkgs.bat
       pkgs.fzf
       pkgs.zsh
+      pkgs.eza
+      pkgs.zoxide
     ];
   };
 in
