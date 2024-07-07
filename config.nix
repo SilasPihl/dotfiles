@@ -15,6 +15,7 @@ let
       pkgs.eza
       pkgs.zoxide
       pkgs.markdownlint-cli
+      pkgs.nerdfonts
     ];
   };
 in
