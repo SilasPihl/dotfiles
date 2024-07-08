@@ -15,8 +15,9 @@ let
       pkgs.eza
       pkgs.zoxide
       pkgs.markdownlint-cli
-      pkgs.nerdfonts
+      pkgs.nerdfonts.meslo-lg
       pkgs.git-credential-manager
+      pkgs.direnv
     ];
   };
 in
