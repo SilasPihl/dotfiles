@@ -31,3 +31,5 @@ stow zsh
 stow bat
 stow nvim
 stow yazi
+
+bat cache --build
