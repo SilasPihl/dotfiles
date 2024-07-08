@@ -1,9 +1,11 @@
 # Installation
 
-Install using
+Dotfiles used to setup tools for local development environment. Additional support integration with DevContainers using [Devpod][<https://devpod.sh/>]
+
+For local setup use stow to create symlinks as follow:
 
 ```bash
 stow nvim
 ```
 
-to create symlinks in your home directory to the symlink targets specified in the `nvim` directory.
+You can stow every folder available in the repo.
