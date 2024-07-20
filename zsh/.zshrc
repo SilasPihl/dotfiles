@@ -76,6 +76,7 @@ alias python='python3'
 alias tf='terraform'
 alias gcl='gitlab-ci-local'
 alias ip="curl -qs https://ifconfig.co/json | jq -r '.ip,.city,.country,.hostname,.asn_org'"
+eval $(thefuck --alias)
 
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
@@ -103,11 +104,13 @@ export NVM_DIR="$HOME/.nvm"
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# Go
-export GOPATH="$HOME/go"
-export GOROOT="$(brew --prefix golang)/libexec"
-export PATH="$PATH:$GOPATH/bin"
-export PATH="$PATH:$GOROOT/bin"
+# Go (only if Golang is installed using Homebrew)
+if [ -d "/opt/homebrew/opt/golang" ]; then
+  export GOPATH="$HOME/go"
+  export GOROOT="/opt/homebrew/opt/golang/libexec"
+  export PATH="$PATH:$GOPATH/bin"
+  export PATH="$PATH:$GOROOT/bin"
+fi
 
 # Shell integrations
 eval "$(fzf --zsh)"
