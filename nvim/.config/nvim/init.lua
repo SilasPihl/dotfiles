@@ -245,8 +245,7 @@ require('lazy').setup({
     end,
   },
 
-  -- LSP Configuration & Plugins
-  {
+  { -- LSP Configs
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -324,6 +323,18 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      -- Function to apply the workaround
+      local function apply_fix(server_opts)
+        for _, v in pairs(server_opts) do
+          if type(v) == 'table' and v.workspace then
+            v.workspace.didChangeWatchedFiles = {
+              dynamicRegistration = false,
+              relativePatternSupport = false,
+            }
+          end
+        end
+      end
+
       local servers = {
         gopls = {
           on_attach = on_attach,
@@ -387,6 +398,8 @@ require('lazy').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+            -- Apply the workaround here
+            apply_fix(server)
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
@@ -398,7 +411,6 @@ require('lazy').setup({
       }
     end,
   },
-
   { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
