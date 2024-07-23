@@ -441,8 +441,7 @@ require('lazy').setup({
         -- Conform can also run multiple formatters sequentially
         python = { 'isort' },
         terraform = { 'terraform_fmt' },
-        go = { { 'gofmt' } },
-        --
+        go = { 'gofmt' },
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
         -- You can use a sub-list to tell conform to run *until* a formatter
@@ -451,7 +450,6 @@ require('lazy').setup({
       },
     },
   },
-
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
