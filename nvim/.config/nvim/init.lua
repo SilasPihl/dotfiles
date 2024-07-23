@@ -271,21 +271,16 @@ require('lazy').setup({
       require('which-key').setup()
 
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-        ['<leader>u'] = { name = '[U]ndo', _ = 'which_key_ignore' },
-        ['<leader>sc'] = { name = '[S]earch [C]lipboard', _ = 'which_key_ignore' },
+      require('which-key').add {
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>sc', group = '[S]earch [C]lipboard' },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>t', group = '[T]oggle' },
+        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       }
-      -- visual mode
-      require('which-key').register({
-        ['<leader>h'] = { 'Git [H]unk' },
-      }, { mode = 'v' })
     end,
   },
 
@@ -575,6 +570,7 @@ require('lazy').setup({
         yamlls = {},
         typos_lsp = {},
         ruff = {},
+        delve = {},
         bashls = {},
         tailwindcss = {}, -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -663,6 +659,7 @@ require('lazy').setup({
         -- Conform can also run multiple formatters sequentially
         python = { 'isort' },
         terraform = { 'terraform_fmt' },
+        go = { { 'gofmt' } },
         --
         -- ['*'] = { 'codespell' },
         ['_'] = { 'trim_whitespace' },
@@ -795,7 +792,7 @@ require('lazy').setup({
   --     -- Load the colorscheme here.
   --     -- Like many other themes, this one has different styles, and you could load
   --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  --     vim.cmd.colorscheme 'catppuccin'
+  --     vim.cmd.colorscheme 'tokyonight-moon'
   --
   --     -- You can configure highlights by doing something like:
   --     vim.cmd.hi 'Comment gui=none'
