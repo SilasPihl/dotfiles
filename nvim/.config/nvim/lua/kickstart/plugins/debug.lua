@@ -23,6 +23,9 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python', -- Python debugger
+    'theHamsta/nvim-dap-virtual-text', -- Virtual text for DAP
+    'nvim-telescope/telescope-dap.nvim', -- Telescope integration for DAP
   },
   config = function()
     local dap = require 'dap'
@@ -41,7 +44,9 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        'delve', -- Go debugger
+        'debugpy', -- Python debugger
+        -- Add other debuggers you need here
       },
     }
 
@@ -92,5 +97,37 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Python specific config
+    require('dap-python').setup '~/.virtualenvs/debugpy/bin/python'
+    vim.keymap.set('n', '<leader>dn', function()
+      require('dap-python').test_method()
+    end, { desc = 'Debug: Test Method' })
+    vim.keymap.set('n', '<leader>df', function()
+      require('dap-python').test_class()
+    end, { desc = 'Debug: Test Class' })
+    vim.keymap.set('v', '<leader>ds', function()
+      require('dap-python').debug_selection()
+    end, { desc = 'Debug: Debug Selection' })
+
+    -- DAP Virtual Text
+    require('nvim-dap-virtual-text').setup {
+      enabled = true, -- enable this plugin (the default)
+      enabled_commands = true, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, and DapVirtualTextToggle
+      highlight_changed_variables = true, -- highlight changed values with NvimDapVirtualTextChanged, else always NvimDapVirtualText
+      highlight_new_as_changed = true, -- highlight new variables in the same way as changed variables (if highlight_changed_variables)
+      show_stop_reason = true, -- show stop reason when stopped for exceptions
+      commented = false, -- prefix virtual text with comment string
+      only_first_definition = true, -- only show virtual text at first definition (if there are multiple)
+      all_references = false, -- show virtual text on all references of the variable (if there are multiple)
+      clear_on_continue = true, -- clear virtual text on "continue" (might cause flickering when stepping)
+    }
+
+    -- Telescope DAP integration
+    require('telescope').load_extension 'dap'
+    vim.keymap.set('n', '<leader>dc', require('telescope').extensions.dap.commands, { desc = 'Telescope: DAP Commands' })
+    vim.keymap.set('n', '<leader>dl', require('telescope').extensions.dap.list_breakpoints, { desc = 'Telescope: List Breakpoints' })
+    vim.keymap.set('n', '<leader>dv', require('telescope').extensions.dap.variables, { desc = 'Telescope: DAP Variables' })
+    vim.keymap.set('n', '<leader>df', require('telescope').extensions.dap.frames, { desc = 'Telescope: DAP Frames' })
   end,
 }
