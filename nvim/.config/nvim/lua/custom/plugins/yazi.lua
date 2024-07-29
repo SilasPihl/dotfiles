@@ -20,6 +20,7 @@ return {
       function()
         require('yazi').setup {
           open_for_directories = true,
+          open_files_in_current_buffer = true,
         }
         require('yazi').yazi(nil, vim.fn.getcwd())
       end,
