@@ -48,6 +48,16 @@ return {
     require('nvim-treesitter.install').prefer_git = true
     ---@diagnostic disable-next-line: missing-fields
     require('nvim-treesitter.configs').setup(opts)
+
+    -- Set .yml.tpl files to be recognized as yaml
+    vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+      pattern = '*.yml.tpl',
+      callback = function()
+        vim.bo.filetype = 'yaml'
+      end,
+    })
+
+    -- Register .yml.tpl with the yaml parser in nvim-treesitter
     vim.treesitter.language.register('yaml', 'yml.tpl')
 
     -- There are additional nvim-treesitter modules that you can use to interact

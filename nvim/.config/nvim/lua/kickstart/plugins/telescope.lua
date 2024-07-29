@@ -37,6 +37,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
           hidden = true,
           file_ignore_patterns = { '^.git/', '^node_modules/', '^.venv/' },
         },
+        live_grep = {
+          additional_args = function()
+            return { '--hidden' }
+          end,
+        },
       },
       extensions = {
         ['ui-select'] = {
@@ -77,6 +82,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.live_grep {
         grep_open_files = true,
         prompt_title = 'Live Grep in Open Files',
+        additional_args = function()
+          return { '--hidden' }
+        end,
       }
     end, { desc = '[S]earch [/] in Open Files' })
 
