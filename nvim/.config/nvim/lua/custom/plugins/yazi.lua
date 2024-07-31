@@ -7,10 +7,10 @@ return {
     {
       '<leader>-',
       function()
-        require('yazi').setup {
+        -- Open the file manager with default settings
+        require('yazi').yazi {
           open_for_directories = true,
         }
-        require('yazi').yazi()
       end,
       desc = 'Open the file manager',
     },
@@ -18,11 +18,11 @@ return {
       -- Open in the current working directory
       '<leader>cw',
       function()
-        require('yazi').setup {
+        -- Open the file manager in the current working directory with custom settings
+        require('yazi').yazi({
           open_for_directories = true,
           open_files_in_current_buffer = true,
-        }
-        require('yazi').yazi(nil, vim.fn.getcwd())
+        }, vim.fn.getcwd())
       end,
       desc = "Open the file manager in nvim's working directory",
     },
