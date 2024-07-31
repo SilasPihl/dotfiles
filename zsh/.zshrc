@@ -76,6 +76,7 @@ alias python='python3'
 alias tf='terraform'
 alias gcl='gitlab-ci-local'
 alias cat='bat'
+alias y='yazi'
 alias ip="curl -qs https://ifconfig.co/json | jq -r '.ip,.city,.country,.hostname,.asn_org'"
 eval $(thefuck --alias)
 
