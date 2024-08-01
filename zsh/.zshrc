@@ -78,6 +78,8 @@ alias gcl='gitlab-ci-local'
 alias cat='bat'
 alias y='yazi'
 alias ip="curl -qs https://ifconfig.co/json | jq -r '.ip,.city,.country,.hostname,.asn_org'"
+alias dark="~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark"
+alias light="~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light"
 eval $(thefuck --alias)
 
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
