@@ -1,62 +1,37 @@
+-- Plugin configuration
 return {
   'catppuccin/nvim',
   lazy = false, -- make sure we load this during startup if it is your main colorscheme
   priority = 1000, -- make sure to load this before all the other start plugins
   opts = {
-    flavour = 'macchiato', -- latte, frappe, macchiato, mocha
+    flavour = 'macchiato', -- initial flavour
     background = { -- :h background
-      light = 'latte',
-      dark = 'mocha',
+      light = 'frappe',
+      dark = 'macchiato', -- default dark background to macchiato
     },
-    transparent_background = true, -- disables setting the background color.
-    show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-    term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
-    dim_inactive = {
-      enabled = false, -- dims the background color of inactive window
-      shade = 'dark',
-      percentage = 0.15, -- percentage of the shade to apply to the inactive window
-    },
-    no_italic = false, -- Force no italic
-    no_bold = false, -- Force no bold
-    no_underline = false, -- Force no underline
-    styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-      comments = { 'italic' }, -- Change the style of comments
-      conditionals = { 'italic' },
-      loops = {},
-      functions = {},
-      keywords = {},
-      strings = {},
-      variables = {},
-      numbers = {},
-      booleans = {},
-      properties = {},
-      types = {},
-      operators = {},
-      -- miscs = {}, -- Uncomment to turn off hard-coded styles
-    },
-    color_overrides = {},
-    custom_highlights = {},
-    default_integrations = true,
-    integrations = {
-      barbar = true,
-      cmp = true,
-      gitsigns = true,
-      nvimtree = true,
-      treesitter = true,
-      notify = false,
-      mason = true,
-      mini = {
-        enabled = true,
-        indentscope_color = '',
-      },
-      neotree = true,
-      lsp_trouble = true,
-      which_key = true,
-      -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-    },
+    transparent_background = true, -- disables setting the background color
   },
   config = function()
-    -- Load the colorscheme here
+    -- Define the function to set dark background
+    function set_dark_background()
+      -- Set the dark flavour and colorscheme
+      require('catppuccin').setup { flavour = 'macchiato' }
+      vim.o.background = 'dark'
+    end
+
+    -- Define the function to set light background
+    function set_light_background()
+      -- Set the light flavour and colorscheme
+      require('catppuccin').setup { flavour = 'frappe' }
+      vim.o.background = 'light'
+    end
+
+    -- Load the default colorscheme
     vim.cmd.colorscheme 'catppuccin-macchiato'
+    vim.o.background = 'dark'
+
+    -- Map the functions to keys (e.g., <leader>bd for dark background and <leader>bl for light background)
+    vim.api.nvim_set_keymap('n', '<leader>td', ':lua set_dark_background()<CR>', { noremap = true, silent = true, desc = 'Set dark background' })
+    vim.api.nvim_set_keymap('n', '<leader>tl', ':lua set_light_background()<CR>', { noremap = true, silent = true, desc = 'Set light background' })
   end,
 }
