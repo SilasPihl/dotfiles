@@ -18,6 +18,7 @@ let
       pkgs.nerdfonts
       pkgs.git-credential-manager
       pkgs.direnv
+      pkgs.thefuck
     ];
   };
 in
