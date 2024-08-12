@@ -64,6 +64,29 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
+# Devcontainer integration
+dev() {
+    # Function to handle Ctrl+C (SIGINT)
+    trap 'echo "Aborted by user."; return 1' SIGINT
+
+    # Check if the .devcontainer folder exists
+    if [ ! -d ".devcontainer" ]; then
+        echo "No .devcontainer folder found in the current directory. Exiting."
+        return 1
+    fi
+
+    # Check if the container is already running or exists
+    if ! devcontainer exec --workspace-folder . /bin/true > /dev/null 2>&1; then
+        echo "Starting the devcontainer..."
+        devcontainer up --workspace-folder . --dotfiles-repository https://github.com/SebastianBalle/dotfiles --dotfiles-install-command ./setup
+    else
+        echo "Devcontainer is already running."
+    fi
+
+    # Start the shell in the container
+    devcontainer exec --workspace-folder . /bin/zsh
+}
+
 # Git aliases
 source ~/.zshrc-git
 
