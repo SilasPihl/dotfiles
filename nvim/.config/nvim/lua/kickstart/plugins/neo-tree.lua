@@ -25,6 +25,8 @@ return {
         hide_gitignore = false,
       },
       window = {
+        position = 'right',
+        width = 50,
         mappings = {
           ['\\'] = 'close_window',
           ['<space>'] = 'noop',
@@ -42,6 +44,16 @@ return {
       callback = function()
         if #vim.api.nvim_list_wins() == 1 and vim.bo.filetype == 'neo-tree' then
           vim.cmd 'quit'
+        end
+      end,
+    })
+    vim.api.nvim_create_augroup('neotree', {})
+    vim.api.nvim_create_autocmd('UiEnter', {
+      desc = 'Open Neotree automatically',
+      group = 'neotree',
+      callback = function()
+        if vim.fn.argc() == 0 then
+          vim.cmd 'Neotree toggle'
         end
       end,
     })
