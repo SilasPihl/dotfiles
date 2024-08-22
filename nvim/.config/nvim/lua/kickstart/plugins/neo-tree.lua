@@ -5,7 +5,7 @@ return {
   version = '*',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+    'DaikyXendo/nvim-material-icon',
     'MunifTanjim/nui.nvim',
   },
   cmd = 'Neotree',
@@ -26,7 +26,7 @@ return {
       },
       window = {
         position = 'right',
-        width = 50,
+        width = 40,
         mappings = {
           ['\\'] = 'close_window',
           ['<space>'] = 'noop',
