@@ -1,35 +1,15 @@
 return {
-  'nvim-lualine/lualine.nvim',
-  dependencies = {
-    'rcarriga/nvim-notify', -- Notification manager
-    'folke/noice.nvim', -- Noice plugin for better statusline integration
+  'folke/noice.nvim',
+  event = 'VeryLazy',
+  opts = {
+    -- add any options here
   },
-  config = function()
-    require('lualine').setup {
-      options = {
-        icons_enabled = true,
-        component_separators = '|',
-        section_separators = '',
-      },
-      sections = {
-        lualine_x = {
-          {
-            require('noice').api.statusline.mode.get,
-            cond = require('noice').api.statusline.mode.has,
-            color = { fg = '#ff9e64' },
-          },
-          {
-            require('noice').api.status.command.get,
-            cond = require('noice').api.status.command.has,
-            color = { fg = '#ff9e64' },
-          },
-        },
-        lualine_a = {
-          {
-            'buffers',
-          },
-        },
-      },
-    }
-  end,
+  dependencies = {
+    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+    'MunifTanjim/nui.nvim',
+    -- OPTIONAL:
+    --   `nvim-notify` is only needed, if you want to use the notification view.
+    --   If not available, we use `mini` as the fallback
+    'rcarriga/nvim-notify',
+  },
 }
