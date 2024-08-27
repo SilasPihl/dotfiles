@@ -112,10 +112,6 @@ vim.keymap.set('n', '<c-l>', ':wincmd l<CR>', { desc = 'Move focus to the right 
 vim.keymap.set('n', '<c-j>', ':wimcmd j<CR>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<c-k>', ':wimcmd k<CR>', { desc = 'Move focus to the upper window' })
 
--- Custom keybinds
-vim.keymap.set('n', '<c-d>', ':+10<CR>', { desc = 'Move down 10 lines' })
-vim.keymap.set('n', '<c-u>', ':-10<CR>', { desc = 'Move up 10 lines' })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
