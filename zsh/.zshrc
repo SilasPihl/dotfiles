@@ -147,6 +147,6 @@ eval "$(zoxide init zsh)"
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 
-# if [ -z "$TMUX" ]; then
-#   exec tmux new-session -A -s workspace
-# fi
+if [ -z "$TMUX" ]; then
+  exec tmux new-session -A -s workspace
+fi
