@@ -58,9 +58,6 @@ return {
       end,
     })
 
-    -- Register .yml.tpl with the yaml parser in nvim-treesitter
-    vim.treesitter.language.register('yaml', 'yml.tpl')
-
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --

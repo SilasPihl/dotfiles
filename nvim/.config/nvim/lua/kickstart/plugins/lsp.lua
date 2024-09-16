@@ -77,13 +77,15 @@ return { -- LSP Configs
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     -- Function to apply the workaround
-    local function apply_fix(server_opts)
-      for _, v in pairs(server_opts) do
-        if type(v) == 'table' and v.workspace then
-          v.workspace.didChangeWatchedFiles = {
-            dynamicRegistration = false,
-            relativePatternSupport = false,
-          }
+    local function apply_fix(server_name, server_opts)
+      if server_name == 'gopls' then
+        for _, v in pairs(server_opts) do
+          if type(v) == 'table' and v.workspace then
+            v.workspace.didChangeWatchedFiles = {
+              dynamicRegistration = false,
+              relativePatternSupport = false,
+            }
+          end
         end
       end
     end
@@ -111,7 +113,10 @@ return { -- LSP Configs
       dockerls = {},
       eslint = {},
       tflint = {},
-      yamlls = {},
+      yamlls = {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      },
       typos_lsp = {},
       ruff = {},
       delve = {},
@@ -152,10 +157,7 @@ return { -- LSP Configs
         function(server_name)
           local server = servers[server_name] or {}
           -- Apply the workaround here
-          apply_fix(server)
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for tsserver)
+          apply_fix(server_name, server)
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
           server.on_attach = on_attach
           require('lspconfig')[server_name].setup(server)
