@@ -122,7 +122,6 @@ return { -- LSP Configs
       delve = {},
       bashls = {},
       tailwindcss = {},
-      tsserver = {},
       lua_ls = {
         settings = {
           Lua = {
