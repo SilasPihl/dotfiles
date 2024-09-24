@@ -160,3 +160,4 @@ eval "$(zoxide init zsh)"
 # Powerlevel10k
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
+eval "$(direnv hook zsh)"
