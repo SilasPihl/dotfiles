@@ -100,10 +100,24 @@ alias tf='terraform'
 alias gcl='gitlab-ci-local'
 alias cat='bat'
 alias y='yazi'
-alias ip="curl -qs https://ifconfig.co/json | jq -r '.ip,.city,.country,.hostname,.asn_org'"
+# alias ip="curl -qs https://ifconfig.co/json | jq -r '.ip,.city,.country,.hostname,.asn_org'"
 alias dark="~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark"
 alias light="~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light"
 eval $(thefuck --alias)
+
+# Tmux
+alias ta='tmux attach -t'
+# Creates a new session
+alias tn='tmux new-session -s '
+# Kill session
+alias tk='tmux kill-session -t '
+# Lists all ongoing sessions
+alias tl='tmux list-sessions'
+# Detach from session
+alias td='tmux detach'
+# Tmux Clear pane
+alias tc='clear; tmux clear-history; clear'
+
 
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
@@ -147,5 +161,5 @@ eval "$(zoxide init zsh)"
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 if [ -z "$TMUX" ]; then
-  exec tmux new-session -A -s workspace
+  exec tmux new-session -A
 fi

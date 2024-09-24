@@ -25,8 +25,9 @@ return {
         hide_gitignore = false,
       },
       window = {
-        position = 'right',
-        width = 40,
+        position = 'left',
+        auto_expand_width = true,
+        width = 30,
         mappings = {
           ['\\'] = 'close_window',
           ['<space>'] = 'noop',
