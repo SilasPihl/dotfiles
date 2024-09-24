@@ -2,7 +2,6 @@ return {
   'folke/noice.nvim',
   event = 'VeryLazy',
   opts = {
-    -- add any options here
     routes = {
       {
         filter = {
@@ -29,6 +28,21 @@ return {
         filter = {
           event = 'cmdline',
           find = '%-10',
+        },
+        opts = { skip = true },
+      },
+      -- Suppress the output for Neotree reveal command
+      {
+        filter = {
+          event = 'cmdline',
+          find = 'Neotree reveal',
+        },
+        opts = { skip = true },
+      },
+      {
+        filter = {
+          event = 'msg_show',
+          find = 'Neotree reveal',
         },
         opts = { skip = true },
       },
