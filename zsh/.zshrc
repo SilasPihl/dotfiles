@@ -117,7 +117,7 @@ alias tl='tmux list-sessions'
 alias td='tmux detach'
 # Tmux Clear pane
 alias tc='clear; tmux clear-history; clear'
-
+bindkey -r '^L'
 
 export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always --line-range :500 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
