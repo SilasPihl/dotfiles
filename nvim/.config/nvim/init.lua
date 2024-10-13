@@ -68,13 +68,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 20
 
--- Register yml.tpl files as yaml
-vim.filetype.add {
-  extension = {
-    ['yml.tpl'] = 'yaml',
-  },
-}
-vim.treesitter.language.register('yaml', 'yml.tpl')
+-- Set background transparency for Neovim
+vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
