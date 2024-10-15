@@ -10,6 +10,20 @@ return {
       dark = 'macchiato', -- default dark background to macchiato
     },
     transparent_background = true, -- disables setting the background color
+    integrations = {
+      cmp = true,
+      gitsigns = true,
+      nvimtree = true,
+      treesitter = true,
+      notify = false,
+      mini = true,
+      markdown = true,
+      treesitter_context = false,
+      indent_blankline = {
+        enabled = true,
+        colored_indent_levels = false,
+      },
+    },
   },
   config = function()
     -- Define the function to set dark background
