@@ -29,6 +29,7 @@ return {
         highlight_diagnostics = true,
         highlight_bookmarks = 'all',
         highlight_clipboard = 'all',
+        root_folder_label = false,
         icons = {
           webdev_colors = false,
           git_placement = 'after',
@@ -54,5 +55,8 @@ return {
         enable = true,
       },
     }
+
+    -- Key mapping to toggle nvim-tree with <leader>te
+    vim.api.nvim_set_keymap('n', '<leader>b', ':NvimTreeToggle<CR>', { noremap = true, silent = true, desc = 'Toggle NvimTree' })
   end,
 }
