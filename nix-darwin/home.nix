@@ -3,7 +3,7 @@
 
 with pkgs; {
   home.username = "sebastianballe";
-  home.homeDirectory = "/Users/sebastianballe";
+  home.homeDirectory = "lib.mkForce "/Users/sebastianballe";
   home.stateVersion = "23.05";
 
   home.packages = [
