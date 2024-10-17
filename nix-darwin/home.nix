@@ -1,7 +1,7 @@
 # nix-darwin/home.nix
 { config, pkgs, ... }:
 
-with pkgs; {  # Apply `with pkgs` here to allow package references without `pkgs.`
+with pkgs; {
   home.username = "sebastianballe";
   home.homeDirectory = "/Users/sebastianballe";
   home.stateVersion = "23.05";  # Adjust based on your Nix and home-manager version
@@ -16,11 +16,11 @@ with pkgs; {  # Apply `with pkgs` here to allow package references without `pkgs
   ];
 
   home.file = {
-    ".zshrc".source = ~/dotfiles/zsh/.zshrc;
-    ".config/kitty".source = ~/dotfiles/kitty;
-    ".config/nvim".source = ~/dotfiles/nvim;
-    ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
-    ".config/tmux".source = ~/dotfiles/tmux/.tmux.conf;
+    ".zshrc".source = "${config.home.homeDirectory}/dotfiles/zsh/.zshrc";
+    ".config/kitty".source = "${config.home.homeDirectory}/dotfiles/kitty";
+    ".config/nvim".source = "${config.home.homeDirectory}/dotfiles/nvim";
+    ".config/nix-darwin".source = "${config.home.homeDirectory}/dotfiles/nix-darwin";
+    ".config/tmux".source = "${config.home.homeDirectory}/dotfiles/tmux/.tmux.conf";
   };
 
   home.sessionVariables = {
