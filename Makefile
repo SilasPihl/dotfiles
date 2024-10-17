@@ -12,7 +12,7 @@ all: system-update home-manager-switch
 .PHONY: system-update
 system-update:
 	@echo "Updating system configuration using nix-darwin..."
-	nix run nix-darwin -- switch --flake $(FLAKE_DIR)
+	nix run nix-darwin --impure -- switch --flake $(FLAKE_DIR)
 
 # Target to switch home-manager configuration
 .PHONY: home-manager-switch

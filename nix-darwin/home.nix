@@ -3,10 +3,9 @@
 
 with pkgs; {
   home.username = "sebastianballe";
-  home.homeDirectory = lib.mkForce "/Users/sebastianballe";  # Force the home directory to be your user directory
-  home.stateVersion = "23.05";  # Adjust based on your Nix and home-manager version
+  home.homeDirectory = "/Users/sebastianballe";
+  home.stateVersion = "23.05";
 
-  # User-specific packages
   home.packages = [
     bat
     fzf
@@ -16,7 +15,7 @@ with pkgs; {
   ];
 
   home.file = {
-    ".zshrc".source = "${config.home.homeDirectory}/dotfiles/zsh/.zshrc";
+    ".zshrc".source = "${config.home.homeDirectory}/dotfiles/zsh/.zshrc";  # Dynamically resolve home directory
     ".config/kitty".source = "${config.home.homeDirectory}/dotfiles/kitty";
     ".config/nvim".source = "${config.home.homeDirectory}/dotfiles/nvim";
     ".config/nix-darwin".source = "${config.home.homeDirectory}/dotfiles/nix-darwin";
@@ -25,7 +24,7 @@ with pkgs; {
 
   home.sessionVariables = {
     EDITOR = "nvim";
-    PATH = "${config.home.homeDirectory}/.nix-profile/bin:${config.home.sessionPath}";
+    PATH = lib.mkForce "${config.home.homeDirectory}/.nix-profile/bin:${builtins.concatStringsSep ":" config.home.sessionPath}";
   };
 
   home.sessionPath = [
@@ -43,6 +42,5 @@ with pkgs; {
     '';
   };
 
-  # Enable home-manager programs
   programs.home-manager.enable = true;
 }
