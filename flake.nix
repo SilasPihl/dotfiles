@@ -16,40 +16,35 @@
     configuration = { pkgs, ... }: {
       services.nix-daemon.enable = true;
       nix.settings.experimental-features = "nix-command flakes";
-      programs.zsh.enable = true;  # Enable Zsh shell
+      programs.zsh.enable = true;
 
       system.configurationRevision = self.rev or self.dirtyRev or null;
       system.stateVersion = 4;  # Adjust based on your Nix-darwin system version
-      nixpkgs.hostPlatform = "aarch64-darwin";  # Use this for Apple Silicon, x86_64-darwin for Intel
+      nixpkgs.hostPlatform = "aarch64-darwin";  # Apple Silicon architecture
 
-      # Homebrew installations
       homebrew.enable = true;
       homebrew.casks = [
-        "basictex"
-        "docker"
-        "font-meslo-lg-nerd-font"
-        "git-credential-manager"
-        "git-credential-manager-core"
-        "raycast"
-        "slack"
-        "vmware-fusion"
-      ];
-      homebrew.brews = [
-        "imagemagick"
+        # "basictex"
+        # "docker"
+        # "font-meslo-lg-nerd-font"
+        # "git-credential-manager"
+        # "raycast"
+        # "slack"
+        # "vmware-fusion"
       ];
     };
   in
   {
     darwinConfigurations."Sebastians-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";  # Adjust based on your architecture
-      modules = [
-        configuration
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.sebastianballe = import ./home.nix;
-        }
-      ];
-    };
+  system = "aarch64-darwin";  # Explicitly for Apple Silicon
+  modules = [
+    configuration
+    home-manager.darwinModules.home-manager {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.sebastianballe = import ./home.nix;
+    }
+  ];
+};
   };
 }

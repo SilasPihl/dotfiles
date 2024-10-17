@@ -1,35 +1,26 @@
-# nix-darwin/home.nix
 { config, pkgs, lib, ... }:
 
-with pkgs; {
+{
   home.username = "sebastianballe";
-  home.homeDirectory = "lib.mkForce "/Users/sebastianballe";
-  home.stateVersion = "23.05";
+  home.homeDirectory = lib.mkForce "/Users/sebastianballe";  # Use lib.mkForce to resolve conflicts
+  home.stateVersion = "23.05";  # Adjust based on your Nix and home-manager version
 
-  home.packages = [
-    bat
-    fzf
-    tmux
-    vim
-    direnv
-  ];
-
+  # Dotfiles configuration, using config.home.homeDirectory for all paths
   home.file = {
-    ".zshrc".source = "${config.home.homeDirectory}/dotfiles/zsh/.zshrc";  # Dynamically resolve home directory
+    ".zshrc".source = "${config.home.homeDirectory}/dotfiles/zsh/.zshrc";
     ".config/kitty".source = "${config.home.homeDirectory}/dotfiles/kitty";
     ".config/nvim".source = "${config.home.homeDirectory}/dotfiles/nvim";
     ".config/nix-darwin".source = "${config.home.homeDirectory}/dotfiles/nix-darwin";
     ".config/tmux".source = "${config.home.homeDirectory}/dotfiles/tmux/.tmux.conf";
   };
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    PATH = lib.mkForce "${config.home.homeDirectory}/.nix-profile/bin:${builtins.concatStringsSep ":" config.home.sessionPath}";
-  };
-
-  home.sessionPath = [
-    "/run/current-system/sw/bin"
-    "$HOME/.nix-profile/bin"
+  # User-specific packages, using pkgs scope
+  home.packages = [
+    pkgs.bat
+    pkgs.fzf
+    pkgs.tmux
+    pkgs.vim
+    pkgs.direnv
   ];
 
   programs.zsh = {
@@ -41,6 +32,4 @@ with pkgs; {
       fi
     '';
   };
-
-  programs.home-manager.enable = true;
 }
