@@ -1,9 +1,9 @@
 # nix-darwin/home.nix
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 with pkgs; {
   home.username = "sebastianballe";
-  home.homeDirectory = "/Users/sebastianballe";
+  home.homeDirectory = lib.mkForce "/Users/sebastianballe";  # Force the home directory to be your user directory
   home.stateVersion = "23.05";  # Adjust based on your Nix and home-manager version
 
   # User-specific packages
