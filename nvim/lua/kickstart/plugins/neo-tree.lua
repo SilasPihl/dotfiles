@@ -10,7 +10,7 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '<leader>b', ':Neotree reveal<CR>', { desc = 'NeoTree reveal' } },
+    { '<leader>b', ':Neotree toggle<CR>', { desc = 'NeoTree toggle' } },
   },
   opts = {
     close_if_last_window = true,
@@ -27,11 +27,7 @@ return {
       window = {
         position = 'left',
         auto_expand_width = true,
-        width = 30,
-        mappings = {
-          ['\\'] = 'close_window',
-          ['<space>'] = 'noop',
-        },
+        width = 20,
       },
     },
   },
