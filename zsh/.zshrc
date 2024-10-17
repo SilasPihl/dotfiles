@@ -64,29 +64,6 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-# Devcontainer integration
-dev() {
-    # Function to handle Ctrl+C (SIGINT)
-    trap 'echo "Aborted by user."; return 1' SIGINT
-
-    # Check if the .devcontainer folder exists
-    if [ ! -d ".devcontainer" ]; then
-        echo "No .devcontainer folder found in the current directory. Exiting."
-        return 1
-    fi
-
-    # Check if the container is already running or exists
-    if ! devcontainer exec --workspace-folder . /bin/true > /dev/null 2>&1; then
-        echo "Starting the devcontainer..."
-        devcontainer up --workspace-folder . --dotfiles-repository https://github.com/SebastianBalle/dotfiles --dotfiles-install-command ./setup
-    else
-        echo "Devcontainer is already running."
-    fi
-
-    # Start the shell in the container
-    devcontainer exec --workspace-folder . /bin/zsh
-}
-
 # Git aliases
 source ~/.zshrc-git
 
@@ -138,12 +115,6 @@ _fzf_comprun() {
     *)            fzf --preview "bat -n --color=always --line-range :500 {}" "$@" ;;
   esac
 }
-
-# Node
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -161,5 +132,11 @@ eval "$(zoxide init zsh)"
 
 # Powerlevel10k
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+# typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
+
+# Nix
+if [ -n "$NIX_FLAKE_NAME" ]; then
+   export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";
+fi
 
 eval "$(direnv hook zsh)"
