@@ -5,11 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  # If you're using macOS, you'll want this enabled
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -82,7 +77,6 @@ alias dark="~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark"
 alias light="~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light"
 alias lg='lazygit'
 alias ld='lazydocker'
-eval $(thefuck --alias)
 
 # Tmux
 alias ta='tmux attach -t'
@@ -136,7 +130,10 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # Nix
 if [ -n "$NIX_FLAKE_NAME" ]; then
-   export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";
+  export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";
 fi
+
+# Path
+export PATH="/Users/sebastianballe/.cargo/bin:/Users/sebastianballe/.local/share/zinit/polaris/bin:/Users/sebastianballe/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/Users/sebastianballe/.local/bin"
 
 eval "$(direnv hook zsh)"
