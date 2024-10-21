@@ -133,7 +133,4 @@ if [ -n "$NIX_FLAKE_NAME" ]; then
   export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";
 fi
 
-# Path
-export PATH="/Users/sebastianballe/.cargo/bin:/Users/sebastianballe/.local/share/zinit/polaris/bin:/Users/sebastianballe/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/Users/sebastianballe/.local/bin"
-
 eval "$(direnv hook zsh)"

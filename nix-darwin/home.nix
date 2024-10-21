@@ -2,13 +2,28 @@
 
 {
   home.username = "sebastianballe";
-  home.stateVersion = "23.05";  # Required for home-manager compatibility, can be updated with the correct version.
+  home.homeDirectory = "/Users/sebastianballe";
+  home.stateVersion = "24.05";
 
   home.file = {
+
+    # Files and directories directly in ~/
     ".zshrc".source = ~/dotfiles/zsh/.zshrc;
+    ".zshrc-git".source = ~/dotfiles/zsh/.zshrc-git;
+    ".tmux.conf".source = ~/dotfiles/tmux/.tmux.conf;
+    ".tmux".source = ~/dotfiles/tmux/.tmux;
+
+    # Directories in ~/.config/
+    ".config/nvim".source = ~/dotfiles/nvim;
+    ".config/yazi".source = ~/dotfiles/yazi;
+    ".config/kitty".source = ~/dotfiles/kitty;
+    ".config/bat".source = ~/dotfiles/bat;
+    ".config/direnv".source = ~/dotfiles/direnv;
+    ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
   };
 
   programs.home-manager.enable = true;
+
 
   programs.zsh = {
     enable = true;

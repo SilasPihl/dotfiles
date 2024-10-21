@@ -1,22 +1,17 @@
 # Makefile for managing system configuration using Nix flakes
 
-# Path to the nix-darwin flake in the dotfiles repo
-# Default target: update both system and home-manager
-.PHONY: all
-all: system-update home-manager-switch
+FLAKE_DIR=./nix-darwin
+HOME_MANAGER_PATH="/nix/store/4ivg0skbbk1ng205xxmh1d9zg5zpj6yy-home-manager-0-unstable-2024-09-26/bin/home-manager"
 
-# Target to update the system using nix-darwin
-update:
-	darwin-rebuild switch --flake ~/.config/nix-darwin --impure
+system:
+	@echo "Applying system-wide updates"
+	darwin-rebuild switch --flake $(FLAKE_DIR) --impure
 
-
-# Target to switch home-manager configuration
-.PHONY: home-manager-switch
-home-manager-switch:
+.PHONY: home
+home:
 	@echo "Applying home-manager configuration..."
-	home-manager switch --flake $(FLAKE_DIR)
+	$(HOME_MANAGER_PATH) switch -f $(FLAKE_DIR)/home.nix
 
-# Clean target for clearing the Nix store (optional)
 .PHONY: clean
 clean:
 	@echo "Cleaning the Nix store (optional)..."
