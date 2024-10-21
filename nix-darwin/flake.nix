@@ -19,15 +19,16 @@
     configuration = { pkgs, ... }:
       let
         userPackages = with pkgs; [
-          vim
           bat
-          eza
-          tmux
-          neovim
-          fzf
-          zoxide
           direnv
+          eza
+          fzf
           kitty
+          markdownlint-cli
+          neovim
+          tmux
+          vim
+          zoxide
         ];
       in {
         environment.systemPackages = userPackages;

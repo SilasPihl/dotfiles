@@ -1,11 +1,15 @@
-# Installation
+# Nix managed dotfiles
 
-Dotfiles used to setup tools for local development environment. Additional support integration with DevContainers using [Devpod](<https://devpod.sh/>)
+## Installation
 
-For local setup use stow to create symlinks as follow:
+See `/docs/nix-darwin-installation.md`
 
-```bash
-stow nvim
-```
+## Update
 
-You can stow every folder available in the repo.
+Updating system wide packages (including home-manager configuration)
+
+`make system`
+
+Updating only user wide package (only home-manager)
+
+`make home`
