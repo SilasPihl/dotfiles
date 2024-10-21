@@ -21,13 +21,19 @@
         userPackages = with pkgs; [
           bat
           direnv
+          docker
+          docker-credential-helpers
           eza
           fzf
+          gitFull
           kitty
           lazydocker
           lazygit
           markdownlint-cli
           neovim
+          obsidian
+          raycast
+          slack
           tmux
           vim
           zoxide
@@ -40,9 +46,6 @@
 
           casks = [
             "1password"
-            "slack"
-            "obsidian"
-            "raycast"
           ];
         };
 
@@ -51,6 +54,7 @@
         nix.settings.experimental-features = "nix-command flakes";
 
         nixpkgs.hostPlatform = "aarch64-darwin";
+        nixpkgs.config.allowUnfree = true;
 
         programs.zsh.enable = true;
 

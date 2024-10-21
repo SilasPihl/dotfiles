@@ -25,6 +25,34 @@
   programs.home-manager.enable = true;
 
 
+  programs.git = {
+    enable = true;
+    userName = "Sebastian Balle";
+    userEmail = "sbal@lix.one";
+
+    aliases = {
+      ls = "eza --color=auto --long --no-filesize --icons=always --no-time --almost-all";
+      v = "nvim";
+      c = "clear";
+      cd = "z";
+      python = "python3";
+      tf = "terraform";
+      gcl = "gitlab-ci-local";
+      cat = "bat";
+      y = "yazi";
+      dark = "~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark";
+      light = "~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light";
+      lg = "lazygit";
+      ld = "lazydocker";
+      ta = "tmux attach -t";
+      tn = "tmux new-session -s ";
+      tk = "tmux kill-session -t ";
+      tl = "mux list-sessions";
+      td = "tmux detach";
+      tc = "clear; tmux clear-history; clear";
+    };
+  };
+
   programs.zsh = {
     enable = true;
     initExtra = ''
@@ -35,5 +63,6 @@
       fi
     '';
   };
+
 
 }
