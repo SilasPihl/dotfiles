@@ -128,8 +128,7 @@ Now I can build my flake.nix and run
 
 *Creating flake from scratch*
 ```sh
-mkdir -p ~/.config/nix-darwin
-cd ~/.config/nix-darwin
+cd ~/dotfiles
 nix flake init -t nix-darwin
 sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
 ```

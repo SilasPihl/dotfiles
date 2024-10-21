@@ -24,6 +24,8 @@
           eza
           fzf
           kitty
+          lazydocker
+          lazygit
           markdownlint-cli
           neovim
           tmux
