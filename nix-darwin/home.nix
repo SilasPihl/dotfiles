@@ -28,33 +28,31 @@
   programs.git = {
     enable = true;
     userName = "Sebastian Balle";
-    userEmail = "sbal@lix.one";
+    userEmail = "s.balle@sbconsultancy.dk";
 
     aliases = {
-      ls = "eza --color=auto --long --no-filesize --icons=always --no-time --almost-all";
-      v = "nvim";
-      c = "clear";
-      cd = "z";
-      python = "python3";
-      tf = "terraform";
-      gcl = "gitlab-ci-local";
-      cat = "bat";
-      y = "yazi";
-      dark = "~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark";
-      light = "~/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light";
-      lg = "lazygit";
-      ld = "lazydocker";
-      ta = "tmux attach -t";
-      tn = "tmux new-session -s ";
-      tk = "tmux kill-session -t ";
-      tl = "mux list-sessions";
-      td = "tmux detach";
-      tc = "clear; tmux clear-history; clear";
+      st = "status";
     };
+
+    includes = [
+      {
+        path = "~/.gitconfig-leo";
+        condition = "gitdir:~/git/leopharma/";
+      }
+      {
+        path = "~/.gitconfig-genmab";
+        condition = "gitdir:~/git/genmab/";
+      }
+      {
+        path = "~/.gitconfig-lix";
+        condition = "gitdir:~/git/lix/";
+      }
+    ];
   };
 
   programs.zsh = {
     enable = true;
+
     initExtra = ''
       # Add any additional configurations here
       export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
