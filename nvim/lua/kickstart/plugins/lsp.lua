@@ -113,10 +113,10 @@ return { -- LSP Configs
       dockerls = {},
       eslint = {},
       tflint = {},
-      yamlls = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-      },
+      -- yamlls = {
+      --   on_attach = on_attach,
+      --   capabilities = capabilities,
+      -- },
       typos_lsp = {},
       ruff = {},
       delve = {},

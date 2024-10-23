@@ -1,5 +1,5 @@
 {
-  description = "Sebastian aarch64-darwin system flake with Home Manager";
+  description = "Sebastian aarch64-darwin system flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -7,7 +7,6 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     home-manager = {
       url = "github:rycee/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,12 +18,8 @@
     configuration = { pkgs, ... }:
       let
         userPackages = with pkgs; [
-          bat
-          direnv
           docker
           docker-credential-helpers
-          eza
-          fzf
           gitFull
           kitty
           lazydocker
@@ -34,9 +29,8 @@
           obsidian
           raycast
           slack
-          tmux
           vim
-          zoxide
+          vivid
         ];
       in {
         environment.systemPackages = userPackages;
@@ -63,8 +57,6 @@
 
         users.users.sebastianballe.home = "/Users/sebastianballe";
 
-        home-manager.backupFileExtension = "backup";
-
         security.pam.enableSudoTouchIdAuth = true;
       };
   in {
@@ -72,12 +64,6 @@
       system = "aarch64-darwin";
       modules = [
         configuration
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.sebastianballe = import ./home.nix;
-        }
       ];
     };
 

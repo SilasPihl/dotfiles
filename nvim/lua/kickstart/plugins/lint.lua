@@ -8,7 +8,7 @@ return {
       lint.linters_by_ft = {
         dockerfile = { 'hadolint' },
         python = { 'bandit', 'trivy' },
-        terraform = { 'tflint', 'trivy', 'mypy' },
+        terraform = { 'tflint', 'trivy' },
         json = { 'jsonlint' },
         markdown = { 'markdownlint' },
       }
