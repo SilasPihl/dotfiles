@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   home.username = "sebastianballe";
@@ -6,12 +6,9 @@
   home.stateVersion = "24.05";
 
   home.file = {
-
-    # Files and directories directly in ~/
     ".tmux.conf".source = ~/dotfiles/tmux/.tmux.conf;
     ".tmux".source = ~/dotfiles/tmux/.tmux;
 
-    # Directories in ~/.config/
     ".config/nvim".source = ~/dotfiles/nvim;
     ".config/kitty".source = ~/dotfiles/kitty;
     ".config/bat".source = ~/dotfiles/bat;
@@ -19,7 +16,7 @@
   };
 
   imports = [
-    inputs.catppuccin.homeManagerModules.catppuccin
+    # No need to import the global Catppuccin module here
     ./home/bat.nix
     ./home/btop.nix
     ./home/direnv.nix
@@ -33,16 +30,11 @@
     ./home/zsh.nix
   ];
 
-  catppuccin.flavor = "macchiato";
-  catppuccin.accent = "mauve";
-
-
   programs = {
-
     home-manager = {
       enable = true;
     };
-
   };
 
+  # You can manually apply the Catppuccin theme for each application here
 }

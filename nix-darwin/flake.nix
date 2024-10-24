@@ -29,6 +29,10 @@
           obsidian
           raycast
           slack
+          spotify
+          spicetify-cli
+          tree
+          tmux
           vim
           vivid
         ];
