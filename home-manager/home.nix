@@ -13,6 +13,8 @@
     ".config/bat".source = ~/dotfiles/bat;
     ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
     ".config/spicetify/config-xpui.ini".source = ~/dotfiles/spicetify/config-xpui.ini;
+    ".config/yabai".source = ~/dotfiles/yabai;
+    ".config/skhd".source = ~/dotfiles/skhd;
   };
 
   imports = [

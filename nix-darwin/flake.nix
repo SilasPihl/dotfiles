@@ -29,12 +29,14 @@
           obsidian
           raycast
           slack
+          skhd
           spotify
           spicetify-cli
           tree
           tmux
           vim
           vivid
+          yabai
         ];
       in {
         environment.systemPackages = userPackages;
