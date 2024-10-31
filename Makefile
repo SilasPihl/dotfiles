@@ -1,16 +1,15 @@
-.DEFAULT_GOAL := home
+.DEFAULT_GOAL := mac
 
-FLAKE_DIR=./nix-darwin
-HOME_MANAGER_DIR=./home-manager
-
-system:
-	@echo "Applying system-wide updates"
-	darwin-rebuild switch --flake $(FLAKE_DIR) --impure
-
-.PHONY: home
-home:
+.PHONY: mac
+mac:
 	@echo "Applying home-manager configuration..."
-	home-manager switch -f $(HOME_MANAGER_DIR)/home.nix
+	home-manager switch --flake .#mac --impure
+
+.PHONY: mac-install
+mac-install:
+	nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager; \
+	nix-channel --update; \
+	nix-shell '<home-manager>' -A install; \
 
 .PHONY: clean
 clean:

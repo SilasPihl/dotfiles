@@ -1,75 +1,121 @@
 {
-  description = "Sebastian aarch64-darwin system flake";
+  description = "Sebastian NixOS and Home-Manager flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+
+    nixpkgs = {
+      url = "github:NixOS/nixpkgs?ref=nixos-24.05";
     };
+
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
+    };
+
     home-manager = {
-      url = "github:rycee/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
-  let
-    configuration = { pkgs, ... }:
-      let
-        userPackages = with pkgs; [
-          docker
-          docker-credential-helpers
-          gitFull
-          kitty
-          lazydocker
-          lazygit
-          markdownlint-cli
-          neovim
-          obsidian
-          raycast
-          slack
-          # skhd
-          spotify
-          spicetify-cli
-          tree
-          tmux
-          vim
-          vivid
-          bat-extras.prettybat
-          bat-extras.batwatch
-          bat-extras.batpipe
-          bat-extras.batman
-          bat-extras.batgrep
-          # yabai
-        ];
-      in {
-        environment.systemPackages = userPackages;
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim }@inputs:
+    let
+      user = "sebastianballe";
+    in
+    {
 
-        services.nix-daemon.enable = true;
+      nixosConfigurations = {
 
-        nix.settings.experimental-features = "nix-command flakes";
+        devos = # sudo nixos-rebuild switch --flake .#devos --impure
+          let
+            system = "aarch64-linux";
+          in nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs system user; };
+            modules = [
+              {
+                nixpkgs.config.allowUnfree = true;
+                system.stateVersion = "24.05";
+              }
 
-        nixpkgs.hostPlatform = "aarch64-darwin";
-        nixpkgs.config.allowUnfree = true;
+              # basic configuration & users
+              ./hosts/devos/configuration.nix
+              ./users/${user}.nix
 
-        programs.zsh.enable = true;
+              # features
+              ./hosts/docker.nix
+              ./hosts/fonts.nix
+              ./hosts/gnome.nix
+              ./hosts/logind.nix
 
-        system.configurationRevision = self.rev or self.dirtyRev or null;
-        system.stateVersion = 5;
+              # packages
+              ./pkgs/1password.nix
+            ];
+          };
 
-        users.users.sebastianballe.home = "/Users/sebastianballe";
-
-        security.pam.enableSudoTouchIdAuth = true;
       };
-  in {
-    darwinConfigurations."Sebastians-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [
-        configuration
-      ];
-    };
 
-    darwinPackages = self.darwinConfigurations."Sebastians-MacBook-Pro".pkgs;
-  };
+      homeConfigurations = {
+        devos = # home-manager switch --flake .#devos
+          let
+            system = "aarch64-linux";
+            pkgs-stable = import inputs.nixpkgs {
+              system = system;
+              config.allowUnfree = true;
+            };
+          in home-manager.lib.homeManagerConfiguration {
+            extraSpecialArgs = { inherit inputs system user pkgs-stable; };
+            pkgs = nixpkgs-unstable.legacyPackages.${system};
+            modules = [
+              {
+                nixpkgs.config.allowUnfree = true;
+              }
+
+              ./home-manager/${user}.nix
+
+              ./home-manager/programs/chromium.nix
+              ./home-manager/programs/common.nix
+              ./home-manager/programs/fzf.nix
+              ./home-manager/programs/git.nix
+              # ./home-manager/programs/nixvim.nix
+              ./home-manager/programs/zoxide.nix
+              ./home-manager/programs/zsh.nix
+            ];
+          };
+
+        mac = # home-manager switch --flake .#mac
+          let
+            system = "aarch64-darwin";
+            pkgs-stable = import inputs.nixpkgs {
+              system = system;
+              config.allowUnfree = true;
+            };
+          in home-manager.lib.homeManagerConfiguration {
+            extraSpecialArgs = { inherit inputs system user pkgs-stable; };
+            pkgs = nixpkgs-unstable.legacyPackages.${system};
+            modules = [
+              {
+                nixpkgs.config.allowUnfree = true;
+              }
+
+              ./home-manager/${user}.nix
+
+              # ./home-manager/programs/bcompare.nix
+              ./home-manager/programs/common.nix
+              ./home-manager/programs/fzf.nix
+              ./home-manager/programs/git.nix
+              # ./home-manager/programs/nixvim.nix
+              # ./home-manager/programs/yabai.nix
+              ./home-manager/programs/zoxide.nix
+              ./home-manager/programs/zsh.nix
+
+            ];
+          };
+      };
+
+    };
 }
