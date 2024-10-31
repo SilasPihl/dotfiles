@@ -29,25 +29,22 @@
           obsidian
           raycast
           slack
-          skhd
+          # skhd
           spotify
           spicetify-cli
           tree
           tmux
           vim
           vivid
-          yabai
+          bat-extras.prettybat
+          bat-extras.batwatch
+          bat-extras.batpipe
+          bat-extras.batman
+          bat-extras.batgrep
+          # yabai
         ];
       in {
         environment.systemPackages = userPackages;
-
-        homebrew = {
-          enable = true;
-
-          casks = [
-            "1password"
-          ];
-        };
 
         services.nix-daemon.enable = true;
 

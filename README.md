@@ -13,3 +13,4 @@ Updating system wide packages (including home-manager configuration)
 Updating only user wide package (only home-manager)
 
 `make home`
+
