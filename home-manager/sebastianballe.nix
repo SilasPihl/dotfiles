@@ -33,9 +33,9 @@
   home.file = {
     ".tmux.conf".source = ~/dotfiles/dotfiles/tmux/.tmux.conf;
     ".tmux".source = ~/dotfiles/dotfiles/tmux/.tmux;
-    ".config/nvim".source = ~/dotfiles/dotfiles/nvim;
+    # ".config/nvim".source = ~/dotfiles/dotfiles/nvim;
     # ".config/kitty".source = ~/dotfiles/dotfiles/kitty;
-    ".config/bat".source = ~/dotfiles/dotfiles/bat;
+    # ".config/bat".source = ~/dotfiles/dotfiles/bat;
     ".config/spicetify/config-xpui.ini".source = ~/dotfiles/dotfiles/spicetify/config-xpui.ini;
     # ".config/yabai".source = ~/dotfiles/yabai;
     # ".config/skhd".source = ~/dotfiles/skhd;
@@ -77,5 +77,5 @@
   home.stateVersion = "24.05";
 
   # Do not let home manager install and manage itself
-  programs.home-manager.enable = false;
+  programs.home-manager.enable = true;
 }

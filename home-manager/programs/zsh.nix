@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, user, ... }:
 
 {
   programs.zsh = {
@@ -17,8 +17,12 @@
       pipe = "batpipe";
       c = "clear";
       cd = "z";
-      lg = "lazygit --use-config-file ~/dotfiles/themes/lazygit/theme.yml";
+      lg = "lazygit --use-config-file /Users/${user}/dotfiles/themes/lazygit/theme.yml";
       ld = "lazydocker";
+      lt = "eza -lTag";
+      lt1 = "eza -lTag --level=1";
+      lt2 = "eza -lTag --level=2";
+      lt3 = "eza -lTag --level=3";
       ta = "tmux attach -t";
       tc = "clear; tmux clear-history; clear";
       td = "tmux detach";
@@ -83,6 +87,9 @@
 
       # Eza - Catppucin
       export LS_COLORS="$(vivid generate catppuccin-macchiato)"
+
+      # Bat - Catppuccin
+      export BAT_THEME="/Users/${user}/dotfiles/themes/bat/Macchiato.tmTheme
 
       # Fzf - Catppuccin
       export FZF_DEFAULT_OPTS=" \

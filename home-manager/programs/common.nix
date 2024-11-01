@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; builtins.filter (pkg: pkg != null) [
-    bat
     btop
     docker-credential-helpers
     eza
@@ -11,15 +10,17 @@
     k9s
     kitty
     kubectl
+    just
     lazydocker
     lazygit
     neofetch
-    # nerdfonts
+    nodejs_22 # for Github Copilot
+    nerdfonts
     raycast
     ripgrep
     rsync
     (if system != "aarch64-linux" then slack else null)
-    (if system != "aarch64-linux" then spotify else null)
+    (if system != "aarch64-li pnux" then spotify else null)
     spicetify-cli
     tmux
     tree

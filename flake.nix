@@ -42,17 +42,12 @@
                 system.stateVersion = "24.05";
               }
 
-              # basic configuration & users
               ./hosts/devos/configuration.nix
               ./users/${user}.nix
-
-              # features
               ./hosts/docker.nix
               ./hosts/fonts.nix
               ./hosts/gnome.nix
               ./hosts/logind.nix
-
-              # packages
               ./pkgs/1password.nix
             ];
           };
@@ -76,12 +71,11 @@
               }
 
               ./home-manager/${user}.nix
-
               ./home-manager/programs/chromium.nix
               ./home-manager/programs/common.nix
               ./home-manager/programs/fzf.nix
               ./home-manager/programs/git.nix
-              # ./home-manager/programs/nixvim.nix
+              ./home-manager/programs/nixvim.nix
               ./home-manager/programs/zoxide.nix
               ./home-manager/programs/zsh.nix
             ];
@@ -97,19 +91,18 @@
           in home-manager.lib.homeManagerConfiguration {
             extraSpecialArgs = { inherit inputs system user pkgs-stable; };
             pkgs = nixpkgs-unstable.legacyPackages.${system};
+
             modules = [
               {
                 nixpkgs.config.allowUnfree = true;
               }
 
               ./home-manager/${user}.nix
-
-              # ./home-manager/programs/bcompare.nix
+              ./home-manager/programs/bat.nix
               ./home-manager/programs/common.nix
               ./home-manager/programs/fzf.nix
               ./home-manager/programs/git.nix
-              # ./home-manager/programs/nixvim.nix
-              # ./home-manager/programs/yabai.nix
+              ./home-manager/programs/nixvim.nix
               ./home-manager/programs/zoxide.nix
               ./home-manager/programs/zsh.nix
 

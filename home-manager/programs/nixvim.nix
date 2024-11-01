@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, user, ... }:
 
 {
   imports = [
@@ -16,18 +16,30 @@
     };
 
     editorconfig.enable = true;
-    colorschemes.catppuccin.enable = true;
-
+    colorschemes.catppuccin = {
+      enable = true;
+      settings = {
+        flavour = "macchiato";
+        integrations = {
+          cmp = true;
+          gitsigns = true;
+          nvimtree = true;
+        };
+        term_colors = true;
+      };
+    };
     opts = {
       autoindent = true;
       breakindent = true;
-      cursorline = false;
+      cursorline = true;
+      clipboard = "unnamedplus";
       expandtab = true;
       hlsearch = true;
       ignorecase = true;
       incsearch = true;
       number = true;
-      relativenumber = true;
+      relativenumber = false;
+      scrolloff = 10;
       shiftwidth = 2;
       smartcase = true;
       smartindent = true;
@@ -40,22 +52,65 @@
       wrap = false;
     };
 
+    keymaps = [
+      {
+        key = "<leader>lg";
+        mode = [ "n" ];
+        action = "<cmd>LazyGit<cr>";
+        options = {
+          desc = "Lazygit";
+          silent = true;
+        };
+      }
+    ];
+
     # ref: https://nix-community.github.io/nixvim/index.html
     plugins = {
-      bufferline.enable = true;
+      barbar = {
+        enable = true;
+        settings = {
+          animation = true;
+          clickable = true;
+          insert_at_start = false;
+          icons = {
+            filetype = {
+              enabled = true;
+            };
+            buffer_number = true;
+          };
+          maximum_length = 30;
+        };
+        keymaps = {
+          previous = {
+            key = "<C-n>";
+            mode = ["n"];
+          };
+          next = {
+            key = "<C-p>";
+            mode = ["n"];
+          };
+        };
+      };
       cmp-buffer.enable = true;
       cmp-nvim-lsp.enable = true;
       cmp-path.enable = true;
       cmp.enable = true;
       cmp_luasnip.enable = true;
       conform-nvim.enable = true;
-      dressing.enable = true;
+      copilot-vim.enable = true;
       flash.enable = true;
       friendly-snippets.enable = true;
       gitsigns.enable = true;
       illuminate.enable = true;
       indent-blankline.enable = true;
       lazy.enable = true;
+      lazygit = {
+        enable = true;
+        settings = {
+          config_file_path = "/Users/${user}/dotfiles/themes/lazygit/theme.yml";
+          use_custom_config_file_path = 1;
+        };
+      };
       lint.enable = true;
       lsp = {
         enable = true;
@@ -103,13 +158,35 @@
         };
       };
       lualine.enable = true;
-      neo-tree.enable = true;
+      neo-tree = {
+        enable = true;
+        closeIfLastWindow = true;
+        hideRootNode = true;
+        window = {
+          position = "left";
+          width = 30;
+        };
+        filesystem = {
+          followCurrentFile = {
+            enabled = true;
+          };
+          filteredItems = {
+            hideDotfiles = false;
+            hideGitignored = false;
+          };
+        };
+      };
+      neoclip.enable = true;
+      neoscroll = {
+        enable = true;
+        settings = {
+          performance_mode = true;
+        };
+      };
       nix-develop.enable = true;
       nix.enable = true;
-      noice.enable = true;
-      notify.enable = true;
-      persistence.enable = true;
-      spectre.enable = true;
+      nvim-autopairs.enable = true;
+      mini.enable = true;
       telescope = {
         enable = true;
         keymaps = {
@@ -152,8 +229,15 @@
         };
       };
       todo-comments.enable = true;
+      tmux-navigator.enable = true;
       treesitter = {
         enable = true;
+        settings = {
+          auto_install = true;
+          highlight = {
+            enable = true;
+          };
+        };
         grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
           bash
           go
@@ -173,6 +257,7 @@
           yaml
         ];
       };
+      transparent.enable = true;
       treesitter-context.enable = true;
       treesitter-textobjects.enable = true;
       trouble.enable = true;
@@ -181,5 +266,6 @@
       web-devicons.enable = true;
       which-key.enable = true;
     };
+
   };
 }
