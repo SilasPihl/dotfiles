@@ -11,7 +11,6 @@
       "--long"
       "--no-permissions"
       "--no-filesize"
-      "--color never"
     ];
   };
 }
