@@ -4,9 +4,7 @@
   programs.zsh = {
     enable = true;
 
-    autosuggestion = {
-      enable = true;
-    };
+    autosuggestion = { enable = true; };
 
     shellAliases = {
       cat = "prettybat";
@@ -17,7 +15,8 @@
       pipe = "batpipe";
       c = "clear";
       cd = "z";
-      lg = "lazygit --use-config-file /Users/${user}/dotfiles/themes/lazygit/theme.yml";
+      lg =
+        "lazygit --use-config-file /Users/${user}/dotfiles/themes/lazygit/theme.yml";
       ld = "lazydocker";
       lt = "eza -lTag";
       lt1 = "eza -lTag --level=1";
@@ -29,10 +28,11 @@
       tk = "tmux kill-session -t ";
       tl = "tmux list-sessions";
       tn = "tmux new-session -s ";
-      dark = "~/dotfiles/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark";
-      light = "~/dotfiles/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light";
+      dark =
+        "~/dotfiles/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark";
+      light =
+        "~/dotfiles/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light";
       v = "nvim";
-      y = "yazi";
     };
 
     history = {
@@ -87,9 +87,6 @@
 
       # Eza - Catppucin
       export LS_COLORS="$(vivid generate catppuccin-macchiato)"
-
-      # Bat - Catppuccin
-      export BAT_THEME="/Users/${user}/dotfiles/themes/bat/Macchiato.tmTheme
 
       # Fzf - Catppuccin
       export FZF_DEFAULT_OPTS=" \
@@ -147,6 +144,15 @@
 
       command -v talosctl >/dev/null 2>&1 && {
         source <(talosctl completion zsh)
+      }
+
+      function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
       }
 
       if [ -n "$NIX_FLAKE_NAME" ]; then
