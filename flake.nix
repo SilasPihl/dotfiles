@@ -3,13 +3,9 @@
 
   inputs = {
 
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs?ref=nixos-24.05";
-    };
+    nixpkgs = { url = "github:NixOS/nixpkgs?ref=nixos-24.05"; };
 
-    nixpkgs-unstable = {
-      url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
-    };
+    nixpkgs-unstable = { url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable"; };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -24,16 +20,13 @@
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim }@inputs:
-    let
-      user = "sebastianballe";
-    in
-    {
+    let user = "sebastianballe";
+    in {
 
       nixosConfigurations = {
 
         devos = # sudo nixos-rebuild switch --flake .#devos --impure
-          let
-            system = "aarch64-linux";
+          let system = "aarch64-linux";
           in nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs system user; };
             modules = [
@@ -66,9 +59,7 @@
             extraSpecialArgs = { inherit inputs system user pkgs-stable; };
             pkgs = nixpkgs-unstable.legacyPackages.${system};
             modules = [
-              {
-                nixpkgs.config.allowUnfree = true;
-              }
+              { nixpkgs.config.allowUnfree = true; }
 
               ./home-manager/${user}.nix
               ./home-manager/programs/chromium.nix
@@ -93,16 +84,15 @@
             pkgs = nixpkgs-unstable.legacyPackages.${system};
 
             modules = [
-              {
-                nixpkgs.config.allowUnfree = true;
-              }
+              { nixpkgs.config.allowUnfree = true; }
 
               ./home-manager/${user}.nix
               ./home-manager/programs/bat.nix
               ./home-manager/programs/common.nix
               ./home-manager/programs/fzf.nix
               ./home-manager/programs/git.nix
-              ./home-manager/programs/nixvim.nix
+              ./home-manager/programs/vim/default.nix
+              # ./home-manager/programs/nixvim.nix
               ./home-manager/programs/zoxide.nix
               ./home-manager/programs/zsh.nix
 
