@@ -2,30 +2,29 @@
 
 {
   home.username = user;
-  home.homeDirectory = lib.mkForce (
-    if builtins.match ".*-darwin" system != null then
+  home.homeDirectory = lib.mkForce
+    (if builtins.match ".*-darwin" system != null then
       "/Users/${config.home.username}"
     else if builtins.match ".*-linux" system != null then
       "/home/${config.home.username}"
     else
-      "/home/${config.home.username}"
-  );
+      "/home/${config.home.username}");
 
   home.enableNixpkgsReleaseCheck = false;
 
-  home.activation.afterWriteBoundary =
-    let
+  home.activation.afterWriteBoundary = let
 
-      kittyDir = "${config.home.homeDirectory}/.config/kitty";
+    kittyDir = "${config.home.homeDirectory}/.config/kitty";
 
-    in
-    {
-      after = [ "writeBoundary" ];
-      before = [];
-      data = ''
-        #!${pkgs.stdenv.shell}
-        ${pkgs.rsync}/bin/rsync --mkpath -avvh --delete --perms --chmod=u=rwX ${toString ../dotfiles/kitty}/ "${kittyDir}/"
-      '';
+  in {
+    after = [ "writeBoundary" ];
+    before = [ ];
+    data = ''
+      #!${pkgs.stdenv.shell}
+      ${pkgs.rsync}/bin/rsync --mkpath -avvh --delete --perms --chmod=u=rwX ${
+        toString ../dotfiles/kitty
+      }/ "${kittyDir}/"
+    '';
   };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -33,12 +32,9 @@
   home.file = {
     ".tmux.conf".source = ~/dotfiles/dotfiles/tmux/.tmux.conf;
     ".tmux".source = ~/dotfiles/dotfiles/tmux/.tmux;
-    # ".config/nvim".source = ~/dotfiles/dotfiles/nvim;
-    # ".config/kitty".source = ~/dotfiles/dotfiles/kitty;
-    # ".config/bat".source = ~/dotfiles/dotfiles/bat;
-    ".config/spicetify/config-xpui.ini".source = ~/dotfiles/dotfiles/spicetify/config-xpui.ini;
-    # ".config/yabai".source = ~/dotfiles/yabai;
-    # ".config/skhd".source = ~/dotfiles/skhd;
+    ".config/bat".source = ~/dotfiles/dotfiles/bat;
+    ".config/spicetify/config-xpui.ini".source =
+      ~/dotfiles/dotfiles/spicetify/config-xpui.ini;
 
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a

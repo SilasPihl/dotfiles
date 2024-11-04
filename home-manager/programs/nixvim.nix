@@ -257,10 +257,6 @@
         };
       };
       neoclip.enable = true;
-      neoscroll = {
-        enable = true;
-        settings = { performance_mode = true; };
-      };
       nix-develop.enable = true;
       nix.enable = true;
       nvim-autopairs.enable = true;
