@@ -33,8 +33,6 @@
       # Colors
       background = "#24283b";
       cursor_text_color = "#24283b";
-      active_tab_background = "#1f2335";
-      inactive_tab_background = "#1f2335";
     };
     keybindings = {
       "alt+left" = "send_text all \\x1b\\x62";

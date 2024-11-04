@@ -54,28 +54,80 @@
       {
         mode = "n";
         key = "<leader>e";
-        action = ":Neotree toggle<CR>";
+        action = "<cmd>Neotree toggle<CR>";
+        options = { desc = "Neotree"; };
       }
       {
         key = "<leader>g";
         mode = [ "n" ];
-        action = "<cmd>LazyGit<cr>";
-        options = {
-          desc = "Lazygit";
-          silent = true;
-        };
+        action = "<cmd>LazyGit<CR>";
+        options = { desc = "Lazygit"; };
       }
       {
         mode = "n";
         key = "<leader>t";
         action = ":FloatermToggle<CR>";
+        options = { desc = "FloatermToggle"; };
       }
       {
         mode = "n";
         key = "<leader>z";
-        action = ":Twilight<CR>";
+        action = "<cmd>Twilight<CR>";
+        options = { desc = "Twilight"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Tf";
+        action = "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>";
+        options = { desc = "Test file"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Tfb";
+        action =
+          "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>";
+        options = { desc = "Test file with debugger"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Tn";
+        action = "<cmd>lua require('neotest').run.run()<CR>";
+        options = { desc = "Test nearest"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Tl";
+        action = "<cmd>lua require('neotest').run.run_last()<CR>";
+        options = { desc = "Test last"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Tlb";
+        action =
+          "<cmd>lua require('neotest').run.run_last({ strategy = 'dap' })<CR>";
+        options = { desc = "Test last with debugger"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Twf";
+        action =
+          "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<CR>";
+        options = { desc = "Watch file"; };
+      }
+      {
+        mode = "n";
+        key = "<leader>Twf";
+        action = "<cmd>lua require('neotest').summary.toggle()<CR>";
+        options = { desc = "Summary toggle"; };
       }
     ];
+
+    autoCmd = [{
+      event = [ "BufWritePost" ];
+      pattern = "*_test.go";
+      command = '':lua require("neotest").run.run(vim.fn.expand("%")) '';
+      desc = "Run Go tests on save for *_test.go files";
+    }];
 
     # ref: https://nix-community.github.io/nixvim/index.html
     plugins = {
@@ -122,7 +174,7 @@
             { name = "nvim_lsp"; }
             { name = "nvim_lsp_signature_help"; }
             { name = "nvim_lsp_document_symbol"; }
-            { name = "luasnip"; } # For luasnip users.
+            { name = "luasnip"; }
             { name = "path"; }
             { name = "buffer"; }
             { name = "cmdline"; }
@@ -228,8 +280,10 @@
         enable = true;
         autoCleanAfterSessionRestore = true;
         closeIfLastWindow = true;
-        window.position = "left";
-        window.width = 30;
+        window = {
+          position = "left";
+          autoExpandWidth = true;
+        };
         filesystem = {
           followCurrentFile.enabled = true;
           filteredItems = {
@@ -257,8 +311,18 @@
         };
       };
       neoclip.enable = true;
+      neotest = {
+        enable = true;
+        adapters.go = {
+          enable = true;
+          package = pkgs.vimPlugins.neotest-go;
+          settings = { testFlags = [ "-tags=unit,integration" ]; };
+        };
+      };
       nix-develop.enable = true;
       nix.enable = true;
+      noice.enable = true;
+      notify.enable = true;
       nvim-autopairs.enable = true;
       mini.enable = true;
       telescope = {
@@ -333,6 +397,10 @@
       ts-autotag.enable = true;
       ts-context-commentstring.enable = true;
       twilight.enable = true;
+      yanky = {
+        enable = true;
+        enableTelescope = true;
+      };
       web-devicons.enable = true;
       which-key = {
         enable = true;
@@ -357,22 +425,6 @@
               icon = "󰓩 ";
             }
             {
-              __unkeyed-1 = "<leader>g";
-              group = "LazyGit";
-            }
-            {
-              __unkeyed-1 = "<leader>e";
-              group = "Neo-Tree";
-            }
-            {
-              __unkeyed-1 = "<leader>t";
-              group = "Floatterm";
-            }
-            {
-              __unkeyed-1 = "<leader>z";
-              group = "Twilight";
-            }
-            {
               __unkeyed = "<leader>c";
               group = "Codesnap";
               icon = "󰄄 ";
@@ -395,6 +447,22 @@
                 }
               ];
               mode = [ "n" "v" ];
+            }
+            {
+              __unkeyed-1 = "<leader>t";
+              group = "Terminal";
+            }
+            {
+              __unkeyed-1 = "<leader>e";
+              group = "Neo-tree";
+            }
+            {
+              __unkeyed-1 = "<leader>z";
+              group = "Twilight";
+            }
+            {
+              __unkeyed-1 = "<leader>T";
+              group = "Test";
             }
             {
               __unkeyed-1 = "<leader>w";
