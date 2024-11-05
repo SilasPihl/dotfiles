@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 
 {
   plugins = {
@@ -14,6 +14,8 @@
       width = 0.8;
       height = 0.8;
       keymaps.toggle = "<leader>t";
+      shell = "${pkgs.zsh}/bin/zsh";
+      autoinsert = true;
     };
     friendly-snippets.enable = true;
     gitsigns.enable = true;
@@ -25,6 +27,7 @@
       settings = {
         config_file_path = "/Users/${user}/dotfiles/themes/lazygit/theme.yml";
         use_custom_config_file_path = 1;
+        use_neovim_remote = 1;
       };
     };
     lint.enable = true;
@@ -49,7 +52,10 @@
     nix-develop.enable = true;
     nix.enable = true;
     noice.enable = true;
-    notify.enable = true;
+    notify = {
+      enable = true;
+      backgroundColour = "#000000";
+    };
     nvim-autopairs.enable = true;
     mini.enable = true;
     tmux-navigator.enable = true;
@@ -63,6 +69,13 @@
     yanky = {
       enable = true;
       enableTelescope = true;
+      settings = {
+        highlight = {
+          on_put = true;
+          on_yank = true;
+          timer = 500;
+        };
+      };
     };
     web-devicons.enable = true;
   };

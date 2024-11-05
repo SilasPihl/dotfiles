@@ -1,7 +1,7 @@
 {
   globals = {
-    mapleader = " ";
-    maplocalleader = " ";
+    mapleader = ",";
+    maplocalleader = ",";
   };
 
   opts = {

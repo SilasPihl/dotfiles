@@ -32,7 +32,7 @@
     }
     {
       mode = "n";
-      key = "<leader>Tfb";
+      key = "<leader>Td";
       action =
         "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>";
       options = { desc = "Test file with debugger"; };
@@ -51,21 +51,14 @@
     }
     {
       mode = "n";
-      key = "<leader>Tlb";
-      action =
-        "<cmd>lua require('neotest').run.run_last({ strategy = 'dap' })<CR>";
-      options = { desc = "Test last with debugger"; };
-    }
-    {
-      mode = "n";
-      key = "<leader>Twf";
+      key = "<leader>Tw";
       action =
         "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<CR>";
       options = { desc = "Watch file"; };
     }
     {
       mode = "n";
-      key = "<leader>Twf";
+      key = "<leader>Ts";
       action = "<cmd>lua require('neotest').summary.toggle()<CR>";
       options = { desc = "Summary toggle"; };
     }

@@ -3,14 +3,14 @@
 let
   opts = import ./opts.nix;
   keymaps = import ./keymaps.nix;
-  barbar = import ./plugins/barbar.nix { inherit pkgs user; };
-  cmp = import ./plugins/cmp.nix { inherit pkgs user; };
+  barbar = import ./plugins/barbar.nix { inherit pkgs; };
+  cmp = import ./plugins/cmp.nix { inherit pkgs; };
   common = import ./plugins/common.nix { inherit pkgs user; };
-  lsp = import ./plugins/lsp.nix { inherit pkgs user; };
-  neoTree = import ./plugins/neo-tree.nix { inherit pkgs user; };
-  telescope = import ./plugins/telescope.nix { inherit pkgs user; };
-  treesitter = import ./plugins/treesitter.nix { inherit pkgs user; };
-  whichKey = import ./plugins/which-key.nix { inherit pkgs user; };
+  lsp = import ./plugins/lsp.nix { inherit pkgs; };
+  neoTree = import ./plugins/neo-tree.nix { inherit pkgs; };
+  telescope = import ./plugins/telescope.nix { inherit pkgs; };
+  treesitter = import ./plugins/treesitter.nix { inherit pkgs; };
+  whichKey = import ./plugins/which-key.nix { inherit pkgs; };
 in {
   imports = [ inputs.nixvim.homeManagerModules.nixvim ];
 
@@ -22,7 +22,6 @@ in {
     inherit (opts) globals opts;
     inherit (keymaps) keymaps;
 
-    # Merge all plugin configurations
     plugins = barbar.plugins // cmp.plugins // common.plugins // lsp.plugins
       // neoTree.plugins // telescope.plugins // treesitter.plugins
       // whichKey.plugins;
