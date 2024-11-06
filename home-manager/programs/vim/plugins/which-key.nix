@@ -51,6 +51,10 @@
           group = "Test";
         }
         {
+          __unkeyed-1 = "<leader>d";
+          group = "Debug";
+        }
+        {
           __unkeyed-1 = "<leader>w";
           group = "windows";
           proxy = "<C-w>";

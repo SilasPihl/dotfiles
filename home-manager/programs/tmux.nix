@@ -14,19 +14,31 @@
     resizeAmount = 5;
     sensibleOnTop = false;
 
-    plugins = [
+    plugins = with pkgs.tmuxPlugins; [
+      vimTmuxNavigator
+      autoreload
+      tmuxYank
+      mightyScroll
+      sessionx
+      tmuxFzf
+      fzfUrl
+
+      # Plugins with extra configuration
       {
-        plugin = pkgs.tmuxPlugins.catppuccin;
+        plugin = catppuccin;
         extraConfig = "set -g @catppuccin_flavor 'macchiato'";
       }
-      pkgs.tmuxPlugins.tpm
-      pkgs.tmuxPlugins.vimTmuxNavigator
-      pkgs.tmuxPlugins.autoreload
-      pkgs.tmuxPlugins.tmuxYank
-      pkgs.tmuxPlugins.mightyScroll
-      pkgs.tmuxPlugins.sessionx
-      pkgs.tmuxPlugins.tmuxFzf
-      pkgs.tmuxPlugins.fzfUrl
+      {
+        plugin = resurrect;
+        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+      }
+      {
+        plugin = continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '60'
+        '';
+      }
     ];
 
     extraConfig = ''
@@ -68,7 +80,7 @@
       set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
       set -g @catppuccin_status_modules_right "directory date_time"
       set -g @catppuccin_status_modules_left "session"
-      set -g @catppuccin_status_left_separator  " "
+      set -g @catppuccin_status_left_separator " "
       set -g @catppuccin_status_right_separator ""
       set -g @catppuccin_status_right_separator_inverse "no"
       set -g @catppuccin_status_fill "icon"

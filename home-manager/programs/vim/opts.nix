@@ -1,7 +1,7 @@
 {
   globals = {
-    mapleader = ",";
-    maplocalleader = ",";
+    mapleader = " ";
+    maplocalleader = " ";
   };
 
   opts = {
@@ -14,7 +14,7 @@
     ignorecase = true;
     incsearch = true;
     number = true;
-    relativenumber = false;
+    relativenumber = true;
     scrolloff = 10;
     shiftwidth = 2;
     smartcase = true;
@@ -24,7 +24,8 @@
     tabstop = 2;
     termguicolors = true;
     undofile = true;
-    updatetime = 50; # Faster completion
+    updatetime = 50;
     wrap = false;
   };
+
 }

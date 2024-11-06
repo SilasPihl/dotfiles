@@ -10,7 +10,6 @@
       autoExpandWidth = true;
     };
     filesystem = {
-      followCurrentFile.enabled = true;
       filteredItems = {
         hideHidden = false;
         hideDotfiles = false;
@@ -35,4 +34,11 @@
       };
     };
   };
+
+  keymaps = [{
+    mode = "n";
+    key = "<leader>e";
+    action = "<cmd>Neotree toggle<CR>";
+    options.desc = "Neotree";
+  }];
 }

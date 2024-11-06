@@ -12,26 +12,9 @@
 
   home.enableNixpkgsReleaseCheck = false;
 
-  home.activation.afterWriteBoundary = let
-
-    kittyDir = "${config.home.homeDirectory}/.config/kitty";
-
-  in {
-    after = [ "writeBoundary" ];
-    before = [ ];
-    data = ''
-      #!${pkgs.stdenv.shell}
-      ${pkgs.rsync}/bin/rsync --mkpath -avvh --delete --perms --chmod=u=rwX ${
-        toString ../dotfiles/kitty
-      }/ "${kittyDir}/"
-    '';
-  };
-
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".tmux.conf".source = ~/dotfiles/dotfiles/tmux/.tmux.conf;
-    ".tmux".source = ~/dotfiles/dotfiles/tmux/.tmux;
     ".config/bat".source = ~/dotfiles/dotfiles/bat;
     ".config/spicetify/config-xpui.ini".source =
       ~/dotfiles/dotfiles/spicetify/config-xpui.ini;

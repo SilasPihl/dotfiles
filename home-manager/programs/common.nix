@@ -7,7 +7,6 @@
       docker-credential-helpers
       eza
       fd
-      ffmpegthumbnailer
       flux
       k9s
       kitty
@@ -15,9 +14,11 @@
       just
       lazydocker
       lazygit
+      manix
       neofetch
       nodejs_22 # for Github Copilot
       nerdfonts
+      ollama
       raycast
       ripgrep
       rsync

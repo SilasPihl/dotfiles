@@ -3,6 +3,35 @@
 {
   plugins.telescope = {
     enable = true;
+    extensions = {
+      manix.enable = true;
+      media-files = {
+        enable = true;
+        settings = { cword = true; };
+        # dependencies = {
+        #   chafa.enable = true;
+        #   epub-thumbnailer.enable = true;
+        #   ffmpegthumbnailer.enable = true;
+        #   fontpreview.enable = true;
+        #   imageMagick.enable = true;
+        #   pdftoppm.enable = true;
+        # };
+      };
+      undo.enable = true;
+    };
+
+    settings = {
+      pickers = {
+        find_files = {
+          hidden = true;
+          file_ignore_patterns = [ "%.git/" "^node_modules/" "^.venv/" ];
+        };
+        live_grep = {
+          additional_args = { __raw = "function() return { '--hidden' } end"; };
+        };
+      };
+    };
+
     keymaps = {
       "<leader>/" = {
         action = "live_grep";
