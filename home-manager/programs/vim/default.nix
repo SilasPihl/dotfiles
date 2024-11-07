@@ -37,6 +37,7 @@
       ./plugins/treesitter.nix
       ./plugins/ts.nix
       ./plugins/twillight.nix
+      ./plugins/tmux-navigator.nix
       ./plugins/undo-tree.nix
       ./plugins/web-devicons.nix
       ./plugins/which-key.nix

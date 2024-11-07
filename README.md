@@ -24,8 +24,13 @@ nix run home-manager/master -- switch --flake github:sebastianballe/dotfiles#mac
 
 ```bash
 nix run home-manager/master -- switch --flake github:sebastianballe/dotfiles#mac
+
 ```
+
+Key repeat stroke on MacOS is slow. Increase it by following the guide: https://linkarzu.com/posts/2024-macos-workflow/macos-keyrepeat-rate/.
+
 ## Nix-darwin installation (Not used anymore)
 
 See `/docs/nix-darwin-installation.md`
+
 
