@@ -15,6 +15,7 @@
       pipe = "batpipe";
       c = "clear";
       cd = "z";
+      dev = "nix develop";
       lg =
         "lazygit --use-config-file /Users/${user}/dotfiles/themes/lazygit/theme.yml";
       ld = "lazydocker";

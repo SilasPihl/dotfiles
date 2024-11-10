@@ -47,6 +47,7 @@
         };
       };
       yamlls.enable = true;
+      pyright.enable = true;
     };
   };
   plugins.lsp-format = {

@@ -91,8 +91,7 @@
               ./home-manager/programs/fzf.nix
               ./home-manager/programs/git.nix
               ./home-manager/programs/kitty.nix
-              # ./home-manager/programs/tmux.nix
-              ./home-manager/programs/vim/default.nix
+              ./home-manager/programs/nvim/default.nix
               ./home-manager/programs/zoxide.nix
               ./home-manager/programs/zsh.nix
 
