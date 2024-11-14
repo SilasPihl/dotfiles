@@ -1,7 +1,15 @@
 { pkgs, ... }:
 
 {
-  plugins.twilight.enable = true;
+  plugins.twilight = {
+    enable = true;
+    settings = {
+      context = 20;
+      dimming = {
+        alpha = 0.5;
+      };
+    };
+  };
 
   keymaps = [{
     mode = "n";

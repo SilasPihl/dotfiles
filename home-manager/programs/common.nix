@@ -16,7 +16,6 @@
       lazygit
       manix
       neofetch
-      # nodejs_22 # for Github Copilot
       nerdfonts
       ollama
       raycast

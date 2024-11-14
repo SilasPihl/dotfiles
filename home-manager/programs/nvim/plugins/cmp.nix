@@ -5,18 +5,8 @@
     enable = true;
     autoEnableSources = true;
     settings = {
-      sources = [
-        { name = "nvim_lsp"; }
-        { name = "nvim_lsp_signature_help"; }
-        { name = "nvim_lsp_document_symbol"; }
-        { name = "luasnip"; }
-        { name = "path"; }
-        { name = "buffer"; }
-        { name = "cmdline"; }
-        { name = "spell"; }
-        { name = "dictionary"; }
-        { name = "treesitter"; }
-      ];
+      sources =
+        [ { name = "nvim_lsp"; } { name = "luasnip"; } { name = "copilot"; } ];
       mapping = {
         "<C-Space>" = "cmp.mapping.complete()";
         "<C-d>" = "cmp.mapping.scroll_docs(-4)";

@@ -48,6 +48,7 @@
       };
       yamlls.enable = true;
       pyright.enable = true;
+      ts_ls.enable = true;
     };
   };
   plugins.lsp-format = {

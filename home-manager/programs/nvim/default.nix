@@ -1,7 +1,7 @@
 { inputs, pkgs, user, ... }:
 
 {
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ./gp.nix ];
+  imports = [ inputs.nixvim.homeManagerModules.nixvim ]; # ./gp.nix
   programs.nixvim = let
     lib = pkgs.lib;
     opts = import ./opts.nix;
@@ -42,5 +42,19 @@
       command = '':lua require("neotest").run.run(vim.fn.expand("%")) '';
       desc = "Run Go tests on save for *_test.go files";
     }];
+
+    # Define keymaps as a list of individual mappings
+    keymaps = [
+      {
+        key = "<leader>e";
+        action = "<cmd>Neotree toggle<CR>";
+        options = { desc = "Neotree"; };
+      }
+      {
+        key = "<leader>z";
+        action = "<cmd>ZenMode<CR>";
+        options = { desc = "Zen Mode"; };
+      }
+    ];
   };
 }

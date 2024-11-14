@@ -14,80 +14,35 @@
 
     extraConfigLua = ''
       require("gp").setup({
-        openai_api_key = "sk-1234567890abcdef1234567890abcdef";
+        openai_api_key = "sk-1234567890abcdef1234567890abcdef",
         providers = {
           ollama = {
             endpoint = "http://localhost:11434/v1/chat/completions",
           },
-          openai = {
-            disable = false, 
-          },
-          azure = {},
-          copilot = {},
-          lmstudio = {},
-          googleai = {},
-          pplx = {},
-          anthropic = {},
-        },
-        agents = {
-          {
-            name = "Codellama",
-            chat = true,
-            command = true,
-            provider = "ollama",
-            model = { model = "codellama" },
-            system_prompt = "I am an AI meticulously crafted to provide programming guidance and code assistance. "
-              .. "To best serve you as a computer programmer, please provide detailed inquiries and code snippets when necessary, "
-              .. "and expect precise, technical responses tailored to your development needs.\n",
+          copilot = {
+            endpoint = "https://api.githubcopilot.com/chat/completions",
+            secret = {
+              "bash",
+              "-c",
+              "cat ~/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
             },
+          },
+        },
+        whisper = {
+          disable = true;
+        }
+        agents = {
+          { 
+            provider = "copilot", 
+            name = "CodeCopilot", 
+            chat = false, 
+            command = true, 
+            model = { model = "gpt-4o", temperature = 0.8, top_p = 1, n = 1 }, 
+            system_prompt = "You are a helpful coding assistant, optimized to provide code responses directly.\n"
+          }, 
         },
         toggle_target = "vsplit",
       })
     '';
-
-    keymaps = [
-      {
-        key = "<leader>ac";
-        action = "<cmd>GpChatToggle vsplit<cr>";
-        options = { desc = "ChatGPT"; };
-      }
-
-      {
-        key = "<leader>au";
-        action = "<cmd>GpChatStop<cr>";
-        options = { desc = "ChatGPT Stop"; };
-      }
-
-      {
-        key = "<leader>an";
-        action = "<cmd>GpChatNew<cr>";
-        options = { desc = "ChatGPT New Chat"; };
-      }
-
-      {
-        key = "<leader>ad";
-        action = "<cmd>GpChatDelete<cr>";
-        options = { desc = "ChatGPT Delete Chat"; };
-      }
-
-      {
-        key = "<leader>aa";
-        action = "<cmd>GpChatRespond<cr>";
-        options = { desc = "ChatGPT Send Message"; };
-      }
-
-      {
-        key = "<leader>af";
-        action = "<cmd>GpChatFinder<cr>";
-        options = { desc = "ChatGPT Find Chat"; };
-      }
-
-      {
-        mode = "v";
-        key = "<leader>ap";
-        action = "<cmd>GpChatPaste<cr>";
-        options = { desc = "ChatGPT Paste Selection to Chat"; };
-      }
-    ];
   };
 }
