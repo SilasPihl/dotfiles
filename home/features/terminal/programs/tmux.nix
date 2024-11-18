@@ -52,7 +52,6 @@
     extraConfig = ''
       # Unbind and rebind keys
       unbind r
-      bind r source-file ~/.tmux.conf
 
       # Split windows and pane navigation
       bind t split-window -h
@@ -76,6 +75,10 @@
       set -g status-justify left
       set -g renumber-windows on
       set -g set-clipboard on
+
+      # Navigation
+      bind-key n next-window
+      bind-key p previous-window
     '';
   };
 }
