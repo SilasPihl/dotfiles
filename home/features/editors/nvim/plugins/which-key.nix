@@ -27,34 +27,24 @@
           group = "Neo-tree";
         }
         {
-          __unkeyed-1 = "<leader>f";
-          desc = "Telescope Find Files";
-          cmd = "Telescope find_files";
-        }
-        {
-          __unkeyed-1 = "<leader>g";
-          desc = "Telescope Live Grep";
-          cmd = "Telescope live_grep";
-        }
-        {
           __unkeyed-1 = "<leader>k";
           desc = "Telescope Keymaps";
-          cmd = "Telescope keymaps";
+          cmd = "<cmd>Telescope keymaps<CR>";
         }
         {
           __unkeyed-1 = "gd";
           desc = "Telescope LSP Definitions";
-          cmd = "Telescope lsp_definitions";
+          cnd = "<cmd>Telescope lsp_definitions<CR>";
         }
         {
           __unkeyed-1 = "gr";
           desc = "Telescope LSP References";
-          cmd = "Telescope lsp_references";
+          cmd = "<cmd>Telescope lsp_references<CR>";
         }
         {
           __unkeyed-1 = "<leader>z";
           desc = "Zen Mode";
-          cmd = "ZenMode";
+          cmd = "<cmd>ZenMode<CR>";
         }
         {
           __unkeyed-1 = "<leader>w";

@@ -1,39 +1,58 @@
-{ config, pkgs, user, ... }:
+{ config, pkgs, user, lib, ... }:
 
 {
   programs.zsh = {
     enable = true;
-
-    autosuggestion = { enable = true; };
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
 
     shellAliases = {
-      cat = "prettybat";
-      bat = "prettybat";
-      grep = "batgrep";
-      man = "batman";
-      watch = "batwatch";
-      pipe = "batpipe";
-      c = "clear";
-      cd = "z";
+      # Bat
+      cat = "bat --pager=never --plain";
+      pbat = "prettybat";
+      bgrep = "batgrep";
+      grep = "rg";
+      bman = "batman";
+      bwatch = "batwatch";
+      bpipe = "batpipe";
+
+      # Nix
       dev = "nix develop";
+      cleanup =
+        "sudo nix-collect-garbage --delete-older-than 3d && nix-collect-garbage -d";
+
+      # Remove this annoying fd alias coming from maybe common-aliases plugin or hm fd module
+      # fd: aliased to fd '--hidden' '--no-ignore' '--no-absolute-path'
+      # https://github.com/ohmyzsh/ohmyzsh/issues/9414#issuecomment-734947141
+      fd = lib.mkForce "fd";
+
+      # Lazy
       lg =
         "lazygit --use-config-file /Users/${user}/dotfiles/themes/lazygit/theme.yml";
       ld = "lazydocker";
+
+      # Eza
       lt = "eza -lTag";
       lt1 = "eza -lTag --level=1";
       lt2 = "eza -lTag --level=2";
       lt3 = "eza -lTag --level=3";
+      # Just for quicker iterations on home-manager. Will probably be removed once setup stabilizes
+      hmac = "home-manager switch --flake .#mac";
+
+      # Tmux
       ta = "tmux attach -t";
       tc = "clear; tmux clear-history; clear";
       td = "tmux detach";
       tk = "tmux kill-session -t ";
       tl = "tmux list-sessions";
       tn = "tmux new-session -s ";
-      dark =
-        "~/dotfiles/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh dark";
-      light =
-        "~/dotfiles/dotfiles/kitty/.config/kitty/toggle_kitty_theme.sh light";
+
+      # Other
+      c = "clear";
+      cd = "z";
       v = "nvim";
+      myip = "ip addr | grep -m 1 -o '192.*.*.*' | cut -d '/' -f 1";
     };
 
     history = {
@@ -54,14 +73,20 @@
       plugins = [
         "git"
         "copyfile"
+        "colored-man-pages"
         "docker"
         "docker-compose"
         "direnv"
+        "fancy-ctrl-z"
         "eza"
         "fzf"
         "golang"
+        "git"
+        "git-extras"
+        "gitfast"
         "history"
         "terraform"
+
         "zoxide"
         "zsh-interactive-cd"
       ];
@@ -97,12 +122,6 @@
       --color=selected-bg:#494d64 \
       --multi"
 
-      # https://github.com/nix-community/nix-direnv/issues/324#issuecomment-1490085474
-      # function enterNixDevelopShell {
-      #     if test -f flake.nix; then nix develop . --impure; fi
-      #   }
-      #   chpwd_functions=(''${chpwd_functions[@]} "enterNixDevelopShell")
-
       # I currently have an issue of "go: cannot find GOROOT directory:
       # /libexec" but I cannot find where this is set so now I am explicitly
       # unsetting in until further.
@@ -113,6 +132,15 @@
       if [ -e ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then
         source ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh;
       fi
+
+      # function y() {
+      #   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+      #   yazi "$@" --cwd-file="$tmp"
+      #   if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+      #     builtin cd -- "$cwd"
+      #   fi
+      #   rm -f -- "$tmp"
+      # }
 
       command -v k9s >/dev/null 2>&1 && {
         alias k9='k9s --request-timeout=10s --headless --command namespaces'
@@ -145,15 +173,6 @@
 
       command -v talosctl >/dev/null 2>&1 && {
         source <(talosctl completion zsh)
-      }
-
-      function y() {
-        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-        yazi "$@" --cwd-file="$tmp"
-        if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-          builtin cd -- "$cwd"
-        fi
-        rm -f -- "$tmp"
       }
 
       if [ -n "$NIX_FLAKE_NAME" ]; then
