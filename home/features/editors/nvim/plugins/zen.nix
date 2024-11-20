@@ -5,14 +5,16 @@
     enable = true;
     settings = {
       plugins = {
-        twilight = {
+        gitsigns = { enabled = true; };
+        options = {
           enabled = true;
+          ruler = false;
+          showcmd = false;
         };
-        kitty = {
-          enabled = true;
-        };
+        tmux = { enabled = false; };
+        twilight = { enabled = true; };
+        kitty = { enabled = true; };
       };
     };
   };
-
 }

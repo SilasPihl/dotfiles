@@ -1,7 +1,7 @@
 { config, lib, pkgs, system, user, ... }:
 
 {
-  imports = [ ./features/editors ./features/terminal ];
+  imports = [ ./features/editors ./features/terminal ./features/programs ];
   home = {
     username = user;
     homeDirectory = lib.mkForce

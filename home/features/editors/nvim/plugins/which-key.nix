@@ -16,7 +16,7 @@
         ];
       };
       spec = [
-        # Existing key mappings
+        # Individual key mappings
         {
           __unkeyed-1 = "<leader>b";
           group = "Buffer";
@@ -24,22 +24,8 @@
         }
         {
           __unkeyed-1 = "<leader>e";
-          group = "Neo-tree";
-        }
-        {
-          __unkeyed-1 = "<leader>k";
-          desc = "Telescope Keymaps";
-          cmd = "<cmd>Telescope keymaps<CR>";
-        }
-        {
-          __unkeyed-1 = "gd";
-          desc = "Telescope LSP Definitions";
-          cnd = "<cmd>Telescope lsp_definitions<CR>";
-        }
-        {
-          __unkeyed-1 = "gr";
-          desc = "Telescope LSP References";
-          cmd = "<cmd>Telescope lsp_references<CR>";
+          desc = "Neotree toggle";
+          cmd = "<cmd>Neotree toggle<CR>";
         }
         {
           __unkeyed-1 = "<leader>z";
@@ -51,6 +37,30 @@
           group = "Windows";
           proxy = "<C-w>";
         }
+        {
+          __unkeyed-1 = "<leader>u";
+          desc = "Undotree";
+          cmd = "<cmd>UndotreeToggle<CR>";
+        }
+
+        # Telescope
+        {
+          __unkeyed-1 = "<leader>k";
+          desc = "Telescope Keymaps";
+          cmd = "<cmd>Telescope keymaps<CR>";
+        }
+        {
+          __unkeyed-1 = "gd";
+          desc = "Telescope LSP Definitions";
+          cmd = "<cmd>Telescope lsp_definitions<CR>";
+        }
+        {
+          __unkeyed-1 = "gr";
+          desc = "Telescope LSP References";
+          cmd = "<cmd>Telescope lsp_references<CR>";
+        }
+
+        # CopilotChat
         {
           __unkeyed-1 = "<C-g>t";
           desc = "Copilot Chat Toggle";
@@ -96,111 +106,69 @@
           desc = "Copilot Chat Accept";
           cmd = "<cmd>CopilotChatAccept<CR>";
         }
-        # {
-        #   __unkeyed-1 = "<leader>gc";
-        #   desc = "New Chat";
-        #   cmd = "<cmd>GpChatNew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gv";
-        #   desc = "Chat New VSplit";
-        #   cmd = "<cmd>GpChatNew vsplit<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gs";
-        #   desc = "Chat New Split";
-        #   cmd = "<cmd>GpChatNew split<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gt";
-        #   desc = "Chat New Tab";
-        #   cmd = "<cmd>GpChatNew tabnew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gP";
-        #   desc = "Chat Paste";
-        #   cmd = "<cmd>GpChatPaste<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gF";
-        #   desc = "Chat Finder";
-        #   cmd = "<cmd>GpChatFinder<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gd";
-        #   desc = "Chat Delete";
-        #   cmd = "<cmd>GpChatDelete<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gr";
-        #   desc = "Rewrite";
-        #   cmd = "<cmd>GpRewrite<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>ga";
-        #   desc = "Append";
-        #   cmd = "<cmd>GpAppend<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gb";
-        #   desc = "Prepend";
-        #   cmd = "<cmd>GpPrepend<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>ge";
-        #   desc = "Enew";
-        #   cmd = "<cmd>GpEnew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gn";
-        #   desc = "New Horizontal";
-        #   cmd = "<cmd>GpNew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gvn";
-        #   desc = "Vnew";
-        #   cmd = "<cmd>GpVnew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gtb";
-        #   desc = "Tabnew";
-        #   cmd = "<cmd>GpTabnew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gp";
-        #   desc = "Popup";
-        #   cmd = "<cmd>GpPopup<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gi";
-        #   desc = "Implement";
-        #   cmd = "<cmd>GpImplement<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gx";
-        #   desc = "Toggle Context";
-        #   cmd = "<cmd>GpContext<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gvc";
-        #   desc = "Context VSplit";
-        #   cmd = "<cmd>GpContext vsplit<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gsc";
-        #   desc = "Context Split";
-        #   cmd = "<cmd>GpContext split<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gtc";
-        #   desc = "Context Tab";
-        #   cmd = "<cmd>GpContext tabnew<CR>";
-        # }
-        # {
-        #   __unkeyed-1 = "<leader>gpc";
-        #   desc = "Context Popup";
-        #   cmd = "<cmd>GpContext popup<CR>";
-        # }
+
+        # Neotest key mappings
+        {
+          mode = "n";
+          key = "<leader>Tf";
+          action =
+            "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>";
+          options.desc = "Test file";
+        }
+        {
+          mode = "n";
+          key = "<leader>Td";
+          action =
+            "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>";
+          options.desc = "Test file with debugger";
+        }
+        {
+          mode = "n";
+          key = "<leader>Tn";
+          action = "<cmd>lua require('neotest').run.run()<CR>";
+          options.desc = "Test nearest";
+        }
+        {
+          mode = "n";
+          key = "<leader>Tl";
+          action = "<cmd>lua require('neotest').run.run_last()<CR>";
+          options.desc = "Test last";
+        }
+        {
+          mode = "n";
+          key = "<leader>Tw";
+          action =
+            "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<CR>";
+          options.desc = "Watch file";
+        }
+        {
+          mode = "n";
+          key = "<leader>Ts";
+          action = "<cmd>lua require('neotest').summary.toggle()<CR>";
+          options.desc = "Summary toggle";
+        }
+
+        # Dap
+        {
+          __unkeyed-1 = "<leader>dt";
+          desc = "dap ui toggle";
+          cmd = ":dapuitoggle<cr>";
+        }
+        {
+          __unkeyed-1 = "<leader>db";
+          desc = "dap toggle breakpoint";
+          cmd = ":daptogglebreakpoint<cr>";
+        }
+        {
+          __unkeyed-1 = "<leader>dc";
+          desc = "dap continue";
+          cmd = ":dapcontinue<cr>";
+        }
+        {
+          __unkeyed-1 = "<leader>dr";
+          desc = "dap restart";
+          cmd = ":lua require('dapui').open({reset=true})<cr>";
+        }
       ];
       win = { border = "single"; };
     };

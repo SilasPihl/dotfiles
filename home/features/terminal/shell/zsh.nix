@@ -40,19 +40,11 @@
       # Just for quicker iterations on home-manager. Will probably be removed once setup stabilizes
       hmac = "home-manager switch --flake .#mac";
 
-      # Tmux
-      ta = "tmux attach -t";
-      tc = "clear; tmux clear-history; clear";
-      td = "tmux detach";
-      tk = "tmux kill-session -t ";
-      tl = "tmux list-sessions";
-      tn = "tmux new-session -s ";
-
       # Other
       c = "clear";
       cd = "z";
       v = "nvim";
-      myip = "ip addr | grep -m 1 -o '192.*.*.*' | cut -d '/' -f 1";
+      ip = "ip addr | grep -m 1 -o '192.*.*.*' | cut -d '/' -f 1";
     };
 
     history = {
@@ -86,7 +78,6 @@
         "gitfast"
         "history"
         "terraform"
-
         "zoxide"
         "zsh-interactive-cd"
       ];
@@ -127,20 +118,9 @@
       # unsetting in until further.
       unset GOROOT
 
-      EDITOR=nvim
-
       if [ -e ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then
         source ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh;
       fi
-
-      # function y() {
-      #   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-      #   yazi "$@" --cwd-file="$tmp"
-      #   if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-      #     builtin cd -- "$cwd"
-      #   fi
-      #   rm -f -- "$tmp"
-      # }
 
       command -v k9s >/dev/null 2>&1 && {
         alias k9='k9s --request-timeout=10s --headless --command namespaces'
