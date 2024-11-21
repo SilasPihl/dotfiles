@@ -13,7 +13,7 @@
       maximum_length = 30;
       maximum_padding = 2;
       minimum_padding = 1;
-      no_name_title = "[No Name]";
+      no_name_title = "[]";
     };
     keymaps = {
       close.key = "<C-c>";

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, user, ... }:
 let
   # Catppuccin Nix is setting bat theme and we
   # are simply setting aichat theme to bat's theme
@@ -7,28 +7,20 @@ let
   # themeName = config.colorScheme.name;
   # batThemeSrc = config.programs.bat.themes."${themeName}".src;
   # batTheme = "${batThemeSrc}/themes/${themeName}.tmTheme";
-in {
-  home.packages = [ pkgs.aichat ];
-
-  # https://github.com/sigoden/aichat/wiki/Custom-Theme
-  # xdg.configFile."aichat/dark.tmTheme".source = batTheme;
-
-  xdg.configFile."aichat/config.yaml".text =
+  aichatConfig = ''
     # yaml
-    ''
-      model: llama3.2
       clients:
-      - type: ollama
-        name: ollama
-        api_base: http://localhost:11434/v1
-      stream: true
-      save: true
-      keybindings: vi
-    '';
+        - type: openai-compatible
+          name: ollama
+          api_base: http://localhost:11434/v1
+          models:
+            - name: llama3.2
+              max_input_tokens: 128000
+              supports_function_calling: true
+  '';
 
-  xdg.configFile."aichat/roles.yaml".text =
+  aichatRoles = ''
     # yaml
-    ''
       - name: shell
         prompt: >
           I want you to act as a linux shell expert. I want you to answer only with code. Do not write explanations.
@@ -68,5 +60,17 @@ in {
       - name: cmtgpt
         prompt: >
           I want you to act as a commit message generator. I will provide you with information about the task and the prefix for the task code, and I would like you to generate an appropriate commit message using the conventional commit format. Do not write any explanations or other words, just reply with the commit message.
-    '';
+  '';
+in {
+  home.packages = [ pkgs.aichat ];
+
+  # https://github.com/sigoden/aichat/wiki/Custom-Theme
+  # xdg.configFile."aichat/dark.tmTheme".source = batTheme;
+
+  # https://github.com/sigoden/aichat/wiki/Configuration-Guide#configuration-file
+  home.file."/Users/${user}/Library/Application Support/aichat/config.yaml".text =
+    aichatConfig;
+
+  home.file."/Users/${user}/Library/Application Support/aichat/roles.yaml".text =
+    aichatConfig;
 }

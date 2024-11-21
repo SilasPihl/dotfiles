@@ -6,9 +6,7 @@
     userName = "Sebastian Balle";
     userEmail = "s.balle@sbconsultancy.dk";
 
-    aliases = {
-      st = "status";
-    };
+    aliases = { st = "status"; };
 
     includes = [
       {
@@ -24,5 +22,15 @@
         condition = "gitdir:~/git/lix/";
       }
     ];
+
+    delta = {
+      enable = true;
+      options = {
+        navigate = true; # use n and N to move between diff sections
+        # side-by-side = true;
+        diff-so-fancy = true;
+        line-numbers = true;
+      };
+    };
   };
 }

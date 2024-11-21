@@ -8,6 +8,7 @@
     ./fd.nix
     ./fzf.nix
     ./git.nix
+    # ./git-cliff.nix # Include once AI automated flow for new commits is introduced
     ./lazygit.nix
     ./nix-index.nix
     ./ripgrep.nix

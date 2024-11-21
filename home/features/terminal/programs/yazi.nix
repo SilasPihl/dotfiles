@@ -3,6 +3,7 @@
 {
   programs.yazi = {
     enable = true;
+    flavors = { "catppuccin-macchiato" = ../../../../themes/yazi; };
     enableZshIntegration = true;
     # Launches yazi and drops in current dir on exit
     # See: https://yazi-rs.github.io/docs/quick-start/#shell-wrapper

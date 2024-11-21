@@ -28,8 +28,7 @@
       fd = lib.mkForce "fd";
 
       # Lazy
-      lg =
-        "lazygit --use-config-file /Users/${user}/dotfiles/themes/lazygit/theme.yml";
+      lg = "lazygit";
       ld = "lazydocker";
 
       # Eza
@@ -38,7 +37,7 @@
       lt2 = "eza -lTag --level=2";
       lt3 = "eza -lTag --level=3";
       # Just for quicker iterations on home-manager. Will probably be removed once setup stabilizes
-      hmac = "home-manager switch --flake .#mac";
+      hmac = "nix run home-manager/master -- switch --flake .#mac";
 
       # Other
       c = "clear";
@@ -121,6 +120,18 @@
       if [ -e ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then
         source ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh;
       fi
+
+      function s() {
+        {
+          exec </dev/tty
+          exec <&1
+          local session
+          session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' Sessions ' --border --prompt '⚡  ')
+          zle reset-prompt > /dev/null 2>&1 || true
+          [[ -z "$session" ]] && return
+          sesh connect $session
+        }
+      }
 
       command -v k9s >/dev/null 2>&1 && {
         alias k9='k9s --request-timeout=10s --headless --command namespaces'
