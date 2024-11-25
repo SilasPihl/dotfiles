@@ -5,8 +5,7 @@
     enable = true;
     autoEnableSources = true;
     settings = {
-      sources =
-        [ { name = "nvim_lsp"; } { name = "luasnip"; } { name = "copilot"; } ];
+      sources = [ { name = "nvim_lsp"; } { name = "luasnip"; } ];
       mapping = {
         "<C-Space>" = "cmp.mapping.complete()";
         "<C-d>" = "cmp.mapping.scroll_docs(-4)";

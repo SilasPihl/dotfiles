@@ -16,6 +16,7 @@
 
     plugins = with pkgs; [
       tmuxPlugins.vim-tmux-navigator
+      tmuxPlugins.battery
       {
         plugin = tmuxPlugins.catppuccin;
 
@@ -29,7 +30,7 @@
           set -g @catppuccin_window_default_text "#W"
           set -g @catppuccin_window_current_fill "number"
           set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
-          set -g @catppuccin_status_modules_right "directory date_time"
+          set -g @catppuccin_status_modules_right "directory date_time battery"
           set -g @catppuccin_status_modules_left "session"
           set -g @catppuccin_status_left_separator " "
           set -g @catppuccin_status_right_separator ""

@@ -1,7 +1,7 @@
 { inputs, pkgs, user, ... }:
 
 {
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ]; # ./gp.nix
+  imports = [ inputs.nixvim.homeManagerModules.nixvim ./gp.nix ];
   programs.nixvim = let
     lib = pkgs.lib;
     opts = import ./opts.nix;
@@ -31,6 +31,7 @@
         integrations = {
           cmp = true;
           gitsigns = true;
+
           nvimtree = true;
         };
         term_colors = true;
