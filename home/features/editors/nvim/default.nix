@@ -1,7 +1,7 @@
 { inputs, pkgs, user, ... }:
 
 {
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ./gp.nix ];
+  imports = [ inputs.nixvim.homeManagerModules.nixvim ./gp.nix ./snacks.nix ];
   programs.nixvim = let
     lib = pkgs.lib;
     opts = import ./opts.nix;
@@ -12,6 +12,7 @@
       (builtins.attrNames (builtins.readDir pluginDir)));
 
     combinedPlugins = lib.foldl'
+
       (acc: path: acc // (import path { inherit pkgs user; }).plugins) { }
       pluginPaths;
 

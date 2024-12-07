@@ -2,7 +2,7 @@
   description = "Sebastian NixOS and Home-Manager flake";
 
   inputs = {
-    nixpkgs = { url = "github:NixOS/nixpkgs?ref=nixos-24.05"; };
+    nixpkgs = { url = "github:NixOS/nixpkgs?ref=nixos-24.11"; };
     nixpkgs-unstable = { url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable"; };
     # https://github.com/catppuccin/nix/issues/162
     catppuccin.url = "github:catppuccin/nix";
@@ -83,7 +83,7 @@
             modules = [
               {
                 nixpkgs.config.allowUnfree = true;
-                system.stateVersion = "24.05";
+                system.stateVersion = "24.11";
               }
 
               ./hosts/devos/configuration.nix

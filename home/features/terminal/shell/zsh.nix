@@ -9,7 +9,7 @@
 
     shellAliases = {
       # Bat
-      cat = "bat --pager=never --plain";
+      cat = "bat";
       pbat = "prettybat";
       bgrep = "batgrep";
       grep = "rg";
