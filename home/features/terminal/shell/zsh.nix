@@ -40,10 +40,8 @@
       hmac = "nix run home-manager/master -- switch --flake .#mac";
 
       # Other
-      c = "clear";
       cd = "z";
       v = "nvim";
-      ip = "ip addr | grep -m 1 -o '192.*.*.*' | cut -d '/' -f 1";
     };
 
     history = {

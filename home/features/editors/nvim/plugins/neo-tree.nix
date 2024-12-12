@@ -7,6 +7,7 @@
     closeIfLastWindow = true;
     window = {
       position = "left";
+    
       autoExpandWidth = true;
     };
     filesystem = {

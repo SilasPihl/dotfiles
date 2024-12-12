@@ -1,4 +1,5 @@
 { pkgs, user, ... }: {
+
   programs.nixvim = {
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
@@ -22,7 +23,7 @@
         lazygit = { enabled = true },
         notifier = { 
           enabled = true,
-          timeout = 2000,
+          timeout = 2500,
         },
         rename = { enabled = true },
         quickfile = { enabled = true },

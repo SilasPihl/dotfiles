@@ -8,14 +8,6 @@
       media-files = {
         enable = true;
         settings = { cword = true; };
-        # dependencies = {
-        #   chafa.enable = true;
-        #   epub-thumbnailer.enable = true;
-        #   ffmpegthumbnailer.enable = true;
-        #   fontpreview.enable = true;
-        #   imageMagick.enable = true;
-        #   pdftoppm.enable = true;
-        # };
       };
       undo.enable = true;
     };
@@ -35,15 +27,15 @@
     keymaps = {
       "<leader>/" = {
         action = "live_grep";
-        options = { desc = "Telescope Live Grep"; };
+        options = { desc = "Grep"; };
       };
       "<leader>p" = {
         action = "find_files";
-        options = { desc = "Telescope Find Files"; };
+        options = { desc = "Find files"; };
       };
       "<leader>b" = {
         action = "buffers";
-        options = { desc = "Telescope Buffers"; };
+        options = { desc = "Buffers"; };
       };
       "<leader>k" = {
         action = "keymaps";
@@ -51,11 +43,11 @@
       };
       "gd" = {
         action = "lsp_definitions";
-        options = { desc = "Telescope LSP Definitions"; };
+        options = { desc = "LSP Definitions"; };
       };
       "gr" = {
         action = "lsp_references";
-        options = { desc = "Telescope LSP References"; };
+        options = { desc = "LSP References"; };
       };
     };
   };

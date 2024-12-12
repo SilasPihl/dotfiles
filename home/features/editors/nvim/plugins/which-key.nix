@@ -59,7 +59,24 @@
           desc = "Telescope LSP References";
           cmd = "<cmd>Telescope lsp_references<CR>";
         }
-
+        # CopilotChat
+        {
+          __unkeyed-1 = "<C-g>t";
+          desc = "Copilot Chat Toggle";
+          cmd = "<cmd>CopilotChatToggle<CR>";
+        }
+        {
+          __unkeyed-1 = "<C-g>f";
+          desc = "Copilot Chat Fix";
+          cmd = "<cmd>CopilotChatFix<CR>";
+          mode = "v";
+        }
+        {
+          __unkeyed-1 = "<C-g>fd";
+          desc = "Copilot Chat Fix Diagnostic";
+          cmd = "<cmd>CopilotChatFixDiagnostic<CR>";
+          mode = "v";
+        }
         # Gp Commands under <C-g>
         {
           __unkeyed-1 = "<C-g>";
