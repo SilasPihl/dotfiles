@@ -11,9 +11,12 @@
       manix
       # nerdfonts
       ollama
+      go
+      nodejs_23
       raycast
       sesh
       sops
+      stow
       (if system != "aarch64-linux" then slack else null)
       (if system != "aarch64-li pnux" then spotify else null)
       vim
