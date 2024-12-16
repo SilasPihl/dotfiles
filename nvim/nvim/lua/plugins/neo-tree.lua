@@ -1,11 +1,11 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
-  version = '*',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'DaikyXendo/nvim-material-icon',
     'MunifTanjim/nui.nvim',
   },
+  lazy = false,
   cmd = 'Neotree',
   keys = {
     { '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'NeoTree toggle' } },

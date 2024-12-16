@@ -1,6 +1,7 @@
 return {
   "akinsho/bufferline.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
+  lazy = false,
   opts = {
     options = {
       offsets = {
@@ -11,7 +12,6 @@ return {
           text_align = "left",
         },
       },
-      auto_toggle_bufferline = true,
     },
   },
   keys = {
@@ -26,7 +26,6 @@ return {
     { "<C-6>",   "<cmd>BufferLinePick 6<CR>",    desc = "Go to buffer 6" },
     { "<C-7>",   "<cmd>BufferLinePick 7<CR>",    desc = "Go to buffer 7" },
     { "<C-8>",   "<cmd>BufferLinePick 8<CR>",    desc = "Go to buffer 8" },
-    { "<C-9>",   "<cmd>BufferLinePick 9<CR>",    desc = "Go to buffer 9" },
     { "<C-9>",   "<cmd>BufferLinePick 9<CR>",    desc = "Go to buffer 9" },
   },
 }
