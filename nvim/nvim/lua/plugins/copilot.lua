@@ -2,10 +2,10 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
-      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log, and async functions
+      { "github/copilot.vim" },
+      { "nvim-lua/plenary.nvim", branch = "master" },
     },
-    build = "make tiktoken", -- Only on macOS or Linux
+
     opts = {
       settings = {
         auto_insert_mode = true,
@@ -18,11 +18,13 @@ return {
         question_header = "## Sebastian",
         defaults = {
           Commit = {
-            prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+            prompt =
+            "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
             selection = "require('CopilotChat.select').gitdiff",
           },
           CommitStaged = {
-            prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+            prompt =
+            "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
             selection = function(source)
               return require('CopilotChat.select').gitdiff(source, true)
             end,

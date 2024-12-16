@@ -1,7 +1,6 @@
 return {
   "akinsho/bufferline.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
-  version = "*",
   opts = {
     options = {
       offsets = {
@@ -11,7 +10,8 @@ return {
           separator = true,
           text_align = "left",
         },
-      }
+      },
+      auto_toggle_bufferline = true,
     },
   },
   keys = {
