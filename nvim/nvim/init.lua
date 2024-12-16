@@ -110,6 +110,7 @@ vim.keymap.set('n', '<c-k>', ':wimcmd k<CR>', { desc = 'Move focus to the upper 
 
 -- Custom keybinds
 -- Move down 10 lines, or to the bottom if there aren't 10 lines below
+-- { import = 'base'}
 vim.keymap.set('n', '<c-d>', function()
   local cur_line = vim.fn.line '.'
   local last_line = vim.fn.line '$'
@@ -138,6 +139,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Run Go tests on save for *_test.go files
+
+-- Auto format on save using LSP
+vim.api.nvim_create_autocmd('BufWritePre', {
+  desc = 'Auto format on save using LSP',
+  group = vim.api.nvim_create_augroup('lsp-format-on-save', { clear = true }),
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+})
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'

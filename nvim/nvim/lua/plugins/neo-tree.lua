@@ -8,7 +8,7 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '<leader>e', ':Neotree toggle<CR>', { desc = 'NeoTree toggle' } },
+    { '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'NeoTree toggle' } },
   },
   opts = {
     close_if_last_window = true,
@@ -46,25 +46,6 @@ return {
     },
   },
   config = function(_, opts)
-    -- Set up Neo-tree with the given options
     require('neo-tree').setup(opts)
-
-    -- Ensure Neo-tree closes if it's the last window
-    vim.api.nvim_create_autocmd('BufEnter', {
-      nested = true,
-      callback = function()
-        if #vim.api.nvim_list_wins() == 1 and vim.bo.filetype == 'neo-tree' then
-          vim.cmd 'quit'
-        end
-      end,
-    })
-
-    -- Open Neo-tree automatically on startup
-    vim.api.nvim_create_autocmd('VimEnter', {
-      desc = 'Open Neotree automatically on startup',
-      callback = function()
-        vim.cmd 'Neotree show'
-      end,
-    })
   end,
 }

@@ -1,46 +1,26 @@
 return { -- LSP Configs
   'neovim/nvim-lspconfig',
   dependencies = {
-    -- Automatically install LSPs and related tools to stdpath for Neovim
     { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
+    { 'j-hui/fidget.nvim',       opts = {} },
 
-    -- Useful status updates for LSP.
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    { 'j-hui/fidget.nvim', opts = {} },
-
-    -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
-    { 'folke/neodev.nvim', opts = {} },
   },
   config = function()
-    -- Define the on_attach function
     local on_attach = function(client, bufnr)
       local map = function(keys, func, desc)
         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
       end
 
-      -- Jump to the definition of the word under your cursor.
       map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-      -- Find references for the word under your cursor.
       map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-      -- Jump to the implementation of the word under your cursor.
       map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-      -- Jump to the type of the word under your cursor.
-      map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-      -- Fuzzy find all the symbols in your current document.
       map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-      -- Fuzzy find all the symbols in your current workspace.
       map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-      -- Rename the variable under your cursor.
       map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-      -- Execute a code action, usually your cursor needs to be on top of an error
-      -- or a suggestion from your LSP for this to activate.
       map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-      -- Opens a popup that displays documentation about the word under your cursor
       map('K', vim.lsp.buf.hover, 'Hover Documentation')
-      -- Goto Declaration.
       map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
       -- Highlight references of the word under your cursor when your cursor rests there for a while.
@@ -96,7 +76,6 @@ return { -- LSP Configs
         capabilities = capabilities,
         cmd = { "gopls" },
         filetypes = { "go", "gomod", "gowork", "gotmpl" },
-        root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
         settings = {
           gopls = {
             buildFlags = { "-tags=unit,integration" },
@@ -168,16 +147,7 @@ return { -- LSP Configs
       },
     }
 
-    -- Ensure the servers and tools above are installed
-    --  To check the current status of installed tools and/or manually install
-    --  other tools, you can run
-    --    :Mason
-    --
-    --  You can press `g?` for help in this menu.
     require('mason').setup()
-
-    -- You can add other tools here that you want Mason to install
-    -- for you, so that they are available from within Neovim.
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format Lua code

@@ -27,18 +27,17 @@ return {
       },
     },
     keys = {
-      { "<leader>/", "<cmd>Telescope live_grep<CR>", desc = "Grep" },
-      { "<leader>p", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<leader>b", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
-      { "<leader>k", "<cmd>Telescope keymaps<CR>", desc = "Telescope Keymaps" },
-      { "gd", "<cmd>Telescope lsp_definitions<CR>", desc = "LSP Definitions" },
-      { "gr", "<cmd>Telescope lsp_references<CR>", desc = "LSP References" },
+      { "<leader>/", "<cmd>Telescope live_grep<CR>",       desc = "Grep" },
+      { "<leader>p", "<cmd>Telescope find_files<CR>",      desc = "Find files" },
+      { "<leader>b", "<cmd>Telescope buffers<CR>",         desc = "Buffers" },
+      { "<leader>k", "<cmd>Telescope keymaps<CR>",         desc = "Telescope Keymaps" },
+      { "gd",        "<cmd>Telescope lsp_definitions<CR>", desc = "LSP Definitions" },
+      { "gr",        "<cmd>Telescope lsp_references<CR>",  desc = "LSP References" },
     },
     config = function(_, opts)
       local telescope = require("telescope")
       telescope.setup(opts)
 
-      -- Load extensions
       telescope.load_extension("undo")
       telescope.load_extension("media_files")
       telescope.load_extension('manix')
