@@ -59,7 +59,7 @@ return {
           override_file_sorter = true,
           case_mode = "smart_case",
         },
-        yanky_history = {},
+        yank_history = {},
       }
 
 
@@ -70,6 +70,8 @@ return {
 			{ "<space>p", "<cmd>Telescope find_files<CR>", desc = "Find files" },
 			{ "<space>b", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
 			{ "<space>k", "<cmd>Telescope keymaps<CR>", desc = "Telescope Keymaps" },
+      { "<space>y", "<cmd>Telescope yank_history sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>", desc = "Yank history" },
+			{ "<space>u", "<cmd>Telescope undo sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>", desc = "Undo history" },
 			{ "gd", "<cmd>Telescope lsp_definitions<CR>", desc = "LSP Definitions" },
 			{ "gr", "<cmd>Telescope lsp_references<CR>", desc = "LSP References" },
 		},
@@ -79,7 +81,7 @@ return {
 
       telescope.load_extension("fzf")
       telescope.load_extension("undo")
-      telescope.load_extension("yanky_history")
+      telescope.load_extension("yank_history")
 		end,
 	},
 }

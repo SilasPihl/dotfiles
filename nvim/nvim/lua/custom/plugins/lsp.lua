@@ -5,8 +5,8 @@ return { -- LSP Configs
 		'williamboman/mason-lspconfig.nvim',
 		'WhoIsSethDaniel/mason-tool-installer.nvim',
 		"b0o/SchemaStore.nvim",
+		'saghen/blink.cmp', -- Blink CMP dependency
 		{ 'j-hui/fidget.nvim',       opts = {} },
-
 	},
 	config = function()
 		local on_attach = function(client, bufnr)
@@ -24,7 +24,6 @@ return { -- LSP Configs
 			map('K', vim.lsp.buf.hover, 'Hover Documentation')
 			map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-			-- Automatically format the file on save if the server supports it
 			vim.api.nvim_create_autocmd('LspAttach', {
 				callback = function(args)
 					client = vim.lsp.get_client_by_id(args.client_id)
@@ -39,7 +38,6 @@ return { -- LSP Configs
 				end,
 			})
 
-			-- Enable inlay hints if the server supports it
 			if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
 				map('<leader>th', function()
 					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -47,22 +45,10 @@ return { -- LSP Configs
 			end
 		end
 
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-		-- Function to apply the workaround
-		local function apply_fix(server_name, server_opts)
-			if server_name == 'gopls' then
-				for _, v in pairs(server_opts) do
-					if type(v) == 'table' and v.workspace then
-						v.workspace.didChangeWatchedFiles = {
-							dynamicRegistration = false,
-							relativePatternSupport = false,
-						}
-					end
-				end
-			end
-		end
+		-- Use blink.cmp to enhance capabilities
+		local capabilities = require('blink.cmp').get_lsp_capabilities(
+			vim.lsp.protocol.make_client_capabilities()
+		)
 
 		local servers = {
 			gopls = {
@@ -132,17 +118,6 @@ return { -- LSP Configs
 						validate = { enable = true },
 					},
 				},
-				yamlls = {
-					settings = {
-						yaml = {
-							schemaStore = {
-								enable = false,
-								url = "",
-							},
-							schemas = require("schemastore").yaml.schemas(),
-						},
-					},
-				},
 			},
 			delve = {},
 			bashls = {},
@@ -163,19 +138,15 @@ return { -- LSP Configs
 		}
 
 		require('mason').setup()
-		local ensure_installed = vim.tbl_keys(servers or {})
-		vim.list_extend(ensure_installed, {
-			'stylua', -- Used to format Lua code
-		})
-		require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+		require('mason-tool-installer').setup {
+			ensure_installed = vim.tbl_keys(servers),
+		}
 
 		require('mason-lspconfig').setup {
 			handlers = {
 				function(server_name)
 					local server = servers[server_name] or {}
-					-- Apply the workaround here
-					apply_fix(server_name, server)
-					server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+					server.capabilities = capabilities -- Use enhanced capabilities
 					server.on_attach = on_attach
 					require('lspconfig')[server_name].setup(server)
 				end,
