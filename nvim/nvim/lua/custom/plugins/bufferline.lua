@@ -1,5 +1,6 @@
 return {
   "akinsho/bufferline.nvim",
+  enabled = false,
   dependencies = { "nvim-tree/nvim-web-devicons" },
   lazy = false,
   opts = {
@@ -17,7 +18,7 @@ return {
   keys = {
     { "<Tab>",   "<cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
     { "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
-    { "<C-c>",   "<cmd>bdelete<CR>",             desc = "Close buffer" },
+    -- { "<C-c>",   "<cmd>bdelete<CR>",             desc = "Close buffer" },
     { "<C-1>",   "<cmd>BufferLinePick 1<CR>",    desc = "Go to buffer 1" },
     { "<C-2>",   "<cmd>BufferLinePick 2<CR>",    desc = "Go to buffer 2" },
     { "<C-3>",   "<cmd>BufferLinePick 3<CR>",    desc = "Go to buffer 3" },

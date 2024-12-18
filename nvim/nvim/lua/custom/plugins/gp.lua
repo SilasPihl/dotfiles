@@ -87,7 +87,7 @@ return {
         ["<C-g>c"] = { ":'<,'>GpChatNew<CR>", "Visual Chat New" },
         ["<C-g>p"] = { ":'<,'>GpChatPaste<CR>", "Visual Chat Paste" },
         ["<C-g>r"] = { ":'<,'>GpRewrite<CR>", "Visual Rewrite" },
-        ["<C-g>t"] = { ":'<,'>GpChatToggle<CR>", "Visual Toggle Chat" },
+        ["<C-g>t"] = { ":'<,'>GpChatToggle popup<CR>", "Visual Toggle Chat" },
       },
       n = {
         ["<C-g><C-t>"] = { "<cmd>GpChatNew tabnew<CR>", "New Chat tabnew" },
@@ -112,7 +112,6 @@ return {
         ["<C-g>t"] = { "<cmd>GpChatToggle<CR>", "Toggle Chat" },
       },
     }
-
     for mode, mappings in pairs(keymaps) do
       for key, mapping in pairs(mappings) do
         vim.keymap.set(mode, key, mapping[1], { desc = mapping[2] })

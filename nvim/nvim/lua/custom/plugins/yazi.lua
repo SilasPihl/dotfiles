@@ -5,6 +5,6 @@ return {
     "nvim-lua/plenary.nvim",
   },
   keys = {
-    { "<leader>-", "<cmd>Yazi<CR>", desc = "Open Yazi at the current file" },
+    { "<leader>-", "<cmd>Yazi<CR>", desc = "Open Yazi" },
   },
 }
