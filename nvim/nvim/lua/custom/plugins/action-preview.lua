@@ -3,6 +3,6 @@ return {
   lazy = false,
   opts = {},
   config = function()
-    vim.keymap.set({ "v", "n" }, "gf", require("actions-preview").code_actions, { desc = "Code Actions" })
+    vim.keymap.set({ "v", "n" }, "<leader>ca", require("actions-preview").code_actions, { desc = "Code Actions" })
   end,
 }
