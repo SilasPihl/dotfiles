@@ -1,15 +1,42 @@
 return {
-  'saghen/blink.cmp',
-  dependencies = 'rafamadriz/friendly-snippets',
+  "saghen/blink.cmp",
   version = 'v0.*',
-  opts = {
-    keymap = { preset = 'default' },
-
-    appearance = {
-      use_nvim_cmp_as_default = true,
-      nerd_font_variant = 'mono'
+  dependencies = {
+    {
+      "giuxtaposition/blink-cmp-copilot",
     },
-    signature = { enabled = true }
   },
-  opts_extend = { "sources.default" }
+  opts = {
+    keymap = {
+      preset = "default",
+      ["<Tab>"] = { "select_next", "fallback" },
+      ["<S-Tab>"] = { "select_prev", "fallback" },
+      ["<CR>"] = { "accept", "fallback" },
+      ["<C-n>"] = { "scroll_documentation_down", "fallback" },
+      ["<C-p>"] = { "scroll_documentation_up", "fallback" },
+    },
+    sources = {
+      default = { "lsp", "path", "snippets", "buffer", "copilot" },
+      providers = {
+        copilot = {
+          name = "copilot",
+          module = "blink-cmp-copilot",
+          score_offset = 100,
+          async = true,
+        },
+      },
+    },
+    completion = {
+      list = {
+        selection = "manual",
+      },
+      documentation = {
+        auto_show = true,
+        auto_show_delay_ms = 50,
+      },
+    },
+    signature = {
+      enabled = true,
+    },
+  },
 }

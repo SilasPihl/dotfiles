@@ -1,14 +1,14 @@
 return {
-  'nvim-neo-tree/neo-tree.nvim',
+  "nvim-neo-tree/neo-tree.nvim",
   dependencies = {
-    'nvim-lua/plenary.nvim',
-    'DaikyXendo/nvim-material-icon',
-    'MunifTanjim/nui.nvim',
+    "nvim-lua/plenary.nvim",
+    "DaikyXendo/nvim-material-icon",
+    "MunifTanjim/nui.nvim",
   },
   lazy = false,
-  cmd = 'Neotree',
+  cmd = "Neotree",
   keys = {
-    { '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'NeoTree toggle' } },
+    { "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" } },
   },
   opts = {
     close_if_last_window = true,
@@ -25,27 +25,27 @@ return {
       },
     },
     window = {
-      position = 'left',
+      position = "left",
       auto_expand_width = true,
     },
     default_component_configs = {
       diagnostics = {
         symbols = {
-          hint = '',
-          info = '',
-          warn = '',
-          error = '',
+          hint = "",
+          info = "",
+          warn = "",
+          error = "",
         },
         highlights = {
-          hint = 'DiagnosticSignHint',
-          info = 'DiagnosticSignInfo',
-          warn = 'DiagnosticSignWarn',
-          error = 'DiagnosticSignError',
+          hint = "DiagnosticSignHint",
+          info = "DiagnosticSignInfo",
+          warn = "DiagnosticSignWarn",
+          error = "DiagnosticSignError",
         },
       },
     },
   },
   config = function(_, opts)
-    require('neo-tree').setup(opts)
+    require("neo-tree").setup(opts)
   end,
 }

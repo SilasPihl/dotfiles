@@ -19,14 +19,17 @@ return function(opts)
 			local prompt_split = vim.split(prompt, " ")
 
 			local args = { "rg" }
-			if prompt_split[1] then
-				table.insert(args, "-e")
-				table.insert(args, prompt_split[1]) -- Search term
-			end
 
-			if prompt_split[2] then
+			if #prompt_split == 1 then
+				table.insert(args, "-e")
+				table.insert(args, prompt_split[1])
+			elseif #prompt_split > 1 then
+				for i = 1, #prompt_split - 1 do
+					table.insert(args, "-e")
+					table.insert(args, prompt_split[i]) -- Add all search terms
+				end
 				table.insert(args, "-g")
-				table.insert(args, "*." .. prompt_split[2]) -- Filetype passed directly
+				table.insert(args, "*." .. prompt_split[#prompt_split]) -- Treat last word as file extension
 			end
 
 			return flatten {
@@ -41,7 +44,7 @@ return function(opts)
 	pickers
 		.new(opts, {
 			debounce = 100,
-			prompt_title = "Grep",
+			prompt_title = "Grep with file",
 			finder = custom_grep,
 			previewer = conf.grep_previewer(opts),
 			sorter = require("telescope.sorters").empty(),

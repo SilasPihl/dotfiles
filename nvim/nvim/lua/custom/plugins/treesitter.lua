@@ -12,6 +12,7 @@ return {
         "json",
         "lua",
         "make",
+        "go",
         "markdown",
         "nix",
         "regex",

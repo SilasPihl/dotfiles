@@ -9,8 +9,9 @@ return {
           secret = {
             "bash",
             "-c",
-            "cat /Users/" ..
-            vim.fn.expand("$USER") .. "/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
+            "cat /Users/"
+            .. vim.fn.expand("$USER")
+            .. "/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
           },
         },
         ollama = {

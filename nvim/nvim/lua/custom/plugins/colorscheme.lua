@@ -1,13 +1,12 @@
--- Plugin configuration
 return {
-  'catppuccin/nvim',
+  "catppuccin/nvim",
   lazy = false,                    -- make sure we load this during startup if it is your main colorscheme
   priority = 1000,                 -- make sure to load this before all the other start plugins
   opts = {
-    flavour = 'macchiato',         -- initial flavour
+    flavour = "macchiato",         -- initial flavour
     background = {                 -- :h background
-      light = 'frappe',
-      dark = 'macchiato',          -- default dark background to macchiato
+      light = "frappe",
+      dark = "macchiato",          -- default dark background to macchiato
     },
     transparent_background = true, -- disables setting the background color
     integrations = {
@@ -54,7 +53,7 @@ return {
     },
   },
   config = function()
-    vim.cmd.colorscheme 'catppuccin-macchiato'
-    vim.o.background = 'dark'
+    vim.cmd.colorscheme("catppuccin-macchiato")
+    vim.o.background = "dark"
   end,
 }

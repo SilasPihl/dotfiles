@@ -4,5 +4,5 @@ return {
   opts = {},
   config = function()
     require("todo-comments").setup({})
-  end
+  end,
 }

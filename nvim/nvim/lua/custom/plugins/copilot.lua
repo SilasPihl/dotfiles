@@ -1,8 +1,34 @@
 return {
   {
+    "zbirenbaum/copilot.lua",
+    config = function()
+      require("copilot").setup({
+        panel = {
+          enabled = false, -- Set to false to integrate with blink-cmp
+        },
+        suggestion = {
+          enabled = false, -- Set to false to integrate with blink-cmp
+        },
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["."] = false,
+        },
+        copilot_node_command = "node", -- Node.js version must be > 18.x
+        server_opts_overrides = {},
+      })
+    end,
+  },
+  {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "github/copilot.vim" },
+      { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim", branch = "master" },
     },
 
@@ -26,7 +52,7 @@ return {
             prompt =
             "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
             selection = function(source)
-              return require('CopilotChat.select').gitdiff(source, true)
+              return require("CopilotChat.select").gitdiff(source, true)
             end,
           },
           Docs = {
