@@ -74,4 +74,4 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
   end,
 })
 
-vim.keymap.set({ "n", "t" }, "<leader>t", toggle_terminal)
+vim.keymap.set({ "n", "t" }, "<C-t>", toggle_terminal)

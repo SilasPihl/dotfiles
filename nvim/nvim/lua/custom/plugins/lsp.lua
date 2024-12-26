@@ -7,7 +7,6 @@ return { -- LSP Configs
     "b0o/SchemaStore.nvim",
     "saghen/blink.cmp",
     { "j-hui/fidget.nvim",       opts = {} },
-    "jose-elias-alvarez/null-ls.nvim", -- Add null-ls
   },
   config = function()
     vim.diagnostic.config({
@@ -51,23 +50,6 @@ return { -- LSP Configs
         local bufnr = args.buf
 
         if client.server_capabilities.documentFormattingProvider then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({ bufnr = bufnr })
-            end,
-          })
-        end
-      end,
-    })
-
-    local null_ls = require("null-ls")
-    null_ls.setup({
-      sources = {
-        null_ls.builtins.formatting.stylua,
-      },
-      on_attach = function(client, bufnr)
-        if client.supports_method("textDocument/formatting") then
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             callback = function()

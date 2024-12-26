@@ -100,6 +100,10 @@ return {
         "<cmd>Telescope find_files cwd=" .. vim.fn.stdpath("config") .. "<CR>",
         desc = "Find config files",
       },
+      {
+        "<space>t",
+        "<cmd>Telescope treesitter sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>", desc = "Treesitter",
+      },
       { "gd", "<cmd>Telescope lsp_definitions<CR>", desc = "LSP Definitions" },
       { "gr", "<cmd>Telescope lsp_references<CR>",  desc = "LSP References" },
     },

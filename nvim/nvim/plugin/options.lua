@@ -12,7 +12,7 @@ opt.ignorecase = true
 ----- personal preferences -----
 opt.number = true
 opt.relativenumber = true
-opt.clipboard = 'unnamedplus'
+opt.clipboard = "unnamedplus"
 
 opt.splitbelow = true
 opt.splitright = true
@@ -23,7 +23,7 @@ opt.shada = { "'10", "<0", "s10", "h" }
 opt.swapfile = false
 
 -- don't have `o` add a comment
-opt.formatoptions:remove "o"
+opt.formatoptions:remove("o")
 
 opt.wrap = true
 opt.linebreak = true

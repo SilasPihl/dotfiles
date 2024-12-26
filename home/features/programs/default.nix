@@ -14,8 +14,9 @@
       go
       nodejs_23
       raycast
-      sesh
       sops
+	  stylua
+	  nixfmt-rfc-style
       stow
       (if system != "aarch64-linux" then slack else null)
       (if system != "aarch64-li pnux" then spotify else null)

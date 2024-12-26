@@ -31,6 +31,9 @@
       lg = "lazygit";
       ld = "lazydocker";
 
+	  # Ghostty
+	  ghostty = "/Applications/Ghostty.app/Contents/MacOS/ghostty";
+
       # Eza
       lt = "eza -lTag";
       lt1 = "eza -lTag --level=1";
@@ -119,18 +122,6 @@
         source ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh;
       fi
 
-      function s() {
-        {
-          exec </dev/tty
-          exec <&1
-          local session
-          session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' Sessions ' --border --prompt '⚡  ')
-          zle reset-prompt > /dev/null 2>&1 || true
-          [[ -z "$session" ]] && return
-          sesh connect $session
-        }
-      }
-
       command -v k9s >/dev/null 2>&1 && {
         alias k9='k9s --request-timeout=10s --headless --command namespaces'
       }
@@ -163,6 +154,18 @@
       command -v talosctl >/dev/null 2>&1 && {
         source <(talosctl completion zsh)
       }
+
+	  
+	 function y() {
+		 local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+		 yazi "$@" --cwd-file="$tmp"
+		 if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+			 builtin cd -- "$cwd"
+		 fi
+		 rm -f -- "$tmp"
+	 }
+
+
 
       if [ -n "$NIX_FLAKE_NAME" ]; then
         export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";

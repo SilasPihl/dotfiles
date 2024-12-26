@@ -2,7 +2,7 @@
 
 {
   programs.kitty = {
-    enable = true;
+    enable = false; # migrated to Ghostty
 
     font = {
       name = "Lato";

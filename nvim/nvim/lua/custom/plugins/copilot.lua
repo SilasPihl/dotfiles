@@ -85,6 +85,15 @@ return {
     },
     config = function(_, opts)
       require("CopilotChat").setup(opts)
+
+      -- Add keymap to toggle chat
+      vim.keymap.set("n", "<C-c>", function()
+        require("CopilotChat").toggle()
+      end, { desc = "Toggle Copilot Chat" })
+
+      vim.api.nvim_create_user_command("CopilotChatDebug", function()
+        print(vim.inspect(require("CopilotChat").get_settings()))
+      end, {})
     end,
   },
 }
