@@ -1,16 +1,27 @@
-{ config, lib, pkgs, system, user, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  system,
+  user,
+  ...
+}:
 
 {
-  imports = [ ./features/terminal ./features/programs ];
+  imports = [
+    ./features/terminal
+    ./features/programs
+  ];
   home = {
     username = user;
-    homeDirectory = lib.mkForce
-      (if builtins.match ".*-darwin" system != null then
+    homeDirectory = lib.mkForce (
+      if builtins.match ".*-darwin" system != null then
         "/Users/${config.home.username}"
       else if builtins.match ".*-linux" system != null then
         "/home/${config.home.username}"
       else
-        "/home/${config.home.username}");
+        "/home/${config.home.username}"
+    );
 
     enableNixpkgsReleaseCheck = false;
 
@@ -49,7 +60,9 @@
     #
     #  /etc/profiles/per-user/${config.home.username}/etc/profile.d/hm-session-vars.sh
     #
-    sessionVariables = { EDITOR = "nvim"; };
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
 
     stateVersion = "24.11";
   };
@@ -57,7 +70,10 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       warn-dirty = false;
     };
   };

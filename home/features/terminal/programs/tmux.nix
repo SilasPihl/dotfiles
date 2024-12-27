@@ -27,7 +27,7 @@
           set -g @catppuccin_status_modules_right "directory date_time"
           set -g @catppuccin_status_left_separator " "
           set -g @catppuccin_status_right_separator ""
-		  set -g @catppuccin_menu_selected_style "fg=#{@thm_surface_0},bg=#{@thm_yellow}"
+          set -g @catppuccin_menu_selected_style "fg=#{@thm_surface_0},bg=#{@thm_yellow}"
         '';
       }
       {

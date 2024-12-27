@@ -1,6 +1,6 @@
 return {
   "saghen/blink.cmp",
-  version = 'v0.*',
+  version = "v0.*",
   dependencies = {
     {
       "giuxtaposition/blink-cmp-copilot",

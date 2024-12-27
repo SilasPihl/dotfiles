@@ -42,12 +42,12 @@ return function(opts)
   })
 
   pickers
-      .new(opts, {
-        debounce = 100,
-        prompt_title = "Grep with file",
-        finder = custom_grep,
-        previewer = conf.grep_previewer(opts),
-        sorter = require("telescope.sorters").empty(),
-      })
-      :find()
+    .new(opts, {
+      debounce = 100,
+      prompt_title = "Grep with file",
+      finder = custom_grep,
+      previewer = conf.grep_previewer(opts),
+      sorter = require("telescope.sorters").empty(),
+    })
+    :find()
 end

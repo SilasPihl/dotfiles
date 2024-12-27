@@ -2,8 +2,12 @@
   description = "Sebastian NixOS and Home-Manager flake";
 
   inputs = {
-    nixpkgs = { url = "github:NixOS/nixpkgs?ref=nixos-24.05"; };
-    nixpkgs-unstable = { url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable"; };
+    nixpkgs = {
+      url = "github:NixOS/nixpkgs?ref=nixos-24.05";
+    };
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -18,10 +22,19 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim
-    , nix-index-database }@inputs:
-    let user = "sebastianballe";
-    in {
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      nixvim,
+      nix-index-database,
+    }@inputs:
+    let
+      user = "sebastianballe";
+    in
+    {
 
       homeConfigurations = {
 
@@ -32,8 +45,16 @@
               system = system;
               config.allowUnfree = true;
             };
-          in home-manager.lib.homeManagerConfiguration {
-            extraSpecialArgs = { inherit inputs system user pkgs-stable; };
+          in
+          home-manager.lib.homeManagerConfiguration {
+            extraSpecialArgs = {
+              inherit
+                inputs
+                system
+                user
+                pkgs-stable
+                ;
+            };
             pkgs = nixpkgs-unstable.legacyPackages.${system};
 
             modules = [

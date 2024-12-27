@@ -1,1 +1,7 @@
-{ imports = [ ./emulators ./programs ./shell ]; }
+{
+  imports = [
+    ./emulators
+    ./programs
+    ./shell
+  ];
+}

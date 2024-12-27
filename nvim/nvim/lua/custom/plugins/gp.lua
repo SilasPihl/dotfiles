@@ -10,8 +10,8 @@ return {
             "bash",
             "-c",
             "cat /Users/"
-            .. vim.fn.expand("$USER")
-            .. "/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
+              .. vim.fn.expand("$USER")
+              .. "/.config/github-copilot/hosts.json | sed -e 's/.*oauth_token...//;s/\".*//'",
           },
         },
         ollama = {
@@ -28,8 +28,8 @@ return {
           provider = "ollama",
           model = { model = "codellama" },
           system_prompt = "I am an AI meticulously crafted to provide programming guidance and code assistance. "
-              .. "To best serve you as a computer programmer, please provide detailed inquiries and code snippets when necessary, "
-              .. "and expect precise, technical responses tailored to your development needs.\n",
+            .. "To best serve you as a computer programmer, please provide detailed inquiries and code snippets when necessary, "
+            .. "and expect precise, technical responses tailored to your development needs.\n",
         },
         {
           name = "Qwen2.5Coder",
@@ -38,21 +38,21 @@ return {
           provider = "ollama",
           model = { model = "qwen2.5-coder:1.5b" },
           system_prompt = "You are a general AI assistant.\n\n"
-              .. "The user provided the additional info about how they would like you to respond:\n\n"
-              .. "- If you're unsure don't guess and say you don't know instead.\n"
-              .. "- Ask question if you need clarification to provide better answer.\n"
-              .. "- Think deeply and carefully from first principles step by step.\n"
-              .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-              .. "- Use Socratic method to improve your thinking and coding skills.\n"
-              .. "- Don't elide any code from your output if the answer requires coding.\n"
-              .. "- Take a deep breath; You've got this!\n",
+            .. "The user provided the additional info about how they would like you to respond:\n\n"
+            .. "- If you're unsure don't guess and say you don't know instead.\n"
+            .. "- Ask question if you need clarification to provide better answer.\n"
+            .. "- Think deeply and carefully from first principles step by step.\n"
+            .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+            .. "- Use Socratic method to improve your thinking and coding skills.\n"
+            .. "- Don't elide any code from your output if the answer requires coding.\n"
+            .. "- Take a deep breath; You've got this!\n",
         },
       },
       hooks = {
         CodeReview = function(gp, params)
           local template = "I have the following code from {{filename}}:\n\n"
-              .. "```{{filetype}}\n{{selection}}\n```\n\n"
-              .. "Please analyze for code smells and suggest improvements."
+            .. "```{{filetype}}\n{{selection}}\n```\n\n"
+            .. "Please analyze for code smells and suggest improvements."
           local agent = gp.get_chat_agent()
           gp.Prompt(params, gp.Target.enew("markdown"), agent, template)
         end,
@@ -61,15 +61,15 @@ return {
         end,
         Explain = function(gp, params)
           local template = "I have the following code from {{filename}}:\n\n"
-              .. "```{{filetype}}\n{{selection}}\n```\n\n"
-              .. "Please respond by explaining the code above."
+            .. "```{{filetype}}\n{{selection}}\n```\n\n"
+            .. "Please respond by explaining the code above."
           local agent = gp.get_chat_agent()
           gp.Prompt(params, gp.Target.popup, agent, template)
         end,
         UnitTests = function(gp, params)
           local template = "I have the following code from {{filename}}:\n\n"
-              .. "```{{filetype}}\n{{selection}}\n```\n\n"
-              .. "Please respond by writing table-driven unit tests for the code above."
+            .. "```{{filetype}}\n{{selection}}\n```\n\n"
+            .. "Please respond by writing table-driven unit tests for the code above."
           local agent = gp.get_command_agent()
           gp.Prompt(params, gp.Target.vnew, agent, template)
         end,

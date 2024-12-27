@@ -1,12 +1,12 @@
 return {
   "catppuccin/nvim",
-  lazy = false,                    -- make sure we load this during startup if it is your main colorscheme
-  priority = 1000,                 -- make sure to load this before all the other start plugins
+  lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  priority = 1000, -- make sure to load this before all the other start plugins
   opts = {
-    flavour = "macchiato",         -- initial flavour
-    background = {                 -- :h background
+    flavour = "macchiato", -- initial flavour
+    background = { -- :h background
       light = "frappe",
-      dark = "macchiato",          -- default dark background to macchiato
+      dark = "macchiato", -- default dark background to macchiato
     },
     transparent_background = true, -- disables setting the background color
     integrations = {

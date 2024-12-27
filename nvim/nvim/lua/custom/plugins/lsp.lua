@@ -6,7 +6,7 @@ return { -- LSP Configs
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     "b0o/SchemaStore.nvim",
     "saghen/blink.cmp",
-    { "j-hui/fidget.nvim",       opts = {} },
+    { "j-hui/fidget.nvim", opts = {} },
   },
   config = function()
     vim.diagnostic.config({
@@ -39,26 +39,6 @@ return { -- LSP Configs
         },
       }
     )
-
-    vim.api.nvim_create_autocmd("LspAttach", {
-      callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.client_id)
-        if not client then
-          return
-        end
-
-        local bufnr = args.buf
-
-        if client.server_capabilities.documentFormattingProvider then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({ bufnr = bufnr })
-            end,
-          })
-        end
-      end,
-    })
 
     local servers = {
       pyright = {},

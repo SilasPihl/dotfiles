@@ -79,7 +79,7 @@ return {
         desc = "Grep string",
       },
       { "<space>f", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<space>b", "<cmd>Telescope buffers <CR>",   desc = "Buffers" },
+      { "<space>b", "<cmd>Telescope buffers <CR>", desc = "Buffers" },
       {
         "<space>k",
         "<cmd>Telescope keymaps sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
@@ -102,10 +102,11 @@ return {
       },
       {
         "<space>t",
-        "<cmd>Telescope treesitter sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>", desc = "Treesitter",
+        "<cmd>Telescope treesitter sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
+        desc = "Treesitter",
       },
       { "gd", "<cmd>Telescope lsp_definitions<CR>", desc = "LSP Definitions" },
-      { "gr", "<cmd>Telescope lsp_references<CR>",  desc = "LSP References" },
+      { "gr", "<cmd>Telescope lsp_references<CR>", desc = "LSP References" },
     },
     config = function(_, opts)
       local telescope = require("telescope")

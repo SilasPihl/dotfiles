@@ -6,7 +6,9 @@
     userName = "Sebastian Balle";
     userEmail = "s.balle@sbconsultancy.dk";
 
-    aliases = { st = "status"; };
+    aliases = {
+      st = "status";
+    };
 
     includes = [
       {
