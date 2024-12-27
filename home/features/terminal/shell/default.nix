@@ -1,4 +1,3 @@
-{ pkgs, ... }:
-{
-  imports = [ ./zsh.nix ];
+{pkgs, ...}: {
+  imports = [./zsh.nix];
 }

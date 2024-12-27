@@ -3,8 +3,7 @@
   pkgs,
   user,
   ...
-}:
-let
+}: let
   # Catppuccin Nix is setting bat theme and we
   # are simply setting aichat theme to bat's theme
   # since they are both using `thTheme` files
@@ -66,9 +65,8 @@ let
         prompt: >
           I want you to act as a commit message generator. I will provide you with information about the task and the prefix for the task code, and I would like you to generate an appropriate commit message using the conventional commit format. Do not write any explanations or other words, just reply with the commit message.
   '';
-in
-{
-  home.packages = [ pkgs.aichat ];
+in {
+  home.packages = [pkgs.aichat];
 
   # https://github.com/sigoden/aichat/wiki/Custom-Theme
   # xdg.configFile."aichat/dark.tmTheme".source = batTheme;

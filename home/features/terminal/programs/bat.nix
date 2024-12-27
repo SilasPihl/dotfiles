@@ -1,9 +1,6 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   theme = ../../../../themes/bat;
-in
-{
+in {
   programs.bat = {
     enable = true;
     extraPackages = with pkgs.bat-extras; [

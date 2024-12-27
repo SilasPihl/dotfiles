@@ -22,30 +22,26 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      nixpkgs-unstable,
-      home-manager,
-      nixvim,
-      nix-index-database,
-    }@inputs:
-    let
-      user = "sebastianballe";
-    in
-    {
-
-      homeConfigurations = {
-
-        mac = # home-manager switch --flake .#mac
-          let
-            system = "aarch64-darwin";
-            pkgs-stable = import inputs.nixpkgs {
-              system = system;
-              config.allowUnfree = true;
-            };
-          in
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    home-manager,
+    nixvim,
+    nix-index-database,
+  } @ inputs: let
+    user = "sebastianballe";
+  in {
+    homeConfigurations = {
+      mac =
+        # home-manager switch --flake .#mac
+        let
+          system = "aarch64-darwin";
+          pkgs-stable = import inputs.nixpkgs {
+            system = system;
+            config.allowUnfree = true;
+          };
+        in
           home-manager.lib.homeManagerConfiguration {
             extraSpecialArgs = {
               inherit
@@ -58,13 +54,11 @@
             pkgs = nixpkgs-unstable.legacyPackages.${system};
 
             modules = [
-              { nixpkgs.config.allowUnfree = true; }
+              {nixpkgs.config.allowUnfree = true;}
               nix-index-database.hmModules.nix-index
               ./home/${user}.nix
             ];
           };
-
-      };
-
     };
+  };
 }

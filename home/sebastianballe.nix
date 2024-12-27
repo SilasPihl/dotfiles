@@ -5,9 +5,7 @@
   system,
   user,
   ...
-}:
-
-{
+}: {
   imports = [
     ./features/terminal
     ./features/programs
@@ -15,12 +13,11 @@
   home = {
     username = user;
     homeDirectory = lib.mkForce (
-      if builtins.match ".*-darwin" system != null then
-        "/Users/${config.home.username}"
-      else if builtins.match ".*-linux" system != null then
-        "/home/${config.home.username}"
-      else
-        "/home/${config.home.username}"
+      if builtins.match ".*-darwin" system != null
+      then "/Users/${config.home.username}"
+      else if builtins.match ".*-linux" system != null
+      then "/home/${config.home.username}"
+      else "/home/${config.home.username}"
     );
 
     enableNixpkgsReleaseCheck = false;
@@ -88,5 +85,4 @@
   #   enable = true;
   #   flavor = "macchiato";
   # };
-
 }
