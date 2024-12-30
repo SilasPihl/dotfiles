@@ -3,9 +3,7 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "debugloop/telescope-undo.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      "mickael-menu/zk-nvim",
       "gbprod/yanky.nvim",
     },
     opts = {
@@ -24,6 +22,9 @@ return {
             ["K"] = require("telescope.actions").preview_scrolling_up,
             ["H"] = require("telescope.actions").preview_scrolling_left,
             ["L"] = require("telescope.actions").preview_scrolling_right,
+            ["<S-Enter>"] = function(prompt_bufnr)
+              require("telescope.actions").file_vsplit(prompt_bufnr)
+            end,
           },
           i = {
             ["<esc>"] = require("telescope.actions").close,
@@ -91,11 +92,6 @@ return {
         desc = "Yank history",
       },
       {
-        "<space>u",
-        "<cmd>Telescope undo sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
-        desc = "Undo history",
-      },
-      {
         "<space>c",
         "<cmd>Telescope find_files cwd=" .. vim.fn.stdpath("config") .. "<CR>",
         desc = "Find config files",
@@ -113,7 +109,6 @@ return {
       telescope.setup(opts)
 
       telescope.load_extension("fzf")
-      telescope.load_extension("undo")
       telescope.load_extension("yank_history")
     end,
   },

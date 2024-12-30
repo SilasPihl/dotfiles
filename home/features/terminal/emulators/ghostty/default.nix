@@ -4,7 +4,7 @@
   ...
 }: {
   xdg.configFile."ghostty/config".text = ''
-       theme = catppuccin-macchiato
+    theme = catppuccin-macchiato
     window-decoration = false
     macos-titlebar-style = hidden
     macos-window-shadow = true

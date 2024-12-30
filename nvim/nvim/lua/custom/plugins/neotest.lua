@@ -58,40 +58,40 @@ return {
         projects = {},
       })
 
-      vim.api.nvim_set_keymap("n", "<leader>T", "", { noremap = true, silent = true, desc = "Tests" })
+      vim.api.nvim_set_keymap("n", "<leader>t", "", { noremap = true, silent = true, desc = "Tests" })
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>Tf",
+        "<leader>tf",
         "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
         { noremap = true, silent = true, desc = "Test file" }
       )
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>Td",
+        "<leader>td",
         "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<CR>",
         { noremap = true, silent = true, desc = "Test file with debugger" }
       )
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>Tn",
+        "<leader>tn",
         "<cmd>lua require('neotest').run.run()<CR>",
         { noremap = true, silent = true, desc = "Test nearest" }
       )
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>Tl",
+        "<leader>tl",
         "<cmd>lua require('neotest').run.run_last()<CR>",
         { noremap = true, silent = true, desc = "Test last" }
       )
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>Tw",
+        "<leader>tw",
         "<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<CR>",
         { noremap = true, silent = true, desc = "Watch file" }
       )
       vim.api.nvim_set_keymap(
         "n",
-        "<leader>Ts",
+        "<leader>ts",
         "<cmd>lua require('neotest').summary.toggle()<CR>",
         { noremap = true, silent = true, desc = "Summary toggle" }
       )

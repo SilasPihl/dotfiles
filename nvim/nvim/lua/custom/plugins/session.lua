@@ -33,7 +33,7 @@ return {
         --   height = 0.5,
         -- },
       },
-      previewer = false, -- File preview for session picker
+      previewer = true, -- File preview for session picker
 
       mappings = {
         -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode

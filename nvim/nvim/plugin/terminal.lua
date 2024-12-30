@@ -50,8 +50,8 @@ end
 
 local function toggle_terminal()
   if not vim.api.nvim_win_is_valid(state.floating.win) then
-    -- Create the floating window and terminal buffer
     state.floating = create_floating_window({ buf = state.floating.buf })
+
     if vim.bo[state.floating.buf].buftype ~= "terminal" then
       vim.cmd("terminal zsh")
       vim.api.nvim_feedkeys("i", "n", false)
@@ -74,4 +74,4 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
   end,
 })
 
-vim.keymap.set({ "n", "t" }, "<C-t>", toggle_terminal)
+vim.keymap.set({ "n", "t" }, "<C-t>", toggle_terminal, { desc = "Toggle floating terminal" })

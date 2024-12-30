@@ -37,6 +37,13 @@
       # Ghostty
       ghostty = "/Applications/Ghostty.app/Contents/MacOS/ghostty";
 
+      # Tmux
+      tl = "tmux list-sessions";
+      ta = "tmux attach-session -t";
+      tk = "tmux kill-session -t";
+      td = "tmux detach";
+      tn = "tmux new-session -s";
+
       # Eza
       lt = "eza -lTag";
       lt1 = "eza -lTag --level=1";
