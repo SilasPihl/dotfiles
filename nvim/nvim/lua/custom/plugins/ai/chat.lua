@@ -9,11 +9,7 @@ return {
       auto_insert_mode = true,
       temperature = 0.0,
       window = {
-        layout = "float",
-        width = 0.8,
-        height = 0.8,
-        border = "rounded",
-        title = "Copilot",
+        layout = "vertical",
       },
       show_help = false,
       question_header = "## Sebastian",

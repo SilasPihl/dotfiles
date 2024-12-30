@@ -5,7 +5,7 @@ return {
   ---@module "auto-session"
   ---@type AutoSession.Config
   opts = {
-    enabled = true, -- Enables/disables auto creating, saving and restoring
+    enabled = false, -- Enables/disables auto creating, saving and restoring. Disabled for now as it interferes with the custom buffers for terminal windows
     root_dir = vim.fn.stdpath("data") .. "/sessions/", -- Root dir where sessions will be stored
     auto_save = true, -- Enables/disables auto saving session on exit
     auto_restore = true, -- Enables/disables auto restoring session on start
