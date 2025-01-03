@@ -64,6 +64,13 @@ local function toggle_terminal()
       vim.api.nvim_feedkeys("i", "n", false)
     end
 
+    -- Set buffer options to prevent switching
+    vim.bo[state.floating.buf].bufhidden = "wipe"
+    vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-h>", "<nop>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-j>", "<nop>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-k>", "<nop>", { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-l>", "<nop>", { noremap = true, silent = true })
+
     vim.api.nvim_create_autocmd("BufWipeout", {
       buffer = state.floating.buf,
       callback = function()

@@ -44,11 +44,12 @@
     extraConfig = ''
       # Status bar settings
       set -g status on
-      set -g status-position top
+      set -g status-position bottom
       set -g status-interval 1
       set -g status-justify left
       set -g renumber-windows on
       set -g set-clipboard on
+      set -g default-terminal "screen-256color"
 
       # Navigation
       bind-key n next-window
@@ -56,8 +57,6 @@
 
       set -g detach-on-destroy off
       bind-key x kill-pane
-
-      bind-key C-s if-shell "tmux show -g status | grep -q on" "set -g status off" "set -g status on"
     '';
   };
 }

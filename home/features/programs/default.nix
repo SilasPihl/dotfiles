@@ -14,7 +14,7 @@
       kubectl
       lazydocker
       manix
-      # nerdfonts
+      go-task
       ollama
       go
       nodejs_23
