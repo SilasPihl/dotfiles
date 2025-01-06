@@ -4,6 +4,7 @@ return {
     "ray-x/guihua.lua",
     "neovim/nvim-lspconfig",
     "nvim-treesitter/nvim-treesitter",
+    "theHamsta/nvim-dap-virtual-text",
   },
   config = function()
     require("go").setup({
@@ -73,22 +74,13 @@ return {
           },
         },
       },
-      lsp_on_attach = function(client, bufnr)
+      lsp_on_attach = function(_, bufnr)
         local map = function(keys, func, desc)
           vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
         end
 
         map("K", vim.lsp.buf.hover, "Hover Documentation")
         map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
-        if client.supports_method("textDocument/formatting") then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({ bufnr = bufnr })
-            end,
-          })
-        end
       end,
       lsp_keymaps = true,
       lsp_codelens = true,
@@ -98,15 +90,6 @@ return {
           severity = vim.diagnostic.severity.INFO,
         },
       },
-    })
-
-    vim.api.nvim_create_autocmd("BufWritePost", {
-      desc = "Run Go tests on save for *_test.go files",
-      group = vim.api.nvim_create_augroup("run-go-tests-on-save", { clear = true }),
-      pattern = "*_test.go",
-      callback = function()
-        require("neotest").run.run(vim.fn.expand("%"))
-      end,
     })
   end,
   event = { "CmdlineEnter" },

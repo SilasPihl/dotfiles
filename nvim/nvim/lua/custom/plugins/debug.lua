@@ -2,62 +2,30 @@ return {
   "mfussenegger/nvim-dap",
   dependencies = {
     "rcarriga/nvim-dap-ui",
-    "nvim-neotest/nvim-nio",
-    "williamboman/mason.nvim",
-    "jay-babu/mason-nvim-dap.nvim",
     "leoluz/nvim-dap-go",
+    "theHamsta/nvim-dap-virtual-text",
+    "jay-babu/mason-nvim-dap.nvim",
+    "nvim-telescope/telescope-dap.nvim",
+    "nvim-neotest/nvim-nio",
   },
   keys = {
-    {
-      "<F5>",
-      function()
-        require("dap").continue()
-      end,
-      desc = "Debug: Start/Continue",
-    },
-    {
-      "<F1>",
-      function()
-        require("dap").step_into()
-      end,
-      desc = "Debug: Step Into",
-    },
-    {
-      "<F2>",
-      function()
-        require("dap").step_over()
-      end,
-      desc = "Debug: Step Over",
-    },
-    {
-      "<F3>",
-      function()
-        require("dap").step_out()
-      end,
-      desc = "Debug: Step Out",
-    },
-    {
-      "<leader>b",
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      desc = "Debug: Toggle Breakpoint",
-    },
+    { "<F1>", ":lua require'dap'.repl.open()<CR>", desc = "Debug: Open REPL", silent = true },
+    { "<F11>", ":lua require'dap'.continue()<CR>", desc = "Debug: Continue", silent = true },
+    { "<F12>", ":lua require'dap'.terminate()<CR>", desc = "Debug: Terminate", silent = true },
+    { "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>", desc = "Debug: Toggle Breakpoint", silent = true },
     {
       "<leader>B",
-      function()
-        require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end,
-      desc = "Debug: Set Breakpoint",
+      ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+      desc = "Debug: Set Conditional Breakpoint",
+      silent = true,
     },
-    -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     {
-      "<F7>",
-      function()
-        require("dapui").toggle()
-      end,
-      desc = "Debug: See last session result.",
+      "<leader>lp",
+      ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
+      desc = "Debug: Set Log Point",
+      silent = true,
     },
+    { "<leader>dt", ":lua require'dap-go'.debug_test()<CR>", desc = "Debug: Test", silent = true },
   },
   config = function()
     local dap = require("dap")
@@ -91,10 +59,6 @@ return {
     dap.listeners.before.event_terminated["dapui_config"] = dapui.close
     dap.listeners.before.event_exited["dapui_config"] = dapui.close
 
-    require("dap-go").setup({
-      delve = {
-        detached = vim.fn.has("win32") == 0,
-      },
-    })
+    require("dap-go").setup()
   end,
 }

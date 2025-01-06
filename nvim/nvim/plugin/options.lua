@@ -4,7 +4,7 @@ opt.inccommand = "split"
 opt.smartcase = true
 opt.ignorecase = true
 opt.number = true
-opt.relativenumber = true
+opt.relativenumber = false
 opt.cursorline = true
 opt.clipboard = "unnamedplus"
 opt.splitbelow = true
@@ -17,5 +17,8 @@ opt.formatoptions:remove("o")
 opt.wrap = true
 opt.linebreak = true
 opt.more = false
-opt.foldmethod = "manual"
 opt.undofile = true
+
+-- Folding
+opt.foldmethod = "manual"
+opt.foldlevel = 99

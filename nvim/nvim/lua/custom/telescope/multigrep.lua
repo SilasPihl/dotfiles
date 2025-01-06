@@ -2,6 +2,7 @@ local conf = require("telescope.config").values
 local finders = require("telescope.finders")
 local make_entry = require("telescope.make_entry")
 local pickers = require("telescope.pickers")
+local themes = require("telescope.themes")
 
 local flatten = vim.tbl_flatten
 
@@ -9,6 +10,8 @@ return function(opts)
   opts = opts or {}
   opts.cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.loop.cwd()
   opts.pattern = opts.pattern or "%s"
+
+  opts = themes.get_ivy(opts)
 
   local custom_grep = finders.new_async_job({
     command_generator = function(prompt)
@@ -26,10 +29,10 @@ return function(opts)
       elseif #prompt_split > 1 then
         for i = 1, #prompt_split - 1 do
           table.insert(args, "-e")
-          table.insert(args, prompt_split[i]) -- Add all search terms
+          table.insert(args, prompt_split[i])
         end
         table.insert(args, "-g")
-        table.insert(args, "*." .. prompt_split[#prompt_split]) -- Treat last word as file extension
+        table.insert(args, "*." .. prompt_split[#prompt_split])
       end
 
       return flatten({
@@ -44,7 +47,7 @@ return function(opts)
   pickers
     .new(opts, {
       debounce = 100,
-      prompt_title = "Grep with file",
+      prompt_title = "Grep (with file extension)",
       finder = custom_grep,
       previewer = conf.grep_previewer(opts),
       sorter = require("telescope.sorters").empty(),

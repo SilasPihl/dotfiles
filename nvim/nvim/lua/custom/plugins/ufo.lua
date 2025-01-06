@@ -1,7 +1,6 @@
 return {
-
   "kevinhwang91/nvim-ufo",
-  enabled = false,
+  enabled = true,
   dependencies = { "kevinhwang91/promise-async" },
   event = "BufRead",
   keys = {
@@ -31,8 +30,8 @@ return {
     vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
     vim.o.foldcolumn = "0"
     vim.o.foldlevel = 99
-    vim.o.foldlevelstart = 100
-    vim.o.foldenable = false
+    vim.o.foldlevelstart = 99
+    vim.o.foldenable = true
     local handler = function(virtText, lnum, endLnum, width, truncate)
       local newVirtText = {}
       local suffix = (" 󰁂 %d "):format(endLnum - lnum)
@@ -66,7 +65,6 @@ return {
       close_fold_kinds_for_ft = {
         default = { "imports", "comment" },
         json = { "array" },
-        c = { "comment", "region" },
       },
     })
   end,

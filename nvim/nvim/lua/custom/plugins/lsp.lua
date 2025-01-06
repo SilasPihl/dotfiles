@@ -45,6 +45,7 @@ return { -- LSP Configs
       terraformls = {},
       buf_ls = {},
       tflint = {},
+      ts_ls = {},
       jsonls = {
         settings = {
           json = {

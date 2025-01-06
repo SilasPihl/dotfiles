@@ -11,7 +11,7 @@ return {
         scroll_strategy = "limit",
         path_display = {
           filename_first = {
-            reverse_directories = true,
+            reverse_directories = false,
           },
         },
         mappings = {
@@ -22,6 +22,7 @@ return {
             ["K"] = require("telescope.actions").preview_scrolling_up,
             ["H"] = require("telescope.actions").preview_scrolling_left,
             ["L"] = require("telescope.actions").preview_scrolling_right,
+            ["<Enter>"] = require("telescope.actions").select_default,
             ["<S-Enter>"] = function(prompt_bufnr)
               require("telescope.actions").file_vsplit(prompt_bufnr)
             end,
@@ -32,6 +33,7 @@ return {
             ["K"] = require("telescope.actions").preview_scrolling_up,
             ["H"] = require("telescope.actions").preview_scrolling_left,
             ["L"] = require("telescope.actions").preview_scrolling_right,
+            ["<CR>"] = require("telescope.actions").select_default,
             ["<S-Enter>"] = function(prompt_bufnr)
               require("telescope.actions").file_vsplit(prompt_bufnr)
             end,
@@ -39,21 +41,69 @@ return {
         },
       },
       pickers = {
-        find_files = {
-          hidden = true,
-          file_ignore_patterns = { "%.git/", "^node_modules/", "^.venv/" },
+        colorscheme = {
           theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          enable_preview = true,
+          prompt_title = "Colorschemes",
         },
-        live_grep = {
-          additional_args = function()
-            return { "--hidden" }
-          end,
+        find_files = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "insert",
+          prompt_title = "Files",
         },
         buffers = {
           theme = "ivy",
           sort_mru = true,
-          sort_last = true,
+          sort_lastused = true,
           initial_mode = "normal",
+          prompt_title = "Buffers",
+        },
+        live_grep = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "insert",
+          prompt_title = "Grep (without file extension)",
+        },
+        help_tags = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          prompt_title = "Help",
+        },
+        diagnostics = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          prompt_title = "Diagnostics",
+        },
+        keymaps = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          prompt_title = "Keymaps",
+        },
+        current_buffer_fuzzy_find = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "insert",
+          prompt_title = "Buffer fuzzy",
+        },
+        lsp_references = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          prompt_title = "References",
         },
       },
       extensions = {
@@ -67,42 +117,33 @@ return {
       },
     },
     keys = {
+      { "<space>gf", "<cmd>Telescope live_grep<CR>", desc = "Grep (without file extension)" },
       {
-        "<space>gf",
+        "<space>gg",
         function()
           require("custom.telescope.multigrep")()
         end,
-        desc = "Grep string with file",
-      },
-      {
-        "<space>gg",
-        "<cmd>Telescope grep_string sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
-        desc = "Grep string",
+        desc = "Grep (with file extension)",
       },
       { "<space>f", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<space>b", "<cmd>Telescope buffers <CR>", desc = "Buffers" },
-      {
-        "<space>k",
-        "<cmd>Telescope keymaps sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
-        desc = "Telescope Keymaps",
-      },
-      {
-        "<space>y",
-        "<cmd>Telescope yank_history sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
-        desc = "Yank history",
-      },
+      { "<space>b", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
+      { "<space>k", "<cmd>Telescope keymaps<CR>", desc = "Telescope keymaps" },
+      { "<space>Y", "<cmd>Telescope yank_history prompt_title=Yank_Tracker<CR>", desc = "Yank history" },
+      { "<space>t", "<cmd>Telescope treesitter prompt_title=TreeSymbols<CR>", desc = "Treesitter" },
+      { "<space>/", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer fuzzy" },
+      { "gd", "<cmd>Telescope lsp_definitions<CR>", desc = "LSP definitions" },
+      { "gr", "<cmd>Telescope lsp_references<CR>", desc = "LSP references" },
+      { "<space>/", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Buffer fuzzy" },
       {
         "<space>c",
-        "<cmd>Telescope find_files cwd=" .. vim.fn.stdpath("config") .. "<CR>",
-        desc = "Find config files",
+        function()
+          require("telescope.builtin").find_files({
+            cwd = vim.fn.stdpath("config"),
+            prompt_title = "Config",
+          })
+        end,
+        desc = "Config",
       },
-      {
-        "<space>t",
-        "<cmd>Telescope treesitter sort_mru=true sort_last=true initial_mode=normal theme=ivy<CR>",
-        desc = "Treesitter",
-      },
-      { "gd", "<cmd>Telescope lsp_definitions<CR>", desc = "LSP Definitions" },
-      { "gr", "<cmd>Telescope lsp_references<CR>", desc = "LSP References" },
     },
     config = function(_, opts)
       local telescope = require("telescope")

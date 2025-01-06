@@ -21,3 +21,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank()
   end,
 })
+
+-- Switch to the last used buffer
+vim.keymap.set("n", "<leader><Tab>", function()
+  vim.cmd("buffer #")
+end, { desc = "Switch to the last used buffer", silent = true })
