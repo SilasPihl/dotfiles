@@ -2,7 +2,7 @@
   theme = ../../../../themes/bat;
 in {
   programs.bat = {
-    enable = true;
+    enable = false;
     extraPackages = with pkgs.bat-extras; [
       batdiff
       batman

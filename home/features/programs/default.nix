@@ -9,33 +9,38 @@
 
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [
+      _1password-cli
+      age
+      alejandra
+      bat
+      direnv
       docker-credential-helpers
+      eza
       flux
+      go
+      go-task
       kubectl
       lazydocker
       manix
-      go-task
-      ollama
-      go
       nodejs_23
+      ollama
       raycast
       sops
-      stylua
-      alejandra
       stow
+      stylua
+      vim
+      vivid
+      xclip
       (
         if system != "aarch64-linux"
         then slack
         else null
       )
       (
-        if system != "aarch64-li pnux"
+        if system != "aarch64-linux"
         then spotify
         else null
       )
-      vim
-      vivid
-      xclip
       (
         if system != "aarch64-linux"
         then zoom-us

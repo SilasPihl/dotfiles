@@ -16,6 +16,7 @@
     ./tealdeer.nix
     ./tmux.nix
     ./yazi.nix
+    ./zathura.nix
     ./zoxide.nix
   ];
 

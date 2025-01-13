@@ -14,29 +14,16 @@ return {
             reverse_directories = false,
           },
         },
+        file_ignore_patterns = { "^%.[^/]*", "^_[^/]*" },
         mappings = {
           n = {
             ["d"] = require("telescope.actions").delete_buffer,
             ["q"] = require("telescope.actions").close,
-            ["J"] = require("telescope.actions").preview_scrolling_down,
-            ["K"] = require("telescope.actions").preview_scrolling_up,
-            ["H"] = require("telescope.actions").preview_scrolling_left,
-            ["L"] = require("telescope.actions").preview_scrolling_right,
             ["<Enter>"] = require("telescope.actions").select_default,
-            ["<S-Enter>"] = function(prompt_bufnr)
-              require("telescope.actions").file_vsplit(prompt_bufnr)
-            end,
           },
           i = {
             ["<esc>"] = require("telescope.actions").close,
-            ["J"] = require("telescope.actions").preview_scrolling_down,
-            ["K"] = require("telescope.actions").preview_scrolling_up,
-            ["H"] = require("telescope.actions").preview_scrolling_left,
-            ["L"] = require("telescope.actions").preview_scrolling_right,
             ["<CR>"] = require("telescope.actions").select_default,
-            ["<S-Enter>"] = function(prompt_bufnr)
-              require("telescope.actions").file_vsplit(prompt_bufnr)
-            end,
           },
         },
       },
@@ -51,8 +38,6 @@ return {
         },
         find_files = {
           theme = "ivy",
-          sort_mru = true,
-          sort_lastused = true,
           initial_mode = "insert",
           prompt_title = "Files",
         },
@@ -69,6 +54,13 @@ return {
           sort_lastused = true,
           initial_mode = "insert",
           prompt_title = "Grep (without file extension)",
+        },
+        oldfiles = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          prompt_title = "Recent files",
         },
         help_tags = {
           theme = "ivy",
@@ -104,6 +96,13 @@ return {
           sort_lastused = true,
           initial_mode = "normal",
           prompt_title = "References",
+        },
+        treesitter = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+          prompt_title = "Treesitter",
         },
       },
       extensions = {

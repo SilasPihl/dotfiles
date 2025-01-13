@@ -59,6 +59,7 @@
     #
     sessionVariables = {
       EDITOR = "nvim";
+      READER = "zathura";
     };
 
     stateVersion = "24.11";

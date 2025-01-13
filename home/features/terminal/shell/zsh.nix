@@ -13,7 +13,6 @@
 
     shellAliases = {
       # Bat
-      cat = "bat";
       pbat = "prettybat";
       bgrep = "batgrep";
       grep = "rg";
@@ -81,7 +80,7 @@
         "docker-compose"
         "direnv"
         "fancy-ctrl-z"
-        "eza"
+        # "eza"
         "fzf"
         "golang"
         "git"
@@ -115,6 +114,14 @@
 
       # Eza - Catppucin
       export LS_COLORS="$(vivid generate catppuccin-macchiato)"
+
+      # command -v eza >/dev/null 2>&1 && {
+      #   alias ls='eza'
+      # }
+      #
+      # command -v bat >/dev/null 2>&1 && {
+      #   alias cat='bat'
+      # }
 
       # Fzf - Catppuccin
       export FZF_DEFAULT_OPTS=" \

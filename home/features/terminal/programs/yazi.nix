@@ -9,8 +9,6 @@
       "catppuccin-macchiato" = ../../../../themes/yazi;
     };
     enableZshIntegration = true;
-    # Launches yazi and drops in current dir on exit
-    # See: https://yazi-rs.github.io/docs/quick-start/#shell-wrapper
     shellWrapperName = "f";
     settings = {
       manager = {
@@ -36,7 +34,21 @@
             run = ''nvim "$@"'';
           }
         ];
+        pdff = [
+          {
+            run = ''nvim -c "terminal zathura \"$@\""''; # Open Zathura in an nvim terminal buffer
+            desc = "zathura in nvim";
+            block = true;
+            for = "unix";
+          }
+        ];
       };
+      open = [
+        {
+          mime = "application/pdf";
+          use = ["pdff" "reveal"];
+        }
+      ];
     };
   };
 }

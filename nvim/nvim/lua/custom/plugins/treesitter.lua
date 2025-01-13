@@ -38,6 +38,7 @@ return {
         "vimdoc",
         "xml",
         "yaml",
+        "zathurarc",
       },
       incremental_selection = {
         enable = true,
