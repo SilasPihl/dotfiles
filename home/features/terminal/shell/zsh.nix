@@ -164,6 +164,8 @@
         export PATH="$VIRTUAL_ENV/bin:$PATH"
       fi
 
+      export GPG_TTY=$(tty)
+
     '';
   };
 }
