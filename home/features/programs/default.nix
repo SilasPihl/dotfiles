@@ -24,7 +24,9 @@
       manix
       nodejs_23
       ollama
+      gh
       raycast
+      glab
       sops
       stow
       stylua

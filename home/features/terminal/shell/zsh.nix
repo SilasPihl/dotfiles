@@ -48,8 +48,6 @@
       lt1 = "eza -lTag --level=1";
       lt2 = "eza -lTag --level=2";
       lt3 = "eza -lTag --level=3";
-      # Just for quicker iterations on home-manager. Will probably be removed once setup stabilizes
-      hmac = "nix run home-manager/master -- switch --flake .#mac";
 
       # Other
       cd = "z";
@@ -154,10 +152,16 @@
        rm -f -- "$tmp"
       }
 
+      # Taskfile auto-completion
       eval "$(task --completion zsh)"
 
       if [ -n "$NIX_FLAKE_NAME" ]; then
         export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";
+      fi
+
+      # Ensure Python virtual environment takes precedence
+      if [ -n "$VIRTUAL_ENV" ]; then
+        export PATH="$VIRTUAL_ENV/bin:$PATH"
       fi
 
     '';

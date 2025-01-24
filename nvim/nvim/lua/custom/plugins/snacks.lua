@@ -46,6 +46,31 @@ return {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },
           { section = "startup" },
+          { pane = 2, title = " ", padding = 8 }, -- For aligning recent files with find files
+          { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+          function()
+            local in_git = Snacks.git.get_root() ~= nil
+
+            local cmds = {}
+
+            table.insert(cmds, {
+              icon = " ",
+              title = "Git Status",
+              cmd = "git --no-pager diff --stat -B -M -C",
+              height = 10,
+            })
+
+            return vim.tbl_map(function(cmd)
+              return vim.tbl_extend("force", {
+                pane = 2,
+                section = "terminal",
+                enabled = in_git,
+                padding = 1,
+                ttl = 5 * 60,
+                indent = 3,
+              }, cmd)
+            end, cmds)
+          end,
         },
       },
       -- Other features

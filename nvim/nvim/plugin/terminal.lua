@@ -61,10 +61,11 @@ local function toggle_terminal()
 
     if vim.bo[state.floating.buf].buftype ~= "terminal" then
       vim.cmd("terminal zsh")
-      vim.api.nvim_feedkeys("i", "n", false)
     end
 
-    -- Set buffer options to prevent switching
+    -- Always start in insert mode. Escape to go to normal mode.
+    vim.api.nvim_feedkeys("i", "n", false)
+
     vim.bo[state.floating.buf].bufhidden = "wipe"
     vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-h>", "<nop>", { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-j>", "<nop>", { noremap = true, silent = true })

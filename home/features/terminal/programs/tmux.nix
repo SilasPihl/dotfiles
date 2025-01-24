@@ -57,6 +57,9 @@
 
       set -g detach-on-destroy off
       bind-key x kill-pane
+
+      set -g allow-rename off
+      bind-key r command-prompt -p "Rename pane:" "select-pane -T '%%'"
     '';
   };
 }

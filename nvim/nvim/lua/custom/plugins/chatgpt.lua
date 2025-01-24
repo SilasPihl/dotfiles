@@ -1,5 +1,6 @@
 return {
   "jackMort/ChatGPT.nvim",
+  enabled = false, -- I do not believe the experience working with this is par simply copy/paste into ChatGPT website.
   keys = {
     { "<C-c>", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
   },

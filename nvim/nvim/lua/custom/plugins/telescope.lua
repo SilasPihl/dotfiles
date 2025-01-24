@@ -14,7 +14,7 @@ return {
             reverse_directories = false,
           },
         },
-        file_ignore_patterns = { "^%.[^/]*", "^_[^/]*" },
+        file_ignore_patterns = { "%.venv" },
         mappings = {
           n = {
             ["d"] = require("telescope.actions").delete_buffer,

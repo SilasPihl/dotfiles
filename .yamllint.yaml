@@ -1,4 +1,5 @@
 # ref: https://yamllint.readthedocs.io/en/stable/configuration.html
+#
 
 extends: default
 rules:
@@ -17,3 +18,4 @@ rules:
   braces:
     min-spaces-inside: 1
     max-spaces-inside: 1
+  new-line-at-end-of-file: disable

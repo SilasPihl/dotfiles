@@ -5,7 +5,7 @@ return {
       { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim" },
     },
-    enabled = false, -- Testing out JackMort/ChatGPT
+    enabled = true,
     opts = {
       auto_insert_mode = true,
       temperature = 0.0,

@@ -1,0 +1,7 @@
+version: "3"
+tasks:
+  home-manager:switch:
+    desc: Switches home-manager configuration
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - nix run home-manager/master -- switch --flake .#mac -b backup
