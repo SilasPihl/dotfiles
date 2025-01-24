@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   programs.eza = {
-    enable = false;
+    enable = true;
     enableZshIntegration = true;
     icons = "auto";
     git = true;

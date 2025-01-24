@@ -13,6 +13,7 @@
 
     shellAliases = {
       # Bat
+      cat = "bat";
       pbat = "prettybat";
       bgrep = "batgrep";
       grep = "rg";
@@ -44,6 +45,7 @@
       tn = "tmux new-session -s";
 
       # Eza
+      ls = "eza";
       lt = "eza -lTag";
       lt1 = "eza -lTag --level=1";
       lt2 = "eza -lTag --level=2";
@@ -78,7 +80,7 @@
         "docker-compose"
         "direnv"
         "fancy-ctrl-z"
-        # "eza" # Disabled until a solution for spinning up work project work with this
+        "eza"
         "fzf"
         "golang"
         "git"
@@ -112,14 +114,6 @@
 
       # Eza - Catppucin
       export LS_COLORS="$(vivid generate catppuccin-macchiato)"
-
-      # command -v eza >/dev/null 2>&1 && {
-      #   alias ls='eza'
-      # }
-      #
-      # command -v bat >/dev/null 2>&1 && {
-      #   alias cat='bat'
-      # }
 
       # Fzf - Catppuccin
       export FZF_DEFAULT_OPTS=" \

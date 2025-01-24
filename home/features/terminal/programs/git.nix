@@ -14,6 +14,13 @@
 
     includes = [
       {
+        contents = {
+          pull = {
+            rebase = true;
+          };
+        };
+      }
+      {
         condition = "gitdir:~/git/leopharma/";
         contents = {
           user = {
