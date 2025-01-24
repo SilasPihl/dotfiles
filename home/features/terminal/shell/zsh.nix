@@ -78,7 +78,7 @@
         "docker-compose"
         "direnv"
         "fancy-ctrl-z"
-        # "eza"
+        # "eza" # Disabled until a solution for spinning up work project work with this
         "fzf"
         "golang"
         "git"
@@ -131,7 +131,7 @@
 
       # I currently have an issue of "go: cannot find GOROOT directory:
       # /libexec" but I cannot find where this is set so now I am explicitly
-      # unsetting in until further.
+      # unsetting it until further.
       unset GOROOT
 
       if [ -e ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then

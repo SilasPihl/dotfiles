@@ -4,7 +4,6 @@
     userName = "Sebastian Balle";
     userEmail = "s.balle@sbconsultancy.dk";
     signing = {
-      enable = true;
       signByDefault = true;
       key = "22D898A0ECB0003C";
     };
