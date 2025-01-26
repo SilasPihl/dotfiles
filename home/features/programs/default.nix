@@ -30,6 +30,7 @@
       sops
       stow
       stylua
+      timewarrior
       vim
       vivid
       xclip
