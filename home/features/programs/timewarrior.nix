@@ -2,7 +2,7 @@
 , user
 , ...
 }: {
-  home.packages = with pkgs; builtins.filter (pkg: pkg != null) [ sesh ];
+  home.packages = with pkgs; builtins.filter (pkg: pkg != null) [ timewarrior ];
 
   xdg.configFile."sesh/sesh.toml".text = ''
     [[session]]

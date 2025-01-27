@@ -1,9 +1,11 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   # https://github.com/nix-community/home-manager/issues/6295#issuecomment-2597644501
   ghostty-mock = pkgs.writeShellScriptBin "ghostty-mock" ''
     true
   '';
-in {
+in
+{
   programs.ghostty = {
     enable = true;
     package = ghostty-mock; # Explicitly set the package to the mock script

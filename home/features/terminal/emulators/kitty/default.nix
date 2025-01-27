@@ -1,7 +1,6 @@
-{
-  pkgs,
-  user,
-  ...
+{ pkgs
+, user
+, ...
 }: {
   programs.kitty = {
     enable = false; # migrated to Ghostty

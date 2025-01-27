@@ -1,7 +1,6 @@
-{
-  pkgs,
-  lib,
-  ...
+{ pkgs
+, lib
+, ...
 }: {
   programs.yazi = {
     enable = true;
@@ -46,7 +45,7 @@
       open = [
         {
           mime = "application/pdf";
-          use = ["pdff" "reveal"];
+          use = [ "pdff" "reveal" ];
         }
       ];
     };

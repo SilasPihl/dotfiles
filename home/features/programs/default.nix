@@ -1,11 +1,10 @@
-{
-  pkgs,
-  pkgs-stable,
-  system,
-  user,
-  ...
+{ pkgs
+, pkgs-stable
+, system
+, user
+, ...
 }: {
-  imports = [./sesh.nix ./spicetify.nix];
+  imports = [ ./sesh.nix ./spicetify.nix ];
 
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [
@@ -50,5 +49,5 @@
         else null
       )
     ]
-    ++ (with pkgs-stable; [obsidian]);
+    ++ (with pkgs-stable; [ obsidian ]);
 }

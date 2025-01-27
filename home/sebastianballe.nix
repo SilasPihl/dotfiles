@@ -1,10 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  user,
-  ...
+{ config
+, lib
+, pkgs
+, system
+, user
+, ...
 }: {
   imports = [
     ./features/terminal

@@ -1,4 +1,7 @@
-{ pkgs, user, ... }: {
+{ pkgs
+, user
+, ...
+}: {
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [ spicetify-cli ];
 
