@@ -8,7 +8,7 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
-        nix = { "alejandra" },
+        nix = { "nixfmt" },
         proto = { "buf" },
       },
     })

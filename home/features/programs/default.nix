@@ -4,7 +4,7 @@
 , user
 , ...
 }: {
-  imports = [ ./sesh.nix ./spicetify.nix ];
+  imports = [ ./sesh.nix ./spicetify.nix ./timewarrior.nix];
 
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [
@@ -29,7 +29,6 @@
       sops
       stow
       stylua
-      timewarrior
       vim
       vivid
       xclip
