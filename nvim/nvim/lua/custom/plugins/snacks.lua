@@ -93,13 +93,6 @@ return {
     -- Key mappings
     keys = {
       {
-        "<leader>z",
-        function()
-          Snacks.zen()
-        end,
-        desc = "Toggle Zen Mode",
-      },
-      {
         "<leader>n",
         function()
           Snacks.notifier.show_history()
