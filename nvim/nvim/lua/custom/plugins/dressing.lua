@@ -2,7 +2,7 @@ return {
   "stevearc/dressing.nvim",
   opts = {
     input = {
-      -- Set to false to disable the vim.ui.input implementation
+      -- Enable the vim.ui.input implementation
       enabled = true,
 
       -- Default prompt string
@@ -11,34 +11,34 @@ return {
       -- Trim trailing `:` from prompt
       trim_prompt = true,
 
-      -- Can be 'left', 'right', or 'center'
+      -- Position of the title ('left', 'right', or 'center')
       title_pos = "left",
 
-      -- The initial mode when the window opens (insert|normal|visual|select).
+      -- Initial mode when the window opens
       start_mode = "insert",
 
-      -- These are passed to nvim_open_win
+      -- Border style
       border = "rounded",
-      -- 'editor' and 'win' will default to being centered
+
+      -- Window placement relative to 'cursor' or 'editor'
       relative = "cursor",
 
-      -- These can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+      -- Window size preferences
       prefer_width = 40,
       width = nil,
       max_width = { 140, 0.9 },
       min_width = { 20, 0.2 },
 
+      -- Buffer and window options
       buf_options = {},
       win_options = {
-        -- Disable line wrapping
-        wrap = false,
-        -- Indicator for when text exceeds window
-        list = true,
+        wrap = false, -- Disable line wrapping
+        list = true, -- Enable listchars for overflow indicators
         listchars = "precedes:…,extends:…",
         sidescrolloff = 0,
       },
 
-      -- Set to `false` to disable
+      -- Key mappings for input
       mappings = {
         n = {
           ["<Esc>"] = "Close",
@@ -52,25 +52,28 @@ return {
         },
       },
 
+      -- Override configuration for `nvim_open_win`
       override = function(conf)
-        -- This is the config that will be passed to nvim_open_win.
         return conf
       end,
 
+      -- Custom configuration per input
       get_config = nil,
     },
     select = {
-      -- Set to false to disable the vim.ui.select implementation
+      -- Enable the vim.ui.select implementation
       enabled = true,
 
-      -- Priority list of preferred vim.select implementations
+      -- Priority list of preferred backends
       backend = { "telescope", "fzf_lua", "fzf", "builtin", "nui" },
 
       -- Trim trailing `:` from prompt
       trim_prompt = true,
 
+      -- Telescope configuration (optional)
       telescope = nil,
 
+      -- FZF configuration
       fzf = {
         window = {
           width = 0.5,
@@ -78,8 +81,10 @@ return {
         },
       },
 
+      -- FZF Lua configuration
       fzf_lua = {},
 
+      -- NUI configuration
       nui = {
         position = "50%",
         relative = "editor",
@@ -99,6 +104,7 @@ return {
         min_height = 10,
       },
 
+      -- Builtin configuration
       builtin = {
         show_numbers = true,
         border = "rounded",
@@ -130,8 +136,10 @@ return {
         end,
       },
 
+      -- Override for formatting items in the selection
       format_item_override = {},
 
+      -- Custom configuration per select
       get_config = nil,
     },
   },

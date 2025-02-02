@@ -1,10 +1,6 @@
-{ pkgs
-, pkgs-stable
-, system
-, user
-, ...
-}: {
-  imports = [ ./sesh.nix ./spicetify.nix ./timewarrior.nix];
+{ pkgs, pkgs-stable, system, user, ... }:
+{
+  imports = [ ./sesh.nix ./spicetify.nix ];
 
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [
@@ -29,24 +25,14 @@
       sops
       stow
       stylua
+      timetrap
+      rubyPackages.bigdecimal
       vim
       vivid
       xclip
-      (
-        if system != "aarch64-linux"
-        then slack
-        else null
-      )
-      (
-        if system != "aarch64-linux"
-        then spotify
-        else null
-      )
-      (
-        if system != "aarch64-linux"
-        then zoom-us
-        else null
-      )
+      (if system != "aarch64-linux" then slack else null)
+      (if system != "aarch64-linux" then spotify else null)
+      (if system != "aarch64-linux" then zoom-us else null)
     ]
     ++ (with pkgs-stable; [ obsidian ]);
 }
