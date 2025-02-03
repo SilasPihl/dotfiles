@@ -21,9 +21,6 @@ return {
       noice = true,
       notify = true,
       octo = true,
-      telescope = {
-        enabled = true,
-      },
       treesitter = true,
       treesitter_context = false,
       symbols_outline = true,
@@ -35,6 +32,7 @@ return {
         dim_context = false,
         alt_background = false,
       },
+      snacks = true,
       native_lsp = {
         enabled = true,
         virtual_text = {

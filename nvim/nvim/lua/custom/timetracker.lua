@@ -1,7 +1,7 @@
 local TimeTracker = {}
 
-local Popup = require("nui.popup")
 local NuiText = require("nui.text")
+local Popup = require("nui.popup")
 local event = require("nui.utils.autocmd").event
 
 -- Utility: Start dimming
@@ -112,7 +112,7 @@ function TimeTracker:get_summary()
     local popup = Popup({
       position = "50%",
       size = {
-        width = math.floor(vim.o.columns * 0.6),
+        width = math.floor(vim.o.columns * 0.4),
         height = math.floor(vim.o.lines * 0.6),
       },
       border = {
@@ -270,7 +270,7 @@ end
 
 -- Notify messages
 function TimeTracker:notify(msg)
-  vim.notify(msg, vim.log.levels.INFO, { title = "TimeTracker" })
+  Snacks.notify.info(msg, { title = "TimeTracker" })
 end
 
 function TimeTracker:show_overview()
