@@ -93,14 +93,14 @@ return {
       },
       bigfile = { enabled = true },
       bufdelete = { enabled = true },
-      explorer = { enabled = true },
+      explorer = { enabled = false }, -- Disabled until it is possible to remove search
       indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true, timeout = 3000 },
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
       picker = {
-        enabled = true,
+        enabled = false, -- Disabled until theme and selecting options other than first fuzzy match is resolved
         layout = "ivy",
         matcher = {
           frecency = true,
@@ -128,16 +128,16 @@ return {
     keys = {
 
       -- Files
-      {
-        "<space>f",
-        function()
-          Snacks.picker.files({
-            hidden = true,
-            ignored = false,
-          })
-        end,
-        desc = "Find Files",
-      },
+      -- {
+      --   "<space>f",
+      --   function()
+      --     Snacks.picker.files({
+      --       hidden = true,
+      --       ignored = false,
+      --     })
+      --   end,
+      --   desc = "Find Files",
+      -- },
       {
         "<leader>cR",
         function()
@@ -147,31 +147,31 @@ return {
       },
 
       -- Buffers
-      {
-        "<space>b",
-        function()
-          Snacks.picker.buffers({
-            on_show = function()
-              vim.cmd.stopinsert()
-            end,
-            finder = "buffers",
-            format = "buffer",
-            hidden = false,
-            unloaded = true,
-            current = true,
-            sort_lastused = true,
-            win = {
-              input = {
-                keys = {
-                  ["d"] = "bufdelete",
-                },
-              },
-              list = { keys = { ["d"] = "bufdelete" } },
-            },
-          })
-        end,
-        desc = "Buffers",
-      },
+      -- {
+      --   "<space>b",
+      --   function()
+      --     Snacks.picker.buffers({
+      --       on_show = function()
+      --         vim.cmd.stopinsert()
+      --       end,
+      --       finder = "buffers",
+      --       format = "buffer",
+      --       hidden = false,
+      --       unloaded = true,
+      --       current = true,
+      --       sort_lastused = true,
+      --       win = {
+      --         input = {
+      --           keys = {
+      --             ["d"] = "bufdelete",
+      --           },
+      --         },
+      --         list = { keys = { ["d"] = "bufdelete" } },
+      --       },
+      --     })
+      --   end,
+      --   desc = "Buffers",
+      -- },
       {
         "<leader>bd",
         function()
@@ -181,76 +181,76 @@ return {
       },
 
       -- Grep
-      {
-        "<space>g",
-        function()
-          Snacks.picker.grep()
-        end,
-        desc = "Grep",
-      },
+      -- {
+      --   "<space>g",
+      --   function()
+      --     Snacks.picker.grep()
+      --   end,
+      --   desc = "Grep",
+      -- },
 
       -- Config
-      {
-        "<space>c",
-        function()
-          Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
-        end,
-        desc = "Find Config File",
-      },
+      -- {
+      --   "<space>c",
+      --   function()
+      --     Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+      --   end,
+      --   desc = "Find Config File",
+      -- },
 
       -- Recent
-      {
-        "<space>r",
-        function()
-          Snacks.picker.recent()
-        end,
-        desc = "Recent",
-      },
+      -- {
+      --   "<space>r",
+      --   function()
+      --     Snacks.picker.recent()
+      --   end,
+      --   desc = "Recent",
+      -- },
 
       -- Dianostic
-      {
-        "<space>d",
-        function()
-          Snacks.picker.diagnostics()
-        end,
-        desc = "Diagnostics",
-      },
+      -- {
+      --   "<space>d",
+      --   function()
+      --     Snacks.picker.diagnostics()
+      --   end,
+      --   desc = "Diagnostics",
+      -- },
 
       -- Keymaps
-      {
-        "<space>k",
-        function()
-          Snacks.picker.keymaps()
-        end,
-        desc = "Keymaps",
-      },
+      -- {
+      --   "<space>k",
+      --   function()
+      --     Snacks.picker.keymaps()
+      --   end,
+      --   desc = "Keymaps",
+      -- },
 
       -- Docs
-      {
-        "<space>m",
-        function()
-          Snacks.picker.man()
-        end,
-        desc = "Man Pages",
-      },
+      -- {
+      --   "<space>m",
+      --   function()
+      --     Snacks.picker.man()
+      --   end,
+      --   desc = "Man Pages",
+      -- },
 
       -- Quickfix
-      {
-        "<space>q",
-        function()
-          Snacks.picker.qflist()
-        end,
-        desc = "Quickfix List",
-      },
+      -- {
+      --   "<space>q",
+      --   function()
+      --     Snacks.picker.qflist()
+      --   end,
+      --   desc = "Quickfix List",
+      -- },
 
       -- Icons
-      {
-        "<space>i",
-        function()
-          Snacks.picker.icons()
-        end,
-        desc = "Icons",
-      },
+      -- {
+      --   "<space>i",
+      --   function()
+      --     Snacks.picker.icons()
+      --   end,
+      --   desc = "Icons",
+      -- },
 
       -- LSP
       {
@@ -291,16 +291,16 @@ return {
       },
 
       -- File explorer
-      {
-        "<leader>e",
-        function()
-          Snacks.explorer({
-            hidden = true,
-            ignored = true,
-          })
-        end,
-        desc = "File explorer",
-      },
+      -- {
+      --   "<leader>e",
+      --   function()
+      --     Snacks.explorer({
+      --       hidden = true,
+      --       ignored = true,
+      --     })
+      --   end,
+      --   desc = "File explorer",
+      -- },
 
       -- Zen
       {
