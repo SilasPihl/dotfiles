@@ -20,18 +20,14 @@ return {
               icon = " ",
               key = "f",
               desc = "Find File",
-              action = function()
-                Snacks.picker.files()
-              end,
+              action = "<cmd>Telescope find_file<CR>",
             },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             {
               icon = " ",
               key = "g",
               desc = "Find Text",
-              action = function()
-                Snacks.picker.grep()
-              end,
+              action = "<cmd>Telescope live_grep<CR>",
             },
             {
               icon = " ",

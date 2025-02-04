@@ -30,7 +30,7 @@ return {
     vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
     vim.o.foldcolumn = "0"
     vim.o.foldlevel = 99
-    vim.o.foldlevelstart = 5
+    vim.o.foldlevelstart = 99
     vim.o.foldenable = true
     local handler = function(virtText, lnum, endLnum, width, truncate)
       local newVirtText = {}
