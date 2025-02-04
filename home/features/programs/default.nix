@@ -14,19 +14,19 @@
       flux
       go
       go-task
+      gh
+      glab
       kubectl
       lazydocker
       manix
       nodejs_23
       ollama
-      gh
       raycast
-      glab
+      rubyPackages.bigdecimal
       sops
       stow
       stylua
       timetrap
-      rubyPackages.bigdecimal
       vim
       vivid
       xclip

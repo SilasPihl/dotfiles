@@ -20,7 +20,7 @@ return {
               icon = " ",
               key = "f",
               desc = "Find File",
-              action = "<cmd>Telescope find_file<CR>",
+              action = "<cmd>Telescope find_files<CR>",
             },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             {
@@ -96,7 +96,7 @@ return {
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
       picker = {
-        enabled = false, -- Disabled until theme and selecting options other than first fuzzy match is resolved
+        enabled = true, -- Disabled until theme and selecting options other than first fuzzy match is resolved
         layout = "ivy",
         matcher = {
           frecency = true,
