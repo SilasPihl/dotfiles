@@ -7,14 +7,6 @@ return {
       dashboard = {
         enabled = true,
         preset = {
-          header = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
-          ]],
           keys = {
             {
               icon = " ",
@@ -68,11 +60,9 @@ return {
           },
         },
         sections = {
-          { section = "header" },
-          { section = "keys", gap = 1, padding = 1 },
-          { section = "startup" },
-          { pane = 2, title = " ", padding = 8 },
-          { pane = 2, icon = " ", title = "Recent files", section = "recent_files", indent = 2, padding = 1 },
+          { section = "terminal", cmd = "fortune -s | cowsay", hl = "header", padding = 1, indent = 8 },
+          { section = "keys", title = "Keymaps", padding = 1 },
+          { section = "recent_files", title = "Recent files", padding = 1 },
         },
       },
       bigfile = { enabled = true },

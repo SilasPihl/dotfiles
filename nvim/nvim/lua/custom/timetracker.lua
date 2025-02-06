@@ -107,7 +107,7 @@ function TimeTracker:get_summary()
     vim.notify("Dimming function not found", vim.log.levels.WARN, { title = "TimeTracker" })
   end
 
-  local main_width = math.floor(vim.o.columns * 0.25)
+  local main_width = math.floor(vim.o.columns * 0.4)
   local main_height = math.floor(vim.o.lines * 0.6)
   local doc_height = 7
   local total_height = main_height + doc_height

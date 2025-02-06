@@ -8,10 +8,12 @@
       age
       alejandra
       bat
+      cowsay
       direnv
       docker-credential-helpers
       eza
       flux
+      fortune
       go
       go-task
       gh
