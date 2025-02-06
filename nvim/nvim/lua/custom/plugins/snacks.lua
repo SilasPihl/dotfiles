@@ -19,13 +19,13 @@ return {
             {
               icon = " ",
               key = "f",
-              desc = "Find File",
+              desc = "Find file",
               action = "<cmd>Telescope find_files<CR>",
             },
             {
               icon = " ",
               key = "/",
-              desc = "Find Text",
+              desc = "Find text",
               action = "<cmd>Telescope live_grep<CR>",
             },
             {
@@ -72,7 +72,7 @@ return {
           { section = "keys", gap = 1, padding = 1 },
           { section = "startup" },
           { pane = 2, title = " ", padding = 8 },
-          { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+          { pane = 2, icon = " ", title = "Recent files", section = "recent_files", indent = 2, padding = 1 },
           function()
             local in_git = Snacks.git.get_root() ~= nil
             local cmds = {}
