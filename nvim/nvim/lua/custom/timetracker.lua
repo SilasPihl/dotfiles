@@ -178,10 +178,10 @@ function TimeTracker:get_summary()
     "'a': Add entry today",
     "'d': Add entry on specific date",
     "'e': Edit entry",
-    "'q': Quit",
     "'s': Select new monthly report",
     "'x': Delete entry",
     "'y': Add entry yesterday",
+    "'q': Quit",
   }
   vim.api.nvim_buf_set_lines(doc_popup.bufnr, 0, -1, false, doc_lines)
 
