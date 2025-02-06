@@ -1,6 +1,6 @@
 return {
   "akinsho/bufferline.nvim",
-  enabled = false,
+  enabled = false, -- Do not use bufferline as I use Telescope buffer
   dependencies = { "nvim-tree/nvim-web-devicons" },
   lazy = false,
   opts = {

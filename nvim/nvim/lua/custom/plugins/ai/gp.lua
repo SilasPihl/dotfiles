@@ -36,7 +36,7 @@ return {
           chat = true,
           command = true,
           provider = "ollama",
-          model = { model = "qwen2.5-coder:1.5b" },
+          model = { model = "qwen2.5-coder:14b" },
           system_prompt = "You are a general AI assistant.\n\n"
             .. "The user provided the additional info about how they would like you to respond:\n\n"
             .. "- If you're unsure don't guess and say you don't know instead.\n"

@@ -1,6 +1,5 @@
 local TimeTracker = {}
 
-local NuiText = require("nui.text")
 local Popup = require("nui.popup")
 local event = require("nui.utils.autocmd").event
 
@@ -35,30 +34,33 @@ function TimeTracker:report(day, hours)
     return
   end
 
-  -- Determine the correct date format
-  local date_str = (day == "today") and os.date("%Y-%m-%d") or day
+  local date_str
+  if day == "today" then
+    date_str = os.date("%Y-%m-%d")
+  elseif day == "yesterday" then
+    date_str = os.date("%Y-%m-%d", os.time() - 86400)
+  else
+    date_str = day
+  end
 
-  -- Start time is fixed at 09:00
+  -- I don't care about times of the day as I report in full days
   local start_time = date_str .. " 09:00"
-  local end_time = os.date("%Y-%m-%d %H:%M", os.time({
+
+  local start_epoch = os.time({
     year = tonumber(date_str:sub(1, 4)),
     month = tonumber(date_str:sub(6, 7)),
     day = tonumber(date_str:sub(9, 10)),
     hour = 9,
     min = 0,
-  }) + (tonumber(hours) * 3600))
+  })
+  local end_epoch = start_epoch + (tonumber(hours) * 3600)
+  local end_time = os.date("%Y-%m-%d %H:%M", end_epoch)
 
-  -- Start tracking time
   self:exec("in", { "-a", start_time })
-
-  -- Stop tracking time
   self:exec("edit", { "--end", end_time })
-
-  -- Notify success
   self:notify("Reported " .. tostring(hours) .. " hours from 09:00 to " .. end_time:sub(12, 16) .. " on " .. date_str)
 end
 
--- Build shell command from command and arguments
 function TimeTracker:__build_command(cmd, args)
   if not cmd or cmd == "" then
     error("Command cannot be empty")
@@ -85,190 +87,255 @@ function TimeTracker:__build_command(cmd, args)
   return command
 end
 
--- Execute a shell command and return the result
 function TimeTracker:exec(cmd, args)
   local command = self:__build_command(cmd, args)
   local result = table.concat(vim.fn.systemlist(command), "\n")
   return result
 end
 
--- Get and display a summary report in a popup
 function TimeTracker:get_summary()
-  -- Prompt for the month (YYYY-MM); if nothing is entered, default to the current month.
-  vim.ui.input({ prompt = "Enter month (YYYY-MM) [default: current month]:" }, function(input)
-    local month_param = (input and input ~= "") and input or os.date("%Y-%m")
-    -- Build the timetrap month command using --start with the specified month.
-    local cmd = "month --ids --round --start " .. month_param .. " 2>/dev/null"
-    local result = self:exec(cmd)
+  -- Automatically use the current month.
+  local month_param = os.date("%Y-%m")
+  local cmd = "month --ids --round --start "
+    .. month_param
+    .. " 2>/dev/null | rg -v 'Notes' | rg -v '^\\s*\\d{1,2}:\\d{2}:\\d{2}\\s*$'" -- I do not wish to see Notes column and daily totals.
+  local result = self:exec(cmd)
 
-    -- Start dimming if available.
-    if start_dim then
-      start_dim()
-    else
-      vim.notify("Dimming function not found", vim.log.levels.WARN, { title = "TimeTracker" })
-    end
+  if start_dim then
+    start_dim()
+  else
+    vim.notify("Dimming function not found", vim.log.levels.WARN, { title = "TimeTracker" })
+  end
 
-    -- Create the popup.
-    local popup = Popup({
-      position = "50%",
-      size = {
-        width = math.floor(vim.o.columns * 0.4),
-        height = math.floor(vim.o.lines * 0.6),
+  local main_width = math.floor(vim.o.columns * 0.325)
+  local main_height = math.floor(vim.o.lines * 0.6)
+  local doc_height = 7
+  local total_height = main_height + doc_height
+
+  local top = math.floor((vim.o.lines - total_height) / 2)
+  local left = math.floor((vim.o.columns - main_width) / 2)
+
+  local popup = Popup({
+    position = { row = top, col = left },
+    size = {
+      width = main_width,
+      height = main_height,
+    },
+    border = {
+      style = "rounded",
+      text = {
+        top = " Overview ",
+        top_align = "center",
       },
-      border = {
-        style = "rounded",
-        text = {
-          top = " Time Report (Month) ",
-          top_align = "center",
-          bottom = NuiText(
-            "Press 'q' to close, 'e' to edit, 'x' to delete, 'a' to add today, 'd' to add date",
-            "Comment"
-          ),
-          bottom_align = "center",
-        },
+    },
+    win_options = {
+      winblend = 0,
+      winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+    },
+  })
+
+  local doc_popup = Popup({
+    position = { row = top + main_height + 2, col = left },
+    size = {
+      width = main_width,
+      height = doc_height,
+    },
+    border = {
+      style = "rounded",
+      text = {
+        top = " Keymaps ",
+        top_align = "center",
       },
-      win_options = {
-        winblend = 0,
-        winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-      },
-    })
+    },
+    win_options = {
+      winblend = 0,
+      winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+    },
+  })
 
-    popup:mount()
-    vim.api.nvim_set_current_win(popup.winid)
+  popup:mount()
+  doc_popup:mount()
+  vim.api.nvim_set_current_win(popup.winid)
 
-    -- Helper function to refresh the popup content using the same command.
-    local function refresh_popup()
-      local new_result = self:exec(cmd)
-      local new_lines = vim.split(new_result, "\n", { plain = true })
-      if #new_lines == 0 then
-        new_lines = { "No time tracking data found." }
-      end
-      vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, new_lines)
+  -- Helper function to refresh the main popup content.
+  local function refresh_popup()
+    local new_result = self:exec(cmd)
+    local new_lines = vim.split(new_result, "\n", { plain = true })
+    if #new_lines == 0 then
+      new_lines = { "No time tracking data found." }
     end
+    vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, new_lines)
+  end
 
-    -- Set the initial popup content.
-    local lines = vim.split(result, "\n", { plain = true })
-    if #lines == 0 then
-      lines = { "No time tracking data found." }
-    end
-    vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
+  local lines = vim.split(result, "\n", { plain = true })
+  if #lines == 0 then
+    lines = { "No time tracking data found." }
+  end
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
 
-    -- Key mapping: close the popup with 'q'.
-    vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "q", "", {
-      noremap = true,
-      nowait = true,
-      silent = true,
-      callback = function()
-        if stop_dim then
-          stop_dim()
-        end
-        popup:unmount()
-      end,
-    })
+  -- Documentation lines.
+  local doc_lines = {
+    "'a': Add entry today",
+    "'d': Add entry on specific date",
+    "'e': Edit entry",
+    "'q': Quit",
+    "'s': Select new monthly report",
+    "'x': Delete entry",
+    "'y': Add entry yesterday",
+  }
+  vim.api.nvim_buf_set_lines(doc_popup.bufnr, 0, -1, false, doc_lines)
 
-    -- Key mapping: edit an entry when 'e' is pressed.
-    vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "e", "", {
-      noremap = true,
-      nowait = true,
-      silent = true,
-      callback = function()
-        vim.ui.input({ prompt = "Enter entry id to edit:" }, function(id)
-          if id and id ~= "" then
-            vim.ui.input({ prompt = "Enter new hours:" }, function(hours)
-              if hours and tonumber(hours) then
-                local date_str = os.date("%Y-%m-%d")
-                local new_end_time = os.date("%Y-%m-%d %H:%M", os.time({
-                  year = tonumber(date_str:sub(1, 4)),
-                  month = tonumber(date_str:sub(6, 7)),
-                  day = tonumber(date_str:sub(9, 10)),
-                  hour = 9,
-                  min = 0,
-                }) + (tonumber(hours) * 3600))
-                self:exec("edit", { "--id", id, "--end", new_end_time })
-                self:notify("Updated entry " .. id .. " with " .. hours .. " hours worked.")
-                refresh_popup()
-              else
-                self:notify("Invalid hours provided.")
-              end
-            end)
-          else
-            self:notify("No id provided.")
-          end
-        end)
-      end,
-    })
-
-    -- Key mapping: delete an entry when 'x' is pressed.
-    vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "x", "", {
-      noremap = true,
-      nowait = true,
-      silent = true,
-      callback = function()
-        vim.ui.input({ prompt = "Enter entry id to delete:" }, function(id)
-          if id and id ~= "" then
-            self:exec("kill", { "--id", id, "--yes" })
-            self:notify("Deleted entry " .. id .. ".")
-            refresh_popup()
-          else
-            self:notify("No id provided.")
-          end
-        end)
-      end,
-    })
-
-    -- Key mapping: add a new time entry for today when 'a' is pressed.
-    vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "a", "", {
-      noremap = true,
-      nowait = true,
-      silent = true,
-      callback = function()
-        vim.ui.input({ prompt = "Enter hours for today:" }, function(hours)
-          if hours and tonumber(hours) then
-            self:report("today", hours)
-            self:notify("Reported " .. hours .. " hours for today.")
-            refresh_popup()
-          else
-            self:notify("Invalid hours provided.")
-          end
-        end)
-      end,
-    })
-
-    -- Key mapping: add a new time entry for a specific date when 'd' is pressed.
-    vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "d", "", {
-      noremap = true,
-      nowait = true,
-      silent = true,
-      callback = function()
-        vim.ui.input({ prompt = "Enter date (YYYY-MM-DD):" }, function(date)
-          if date and date ~= "" then
-            vim.ui.input({ prompt = "Enter hours for " .. date .. ":" }, function(hours)
-              if hours and tonumber(hours) then
-                self:report(date, hours)
-                self:notify("Reported " .. hours .. " hours for " .. date .. ".")
-                refresh_popup()
-              else
-                self:notify("Invalid hours provided.")
-              end
-            end)
-          else
-            self:notify("No date provided.")
-          end
-        end)
-      end,
-    })
-
-    -- When the popup buffer is left, disable dimming and unmount the popup.
-    popup:on(event.BufLeave, function()
+  -- Key mapping: close both popups with 'q'.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "q", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
       if stop_dim then
         stop_dim()
       end
       popup:unmount()
-    end)
+      doc_popup:unmount()
+    end,
+  })
+
+  -- Key mapping: edit an entry.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "e", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
+      vim.ui.input({ prompt = "Enter entry id to edit:" }, function(id)
+        if id and id ~= "" then
+          vim.ui.input({ prompt = "Enter new hours:" }, function(hours)
+            if hours and tonumber(hours) then
+              local date_str = os.date("%Y-%m-%d")
+              local new_end_time = os.date("%Y-%m-%d %H:%M", os.time({
+                year = tonumber(date_str:sub(1, 4)),
+                month = tonumber(date_str:sub(6, 7)),
+                day = tonumber(date_str:sub(9, 10)),
+                hour = 9,
+                min = 0,
+              }) + (tonumber(hours) * 3600))
+              self:exec("edit", { "--id", id, "--end", new_end_time })
+              self:notify("Updated entry " .. id .. " with " .. hours .. " hours worked.")
+              refresh_popup()
+            else
+              self:notify("Invalid hours provided.")
+            end
+          end)
+        else
+          self:notify("No id provided.")
+        end
+      end)
+    end,
+  })
+
+  -- Key mapping: delete an entry.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "x", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
+      vim.ui.input({ prompt = "Enter entry id to delete:" }, function(id)
+        if id and id ~= "" then
+          self:exec("kill", { "--id", id, "--yes" })
+          self:notify("Deleted entry " .. id .. ".")
+          refresh_popup()
+        else
+          self:notify("No id provided.")
+        end
+      end)
+    end,
+  })
+
+  -- Key mapping: add a new time entry for today.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "a", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
+      vim.ui.input({ prompt = "Enter hours for today:" }, function(hours)
+        if hours and tonumber(hours) then
+          self:report("today", hours)
+          self:notify("Reported " .. hours .. " hours for today.")
+          refresh_popup()
+        else
+          self:notify("Invalid hours provided.")
+        end
+      end)
+    end,
+  })
+
+  -- Key mapping: add a new time entry for yesterday.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "y", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
+      vim.ui.input({ prompt = "Enter hours for yesterday:" }, function(hours)
+        if hours and tonumber(hours) then
+          self:report("yesterday", hours)
+          self:notify("Reported " .. hours .. " hours for yesterday.")
+          refresh_popup()
+        else
+          self:notify("Invalid hours provided.")
+        end
+      end)
+    end,
+  })
+
+  -- Key mapping: add a new time entry for a specific date.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "d", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
+      vim.ui.input({ prompt = "Enter date (YYYY-MM-DD):" }, function(date)
+        if date and date ~= "" then
+          vim.ui.input({ prompt = "Enter hours for " .. date .. ":" }, function(hours)
+            if hours and tonumber(hours) then
+              self:report(date, hours)
+              self:notify("Reported " .. hours .. " hours for " .. date .. ".")
+              refresh_popup()
+            else
+              self:notify("Invalid hours provided.")
+            end
+          end)
+        else
+          self:notify("No date provided.")
+        end
+      end)
+    end,
+  })
+
+  -- Key mapping: press 's' to select a new monthly report.
+  vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "s", "", {
+    noremap = true,
+    nowait = true,
+    silent = true,
+    callback = function()
+      vim.ui.input({ prompt = "Enter month (YYYY-MM):" }, function(input)
+        if input and input ~= "" then
+          month_param = input
+          cmd = "month --ids --round --start " .. month_param .. " 2>/dev/null"
+          refresh_popup()
+        else
+          self:notify("Invalid month provided.")
+        end
+      end)
+    end,
+  })
+
+  popup:on(event.BufLeave, function()
+    if stop_dim then
+      stop_dim()
+    end
+    popup:unmount()
+    doc_popup:unmount()
   end)
 end
 
--- Notify messages
 function TimeTracker:notify(msg)
   Snacks.notify.info(msg, { title = "TimeTracker" })
 end

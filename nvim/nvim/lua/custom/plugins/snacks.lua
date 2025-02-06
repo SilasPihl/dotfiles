@@ -22,17 +22,16 @@ return {
               desc = "Find File",
               action = "<cmd>Telescope find_files<CR>",
             },
-            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             {
               icon = " ",
-              key = "g",
+              key = "/",
               desc = "Find Text",
               action = "<cmd>Telescope live_grep<CR>",
             },
             {
               icon = " ",
               key = "r",
-              desc = "Recent Files",
+              desc = "Recent files",
               action = function()
                 Snacks.picker.recent()
               end,
@@ -46,16 +45,25 @@ return {
               end,
             },
             {
-              icon = " ",
+              icon = "󰦛 ",
               key = "s",
-              desc = "Restore Session",
+              desc = "Restore session",
               action = function()
                 require("persistence").load()
               end,
             },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
-            { icon = "", key = "y", desc = "Yazi", action = "<cmd>Yazi<CR>" },
-            { icon = "", key = "t", desc = "TimeTracker", action = "<cmd>TimeTrackerOverview<CR>" },
+            { icon = " ", key = "y", desc = "Yazi", action = "<cmd>Yazi<CR>" },
+            { icon = " ", key = "t", desc = "Terminal", action = "<cmd>ToggleTerminal<CR>" },
+            { icon = " ", key = "T", desc = "TimeTracker", action = "<cmd>TimeTrackerOverview<CR>" },
+            {
+              icon = " ",
+              key = "g",
+              desc = "git",
+              action = function()
+                Snacks.lazygit()
+              end,
+            },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
         },
@@ -70,7 +78,7 @@ return {
             local cmds = {}
             table.insert(cmds, {
               icon = " ",
-              title = "Git Status",
+              title = "Git status",
               cmd = "git --no-pager diff --stat -B -M -C",
               height = 10,
             })
@@ -183,7 +191,7 @@ return {
       --     Snacks.picker.grep()
       --   end,
       --   desc = "Grep",
-      -- },
+      -- }e
 
       -- Config
       -- {
@@ -240,13 +248,13 @@ return {
       -- },
 
       -- Icons
-      -- {
-      --   "<space>i",
-      --   function()
-      --     Snacks.picker.icons()
-      --   end,
-      --   desc = "Icons",
-      -- },
+      {
+        "<space>i",
+        function()
+          Snacks.picker.icons()
+        end,
+        desc = "Icons",
+      },
 
       -- LSP
       {

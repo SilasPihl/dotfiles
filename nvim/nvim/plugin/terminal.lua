@@ -53,6 +53,14 @@ local function stop_dim()
   vim.cmd("VimadeDisable")
 end
 
+-- Function to close/hide the floating terminal buffer.
+local function close_floating_terminal()
+  if vim.api.nvim_win_is_valid(state.floating.win) then
+    vim.api.nvim_win_hide(state.floating.win)
+    stop_dim()
+  end
+end
+
 local function toggle_terminal()
   if not vim.api.nvim_win_is_valid(state.floating.win) then
     start_dim()
@@ -67,10 +75,21 @@ local function toggle_terminal()
     vim.api.nvim_feedkeys("i", "n", false)
 
     vim.bo[state.floating.buf].bufhidden = "wipe"
+
+    -- Prevent accidental window navigation.
     vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-h>", "<nop>", { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-j>", "<nop>", { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-k>", "<nop>", { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(state.floating.buf, "n", "<C-l>", "<nop>", { noremap = true, silent = true })
+
+    -- Map "q" in normal mode to close the floating terminal buffer.
+    vim.api.nvim_buf_set_keymap(
+      state.floating.buf,
+      "n",
+      "q",
+      "",
+      { noremap = true, silent = true, callback = close_floating_terminal }
+    )
 
     vim.api.nvim_create_autocmd("BufWipeout", {
       buffer = state.floating.buf,
@@ -94,4 +113,12 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
   end,
 })
 
-vim.keymap.set({ "n", "t" }, "<C-t>", toggle_terminal, { desc = "Toggle floating terminal" })
+-- Create a custom user command "ToggleTerminal" that runs toggle_terminal().
+vim.api.nvim_create_user_command("ToggleTerminal", function()
+  toggle_terminal()
+end, {})
+
+-- Map <C-t> in normal and terminal modes to run the ToggleTerminal command.
+vim.keymap.set({ "n", "t" }, "<C-t>", function()
+  vim.cmd("ToggleTerminal")
+end, { desc = "Toggle floating terminal" })
