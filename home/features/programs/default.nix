@@ -30,7 +30,6 @@
       vim
       vivid
       xclip
-      (if system != "aarch64-linux" then slack else null)
       (if system != "aarch64-linux" then spotify else null)
       (if system != "aarch64-linux" then zoom-us else null)
     ]
