@@ -98,7 +98,7 @@ function TimeTracker:get_summary()
   local month_param = os.date("%Y-%m")
   local cmd = "month --ids --round --start "
     .. month_param
-    .. " 2>/dev/null | rg -v 'Notes' | rg -v '^\\s*\\d{1,2}:\\d{2}:\\d{2}\\s*$'" -- I do not wish to see Notes column and daily totals.
+    .. " 2>/dev/null | rg -v '^\\s*\\d{1,2}:\\d{2}:\\d{2}\\s*$' | rg -v 'Notes'"
   local result = self:exec(cmd)
 
   if start_dim then
@@ -107,7 +107,7 @@ function TimeTracker:get_summary()
     vim.notify("Dimming function not found", vim.log.levels.WARN, { title = "TimeTracker" })
   end
 
-  local main_width = math.floor(vim.o.columns * 0.325)
+  local main_width = math.floor(vim.o.columns * 0.25)
   local main_height = math.floor(vim.o.lines * 0.6)
   local doc_height = 7
   local total_height = main_height + doc_height
@@ -143,7 +143,7 @@ function TimeTracker:get_summary()
     border = {
       style = "rounded",
       text = {
-        top = " Keymaps ",
+        top = " Keys ",
         top_align = "center",
       },
     },

@@ -73,26 +73,6 @@ return {
           { section = "startup" },
           { pane = 2, title = " ", padding = 8 },
           { pane = 2, icon = " ", title = "Recent files", section = "recent_files", indent = 2, padding = 1 },
-          function()
-            local in_git = Snacks.git.get_root() ~= nil
-            local cmds = {}
-            table.insert(cmds, {
-              icon = " ",
-              title = "Git status",
-              cmd = "git --no-pager diff --stat -B -M -C",
-              height = 10,
-            })
-            return vim.tbl_map(function(cmd)
-              return vim.tbl_extend("force", {
-                pane = 2,
-                section = "terminal",
-                enabled = in_git,
-                padding = 1,
-                ttl = 5 * 60,
-                indent = 3,
-              }, cmd)
-            end, cmds)
-          end,
         },
       },
       bigfile = { enabled = true },
