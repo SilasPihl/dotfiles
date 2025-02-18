@@ -18,7 +18,3 @@ opt.wrap = true
 opt.linebreak = true
 opt.more = false
 opt.undofile = true
-
--- Folding
-opt.foldmethod = "manual"
-opt.foldlevel = 99

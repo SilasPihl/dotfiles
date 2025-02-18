@@ -1,5 +1,6 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  enabled = true,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "DaikyXendo/nvim-material-icon",
@@ -27,6 +28,7 @@ return {
     window = {
       position = "left",
       auto_expand_width = true,
+      width = 35,
     },
     default_component_configs = {
       diagnostics = {

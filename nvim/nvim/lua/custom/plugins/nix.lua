@@ -1,3 +1,4 @@
-return {
-  "figsoda/nix-develop.nvim",
-}
+return {}
+-- return {
+--   "figsoda/nix-develop.nvim",
+-- }

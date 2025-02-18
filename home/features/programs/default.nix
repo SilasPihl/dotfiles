@@ -1,6 +1,6 @@
 { pkgs, pkgs-stable, system, user, ... }:
 {
-  imports = [ ./sesh.nix ./spicetify.nix ];
+  imports = [./spicetify.nix ];
 
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [

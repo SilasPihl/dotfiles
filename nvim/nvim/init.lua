@@ -32,3 +32,4 @@ require("lazy").setup({
 })
 
 require("custom.timetracker")
+-- require("custom.nix-develop")

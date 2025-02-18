@@ -107,7 +107,7 @@ function TimeTracker:get_summary()
     vim.notify("Dimming function not found", vim.log.levels.WARN, { title = "TimeTracker" })
   end
 
-  local main_width = math.floor(vim.o.columns * 0.4)
+  local main_width = math.floor(vim.o.columns * 0.265)
   local main_height = math.floor(vim.o.lines * 0.6)
   local doc_height = 7
   local total_height = main_height + doc_height
@@ -344,14 +344,14 @@ function TimeTracker:show_overview()
   self:get_summary()
 end
 
-vim.api.nvim_create_user_command("TimeTrackerOverview", function()
+vim.api.nvim_create_user_command("TimeTracker", function()
   local tracker = TimeTracker:new()
   tracker:show_overview()
 end, {})
 
 -- Key mapping for the overview popup
 vim.keymap.set("n", "<leader>t", function()
-  vim.cmd("silent! TimeTrackerOverview")
+  vim.cmd("silent! TimeTracker")
 end, { silent = true, desc = "TimeTracker" })
 
 return TimeTracker

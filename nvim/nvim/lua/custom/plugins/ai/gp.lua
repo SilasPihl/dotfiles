@@ -1,5 +1,6 @@
 return {
   "robitx/gp.nvim",
+  enabled = false,
   dependencies = { "folke/which-key.nvim" }, -- Ensure which-key is available
   config = function()
     local conf = {
