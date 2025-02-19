@@ -76,11 +76,10 @@ return {
           { section = "recent_files", title = "Recent files", padding = 1 },
         },
       },
+
       bigfile = { enabled = true },
       bufdelete = { enabled = true },
-      explorer = {
-        enabled = false, -- I tend to like neotree a bit more
-      },
+      explorer = { enabled = false }, -- I tend to lean more to neotree
       indent = { enabled = true },
       input = { enabled = true },
 
@@ -129,6 +128,47 @@ return {
       styles = {
         notification = {
           wo = { wrap = true },
+        },
+      },
+
+      -- Terminal configuration (unchanged)
+      terminal = {
+        win = { style = "terminal" },
+        bo = { filetype = "snacks_terminal" },
+        keys = {
+          q = "hide",
+          term_normal = {
+            "<esc>",
+            function(self)
+              self.esc_timer = self.esc_timer or (vim.uv or vim.loop).new_timer()
+              if self.esc_timer:is_active() then
+                self.esc_timer:stop()
+                vim.cmd("stopinsert")
+              else
+                self.esc_timer:start(100, 0, function() end)
+                return "<esc>"
+              end
+            end,
+            mode = "t",
+            expr = true,
+            desc = "Double escape to normal mode",
+          },
+          term_new = {
+            "<C-n>",
+            function()
+              Snacks.terminal.open(nil, {
+                shell = "zsh",
+                start_insert = true,
+                auto_close = true,
+                auto_insert = true,
+                interactive = true,
+              })
+              return ""
+            end,
+            mode = "t",
+            expr = true,
+            desc = "Open new terminal",
+          },
         },
       },
     },
@@ -218,7 +258,7 @@ return {
         desc = "Recent",
       },
 
-      -- Dianostic
+      -- Diagnostic
       {
         "<space>d",
         function()
@@ -389,8 +429,8 @@ return {
           _G.dd = function(...)
             Snacks.debug.inspect(...)
           end
-          _G.bt = function()
-            Snacks.debug.backtrace()
+          _G.bt = function(...)
+            Snacks.debug.backtrace(...)
           end
           vim.print = _G.dd
 
@@ -400,6 +440,24 @@ return {
           Snacks.toggle.inlay_hints():map("<leader>uh")
         end,
       })
+
+      -- Toggle Snacks terminal using bottom split (no cmd provided) and run zsh
+      _G.ToggleSnacksTerminal = function()
+        local term, _ = Snacks.terminal.toggle(nil, {
+          shell = "zsh",
+          start_insert = true,
+          auto_close = true,
+          auto_insert = true,
+          interactive = true,
+        })
+        return term
+      end
+
+      vim.api.nvim_create_user_command("ToggleTerminal", function()
+        _G.ToggleSnacksTerminal()
+      end, {})
+
+      vim.keymap.set({ "n", "t" }, "<C-t>", "<cmd>ToggleTerminal<CR>", { desc = "Toggle snacks terminal" })
     end,
   },
   {
