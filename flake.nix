@@ -25,28 +25,44 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim, nix-index-database } @ inputs:
     let
       user = "sebastianballe";
-    in
-    {
+    in {
       homeConfigurations = {
-        mac =
-          let
-            system = "aarch64-darwin";
-            pkgs-stable = import inputs.nixpkgs {
-              system = system;
-              config.allowUnfree = true;
-            };
-          in
-          home-manager.lib.homeManagerConfiguration {
-            extraSpecialArgs = {
-              inherit inputs system user pkgs-stable;
-            };
-            pkgs = nixpkgs-unstable.legacyPackages.${system};
+        mac = let
+          system = "aarch64-darwin";
+          pkgs-stable = import inputs.nixpkgs {
+            system = system;
+            config.allowUnfree = true;
+          };
+        in home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {
+            inherit inputs system user pkgs-stable;
+          };
+          pkgs = nixpkgs-unstable.legacyPackages.${system};
 
+          modules = [
+            { nixpkgs.config.allowUnfree = true; }
+            nix-index-database.hmModules.nix-index
+            ./home/${user}.nix
+          ];
+        };
+      };
+
+      nixosConfigurations = {
+        nixos =
+          let
+            system = "x86_64-linux";
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config = { allowUnfree = true; };
+            };
+          in pkgs.lib.nixosSystem {
+            inherit system;
             modules = [
+              ./nixos/configuration.nix
               { nixpkgs.config.allowUnfree = true; }
-              nix-index-database.hmModules.nix-index
-              ./home/${user}.nix
+              nix-index-database.nixosModules.nix-index
             ];
+            specialArgs = { inherit inputs system user pkgs; };
           };
       };
 

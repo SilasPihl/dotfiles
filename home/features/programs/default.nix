@@ -31,6 +31,7 @@
       timetrap
       vim
       vivid
+      (if system == "aarch64-linux" then vmware-workstation else null)
       xclip
       (if system != "aarch64-linux" then spotify else null)
       (if system != "aarch64-linux" then zoom-us else null)
