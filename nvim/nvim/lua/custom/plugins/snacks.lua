@@ -24,7 +24,7 @@ return {
               key = "/",
               desc = "Find text",
               action = function()
-                Snacks.picker.lines()
+                Snacks.picker.grep()
               end,
             },
 
@@ -83,6 +83,28 @@ return {
       indent = { enabled = true },
       input = { enabled = true },
 
+      lazygit = {
+        configure = true,
+        config = {
+          os = { editPreset = "nvim-remote" },
+          gui = {
+            showIcons = true,
+            nerdFontsVersion = "3",
+            theme = {
+              activeBorderColor = { "#8aadf4", "bold" },
+              inactiveBorderColor = { "#a5adcb" },
+              optionsTextColor = { "#8aadf4" },
+              selectedLineBgColor = { "#363a4f" },
+              cherryPickedCommitBgColor = { "#494d64" },
+              cherryPickedCommitFgColor = { "#8aadf4" },
+              unstagedChangesColor = { "#ed8796" },
+              defaultFgColor = { "#cad3f5" },
+              searchingActiveBorderColor = { "#eed49f" },
+            },
+          },
+        },
+      },
+
       image = {
         enabled = true,
         doc = {
@@ -131,9 +153,15 @@ return {
         },
       },
 
-      -- Terminal configuration (unchanged)
       terminal = {
-        win = { style = "terminal" },
+        win = {
+          style = "terminal",
+          width = math.floor(vim.o.columns * 0.8),
+          height = math.floor(vim.o.lines * 0.8),
+          col = math.floor((vim.o.columns - math.floor(vim.o.columns * 0.8)) / 2),
+          row = math.floor((vim.o.lines - math.floor(vim.o.lines * 0.8)) / 2),
+          border = "rounded",
+        },
         bo = { filetype = "snacks_terminal" },
         keys = {
           q = "hide",
@@ -152,22 +180,6 @@ return {
             mode = "t",
             expr = true,
             desc = "Double escape to normal mode",
-          },
-          term_new = {
-            "<C-n>",
-            function()
-              Snacks.terminal.open(nil, {
-                shell = "zsh",
-                start_insert = true,
-                auto_close = true,
-                auto_insert = true,
-                interactive = true,
-              })
-              return ""
-            end,
-            mode = "t",
-            expr = true,
-            desc = "Open new terminal",
           },
         },
       },
@@ -441,10 +453,8 @@ return {
         end,
       })
 
-      -- Toggle Snacks terminal using bottom split (no cmd provided) and run zsh
       _G.ToggleSnacksTerminal = function()
-        local term, _ = Snacks.terminal.toggle(nil, {
-          shell = "zsh",
+        local term, _ = Snacks.terminal.toggle("zsh", {
           start_insert = true,
           auto_close = true,
           auto_insert = true,

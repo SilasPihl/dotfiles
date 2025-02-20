@@ -2,7 +2,7 @@ return {
   {
     "tadaa/vimade",
     opts = {
-      recipe = { "minimalist", { animate = true } }, -- Minimalist recipe with animations
+      recipe = { "minimalist", { animate = false } }, -- Minimalist recipe with animations
       ncmode = "windows", -- Fade inactive windows
       fadelevel = 0.5, -- Set fade level to 50%
       tint = {
