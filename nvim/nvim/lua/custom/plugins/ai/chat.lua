@@ -9,6 +9,7 @@ return {
     opts = {
       auto_insert_mode = true,
       temperature = 0.0,
+      model = "claude-3.7-sonnet",
       window = {
         layout = "vertical",
       },

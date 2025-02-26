@@ -10,6 +10,7 @@ return {
         lua = { "stylua" },
         nix = { "nixfmt" },
         proto = { "buf" },
+        terraform = { "terraform_fmt" },
       },
     })
 
