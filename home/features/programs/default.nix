@@ -21,6 +21,7 @@
       kubectl
       lazydocker
       manix
+      neovim
       nodejs_23
       ollama
       raycast
