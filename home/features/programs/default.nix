@@ -9,6 +9,7 @@
       alejandra
       bat
       cowsay
+      code
       direnv
       docker-credential-helpers
       eza
