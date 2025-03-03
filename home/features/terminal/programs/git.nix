@@ -44,7 +44,7 @@
         };
       }
       {
-        condition = "gitdir:~/git/lix/";
+        condition = "gitdir:~/git/lix-one/";
         contents = {
           user = {
             email = "sbal@lix.one";

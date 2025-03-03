@@ -10,6 +10,7 @@
       bat
       cowsay
       direnv
+      docker
       docker-credential-helpers
       eza
       flux
