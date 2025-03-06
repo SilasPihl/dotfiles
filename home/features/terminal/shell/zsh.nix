@@ -89,7 +89,6 @@
         "podman"
         "terraform"
         "zoxide"
-        "vi-mode"
         "zsh-interactive-cd"
       ];
 

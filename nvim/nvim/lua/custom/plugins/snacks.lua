@@ -167,19 +167,11 @@ return {
           q = "hide",
           term_normal = {
             "<esc>",
-            function(self)
-              self.esc_timer = self.esc_timer or (vim.uv or vim.loop).new_timer()
-              if self.esc_timer:is_active() then
-                self.esc_timer:stop()
-                vim.cmd("stopinsert")
-              else
-                self.esc_timer:start(100, 0, function() end)
-                return "<esc>"
-              end
+            function()
+              vim.cmd("stopinsert")
             end,
             mode = "t",
-            expr = true,
-            desc = "Double escape to normal mode",
+            desc = "Single escape to normal mode",
           },
         },
       },
@@ -322,6 +314,20 @@ return {
           Snacks.picker.highlights({ pattern = "hl_group:^Snacks" })
         end,
         desc = "Highlights",
+      },
+
+      -- Todo
+      {
+        "<space>t",
+        function()
+          Snacks.picker.todo_comments({
+            on_show = function()
+              vim.cmd.stopinsert()
+            end,
+            keywords = { "TODO", "FIX", "FIXME", "NOTE" },
+          })
+        end,
+        desc = "TODO/FIX/FIXME/NOTE",
       },
 
       -- LSP
@@ -470,6 +476,7 @@ return {
       vim.keymap.set({ "n", "t" }, "<C-t>", "<cmd>ToggleTerminal<CR>", { desc = "Toggle snacks terminal" })
     end,
   },
+
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -478,17 +485,10 @@ return {
       options = { "buffers", "curdir", "tabpages", "winsize", "folds" },
     },
   },
+
   {
     "folke/todo-comments.nvim",
-    optional = true,
-    keys = {
-      {
-        "<space>t",
-        function()
-          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
-        end,
-        desc = "Todo/Fix/Fixme",
-      },
-    },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
   },
 }

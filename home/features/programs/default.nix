@@ -15,7 +15,6 @@
       eza
       flux
       fortune
-      go
       go-task
       gh
       glab
@@ -37,6 +36,7 @@
       xclip
       (if system != "aarch64-linux" then spotify else null)
       (if system != "aarch64-linux" then zoom-us else null)
+      _1password-cli
     ]
     ++ (with pkgs-stable; [ obsidian ]);
 }
