@@ -3,7 +3,6 @@ local TimeTracker = {}
 local Popup = require("nui.popup")
 local event = require("nui.utils.autocmd").event
 
--- Utility: Start dimming
 local function start_dim()
   require("vimade").setup({
     ncmode = "windows",
@@ -15,12 +14,10 @@ local function start_dim()
   vim.cmd("VimadeEnable")
 end
 
--- Utility: Stop dimming
 local function stop_dim()
   vim.cmd("VimadeDisable")
 end
 
--- Constructor
 function TimeTracker:new(options)
   options = options or {}
   self.__index = self
@@ -66,7 +63,6 @@ function TimeTracker:__build_command(cmd, args)
     error("Command cannot be empty")
   end
 
-  -- Helper function to quote an argument if it contains whitespace.
   local function quoteArg(arg)
     if string.find(arg, "%s") then
       return '"' .. arg .. '"'
@@ -94,7 +90,6 @@ function TimeTracker:exec(cmd, args)
 end
 
 function TimeTracker:get_summary()
-  -- Automatically use the current month.
   local month_param = os.date("%Y-%m")
   local cmd = "month --ids --round --start "
     .. month_param
@@ -157,7 +152,6 @@ function TimeTracker:get_summary()
   doc_popup:mount()
   vim.api.nvim_set_current_win(popup.winid)
 
-  -- Helper function to refresh the main popup content.
   local function refresh_popup()
     local new_result = self:exec(cmd)
     local new_lines = vim.split(new_result, "\n", { plain = true })
@@ -185,7 +179,6 @@ function TimeTracker:get_summary()
   }
   vim.api.nvim_buf_set_lines(doc_popup.bufnr, 0, -1, false, doc_lines)
 
-  -- Key mapping: close both popups with 'q'.
   vim.api.nvim_buf_set_keymap(popup.bufnr, "n", "q", "", {
     noremap = true,
     nowait = true,
