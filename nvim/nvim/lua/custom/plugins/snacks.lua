@@ -121,7 +121,7 @@ return {
 
       picker = {
         enabled = true,
-        layout = "ivy",
+        -- layout = "ivy", # For now just use the default
         matcher = {
           frecency = true,
         },

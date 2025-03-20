@@ -26,7 +26,7 @@ return {
       },
     },
     window = {
-      position = "left",
+      position = "right",
       auto_expand_width = true,
       width = 35,
     },
