@@ -42,6 +42,7 @@ return { -- LSP Configs
 
     local servers = {
       pyright = {},
+      bicep = {},
       terraformls = {},
       buf_ls = {},
       tflint = {},

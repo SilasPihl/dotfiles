@@ -15,7 +15,14 @@ return {
               key = "f",
               desc = "Find file",
               action = function()
-                Snacks.picker.files()
+                Snacks.picker.files({
+                  finder = "files",
+                  format = "file",
+                  show_empty = true,
+                  supports_live = true,
+                  hidden = true,
+                  ignored = false,
+                })
               end,
             },
 

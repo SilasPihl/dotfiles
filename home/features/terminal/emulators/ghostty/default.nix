@@ -9,8 +9,9 @@ in
   programs.ghostty = {
     enable = true;
     package = ghostty-mock; # Explicitly set the package to the mock script
-    enableZshIntegration = true;
+    enableBashIntegration = true;
     installBatSyntax = true;
+    installVimSyntax = true;
     settings = {
       theme = "catppuccin-macchiato";
       window-decoration = false;

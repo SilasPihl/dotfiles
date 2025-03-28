@@ -12,8 +12,5 @@ tasks:
   home-manager:switch:
     desc: Switches home-manager configuration
     dir: "{{.ROOT_DIR}}"
-    requires:
-      vars:
-        - NAME
     cmds:
-      - nix run home-manager/master -- switch --flake .#{{.NAME}} -b backup
+      - nix run home-manager/master -- switch --flake .#mac -b backup

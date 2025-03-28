@@ -12,6 +12,7 @@
       direnv
       docker
       docker-credential-helpers
+      dotnetCorePackages.sdk_9_0_1xx
       eza
       flux
       fortune
@@ -25,17 +26,14 @@
       nodejs_23
       ollama
       raycast
-      rubyPackages.bigdecimal
       sops
       stow
       stylua
       timetrap
       vim
       vivid
-      (if system == "aarch64-linux" then vmware-workstation else null)
       xclip
-      (if system != "aarch64-linux" then spotify else null)
-      (if system != "aarch64-linux" then zoom-us else null)
+      spotify
       _1password-cli
     ]
     ++ (with pkgs-stable; [ obsidian ]);
