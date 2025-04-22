@@ -10,9 +10,9 @@
       bat
       cowsay
       direnv
+      discord
       docker
       docker-credential-helpers
-      dotnetCorePackages.sdk_9_0_1xx
       eza
       flux
       fortune

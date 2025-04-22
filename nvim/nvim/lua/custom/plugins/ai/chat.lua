@@ -5,7 +5,7 @@ return {
       { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim" },
     },
-    enabled = false,
+    enabled = false, -- Testing out codecompanion
     opts = {
       auto_insert_mode = true,
       temperature = 0.0,

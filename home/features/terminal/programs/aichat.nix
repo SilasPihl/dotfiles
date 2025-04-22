@@ -18,7 +18,7 @@ let
           name: ollama
           api_base: http://localhost:11434/v1
           models:
-            - name: llama3.2
+            - name: qwen2.5-coder:32b
               max_input_tokens: 128000
               supports_function_calling: true
   '';

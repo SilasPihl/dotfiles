@@ -1,4 +1,3 @@
--- ~/.config/nvim/lua/plugins/debug.lua (or your equivalent path)
 return {
   "mfussenegger/nvim-dap",
   dependencies = {
@@ -42,13 +41,11 @@ return {
       desc = "Breakpoint (Toggle)",
     },
     {
-      "<leader>dc", -- Start (select config) or Continue debugging
+      "<leader>dc",
       function()
-        -- If no session is active, dap.continue() prompts to select a configuration.
-        -- If a session is active, it continues the execution.
         require("dap").continue()
       end,
-      desc = "Debug (Start/Continue/Select)", -- Updated description
+      desc = "Debug (Start/Continue/Select)",
     },
     {
       "<leader>dk",
@@ -74,7 +71,7 @@ return {
     {
       "<leader>dr",
       function()
-        require("dap").restart() -- Restarts the current or last session
+        require("dap").restart()
       end,
       desc = "Debug (Restart)",
     },
@@ -86,32 +83,19 @@ return {
       end,
       desc = "Debug (Quit/Stop)",
     },
-    -- Optional: Keymap specifically to run the *last* used configuration
-    -- {
-    --   "<leader>dl",
-    --   function()
-    --     require("dap").run_last()
-    --   end,
-    --   desc = "Debug (Run Last)",
-    -- },
   },
   config = function()
-    -- Remove or comment out the debug log level once working
-    -- require('dap').set_log_level('DEBUG')
-
-    local dap = require("dap")
-
     require("dap-go").setup()
 
     if vim.fn.filereadable(".vscode/launch.json") == 1 then
       require("dap.ext.vscode").load_launchjs(nil, { go = { "go" } })
     end
 
-    vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DiagnosticError", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticError", linehl = "", numhl = "" })
     vim.fn.sign_define(
       "DapStopped",
-      { text = "→", texthl = "DiagnosticInfo", linehl = "CursorLine", numhl = "CursorLine" }
+      { text = "", texthl = "DiagnosticInfo", linehl = "CursorLine", numhl = "CursorLine" }
     )
-    vim.fn.sign_define("DapLogPoint", { text = "◆", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
   end,
 }

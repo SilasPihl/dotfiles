@@ -16,22 +16,20 @@ return {
       ["<C-p>"] = { "scroll_documentation_up", "fallback" },
     },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer", "codecompanion" },
+      default = { "lsp", "path", "snippets", "buffer", "codecompanion", "copilot" },
       providers = {
         codecompanion = {
           name = "CodeCompanion",
           module = "codecompanion.providers.completion.blink",
           enabled = true,
         },
+        copilot = {
+          name = "copilot",
+          module = "blink-cmp-copilot",
+          score_offset = 100,
+          async = true,
+        },
       },
-      -- providers = {
-      --   copilot = {
-      --     name = "copilot",
-      --     module = "blink-cmp-copilot",
-      --     score_offset = 100,
-      --     async = true,
-      --   },
-      -- },
     },
     completion = {
       list = {

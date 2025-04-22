@@ -63,7 +63,7 @@ return {
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
             { icon = " ", key = "y", desc = "Yazi", action = "<cmd>Yazi<CR>" },
             { icon = " ", key = "t", desc = "Terminal", action = "<cmd>ToggleTerminal<CR>" },
-            { icon = " ", key = "T", desc = "TimeTracker", action = "<cmd>TimeTracker<CR>" },
+            { icon = " ", key = "T", desc = "TimeTracker", action = "<cmd>TimeTracker<CR>" },
 
             {
               icon = " ",
@@ -128,7 +128,6 @@ return {
 
       picker = {
         enabled = true,
-        -- layout = "ivy", # For now just use the default
         matcher = {
           frecency = true,
         },
@@ -264,7 +263,11 @@ return {
       {
         "<space>r",
         function()
-          Snacks.picker.recent()
+          Snacks.picker.recent({
+            on_show = function()
+              vim.cmd.stopinsert()
+            end,
+          })
         end,
         desc = "Recent",
       },
@@ -273,7 +276,11 @@ return {
       {
         "<space>d",
         function()
-          Snacks.picker.diagnostics()
+          Snacks.picker.diagnostics({
+            on_show = function()
+              vim.cmd.stopinsert()
+            end,
+          })
         end,
         desc = "Diagnostics",
       },
@@ -287,24 +294,6 @@ return {
         desc = "Keymaps",
       },
 
-      -- Docs
-      {
-        "<space>m",
-        function()
-          Snacks.picker.man()
-        end,
-        desc = "Man pages",
-      },
-
-      -- Quickfix
-      {
-        "<space>q",
-        function()
-          Snacks.picker.qflist()
-        end,
-        desc = "Quickfix list",
-      },
-
       -- Icons
       {
         "<space>i",
@@ -312,15 +301,6 @@ return {
           Snacks.picker.icons()
         end,
         desc = "Icons",
-      },
-
-      -- Highlights
-      {
-        "<space>h",
-        function()
-          Snacks.picker.highlights({ pattern = "hl_group:^Snacks" })
-        end,
-        desc = "Highlights",
       },
 
       -- Todo
@@ -369,7 +349,7 @@ return {
         function()
           Snacks.picker.lsp_type_definitions()
         end,
-        desc = "Goto T[y]pe Definition",
+        desc = "Goto Type Definition",
       },
       {
         "<leader>ss",
@@ -380,16 +360,16 @@ return {
       },
 
       -- File explorer
-      {
-        "<leader>e",
-        function()
-          Snacks.explorer({
-            hidden = true,
-            ignored = true,
-          })
-        end,
-        desc = "File explorer",
-      },
+      -- {
+      --   "<leader>e",
+      --   function()
+      --     Snacks.explorer({
+      --       hidden = true,
+      --       ignored = true,
+      --     })
+      --   end,
+      --   desc = "File explorer",
+      -- },
 
       -- Zen
       {

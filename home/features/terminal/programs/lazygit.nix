@@ -95,6 +95,7 @@
         commit = {
           signOff = true;
         };
+        overrideGpg = true;
         paging = {
           colorArg = "always";
           pager = "delta --dark --paging=never --tabs 2";
