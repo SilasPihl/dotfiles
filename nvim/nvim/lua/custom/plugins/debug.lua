@@ -87,10 +87,6 @@ return {
   config = function()
     require("dap-go").setup()
 
-    if vim.fn.filereadable(".vscode/launch.json") == 1 then
-      require("dap.ext.vscode").load_launchjs(nil, { go = { "go" } })
-    end
-
     vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticError", linehl = "", numhl = "" })
     vim.fn.sign_define(
       "DapStopped",

@@ -10,6 +10,7 @@
 
     aliases = {
       st = "status";
+      c = "commit --signoff --message";
     };
 
     includes = [

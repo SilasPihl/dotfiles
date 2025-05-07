@@ -47,6 +47,76 @@ return { -- LSP Configs
       buf_ls = {},
       tflint = {},
       ts_ls = {},
+      gopls = {
+        cmd = { "gopls" },
+        filetypes = { "go", "gomod", "gowork", "gotmpl" },
+        on_attach = function(client, bufnr)
+          -- Autoformat on save
+          if client.server_capabilities.documentFormattingProvider then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr })
+              end,
+            })
+          end
+
+          -- Run go test on save (for current file)
+          vim.api.nvim_create_autocmd("BufWritePost", {
+            buffer = bufnr,
+            callback = function()
+              -- To run the full package instead, use: "!go test ./..."
+              vim.cmd("!go test " .. vim.fn.expand("%"))
+            end,
+          })
+        end,
+        settings = {
+          gopls = {
+            buildFlags = { "-tags=unit,integration" },
+            gofumpt = true,
+            hoverKind = "FullDocumentation",
+            linkTarget = "pkg.go.dev",
+            analyses = {
+              nilness = true,
+              unusedparams = true,
+              unusedwrite = true,
+              useany = true,
+            },
+            codelenses = {
+              gc_details = false,
+              generate = true,
+              regenerate_cgo = true,
+              run_govulncheck = true,
+              test = true,
+              tidy = true,
+              upgrade_dependency = true,
+              vendor = true,
+            },
+            hints = {
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
+              constantValues = true,
+              functionTypeParameters = true,
+              parameterNames = true,
+              rangeVariableTypes = true,
+            },
+            usePlaceholders = true,
+            completeUnimported = true,
+            staticcheck = true,
+            directoryFilters = {
+              "-.git",
+              "-.vscode",
+              "-.idea",
+              "-.vscode-test",
+              "-node_modules",
+            },
+            semanticTokens = true,
+            experimentalPostfixCompletions = true,
+            diagnosticsDelay = "500ms",
+          },
+        },
+      },
       jsonls = {
         settings = {
           json = {
@@ -56,7 +126,6 @@ return { -- LSP Configs
         },
       },
       lua_ls = {
-        capabilities = capabilities,
         settings = {
           Lua = {
             format = {
@@ -85,8 +154,19 @@ return { -- LSP Configs
     }
 
     require("mason").setup()
+
     require("mason-tool-installer").setup({
-      ensure_installed = vim.tbl_keys(servers),
+      ensure_installed = {
+        "pyright",
+        "bicep",
+        "terraformls",
+        "buf_ls",
+        "tflint",
+        "ts_ls",
+        "gopls",
+        "jsonls",
+        "lua_ls",
+      },
     })
 
     require("mason-lspconfig").setup({

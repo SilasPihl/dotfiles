@@ -6,12 +6,13 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "theHamsta/nvim-dap-virtual-text",
   },
+  enabled = false,
   config = function()
     require("go").setup({
-      disable_defaults = false,
+      disable_defaults = true,
       go = "go",
-      goimports = "gopls",
-      gofmt = "gopls",
+      goimports = "gopls", -- or "goimports"
+      gofmt = "gopls", -- or "gofmt"
       fillstruct = "gopls",
       max_line_len = 0,
       tag_transform = false,
@@ -25,7 +26,7 @@ return {
       lsp_semantic_highlights = true,
       lsp_cfg = {
         capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        cmd = { "gopls" },
+        cmd = { "gopls", "-remote=off" },
         filetypes = { "go", "gomod", "gowork", "gotmpl" },
         settings = {
           gopls = {
@@ -92,7 +93,6 @@ return {
       },
     })
   end,
-  event = "FileType go",
-  ft = { "go", "gomod" },
+  ft = { "go", "gomod", "gowork", "gotmpl" },
   build = ':lua require("go.install").update_all_sync()',
 }
