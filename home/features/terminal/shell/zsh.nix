@@ -72,7 +72,6 @@
       enable = true;
       theme = "robbyrussell";
       plugins = [
-        "git"
         "copyfile"
         "colored-man-pages"
         "docker"
@@ -101,7 +100,7 @@
       '';
     };
 
-    initExtra = ''
+    initContent = ''
 
       # Export the PATH for Nix integration
       export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH

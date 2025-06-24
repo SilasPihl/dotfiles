@@ -23,9 +23,11 @@
       lazydocker
       manix
       neovim
-      nodejs_23
       ollama
       raycast
+      podman
+      podman-compose
+      podman-tui
       sops
       stow
       stylua

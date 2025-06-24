@@ -11,6 +11,7 @@
     aliases = {
       st = "status";
       c = "commit --signoff --message";
+      p = "push";
     };
 
     includes = [
