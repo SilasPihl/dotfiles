@@ -25,6 +25,13 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim, nix-index-database } @ inputs:
     let
       user = "sebastianballe";
+      
+      # Custom packages
+      pkgs-unstable = import nixpkgs-unstable {
+        system = "aarch64-darwin";
+        config.allowUnfree = true;
+      };
+      claude-code = pkgs-unstable.callPackage ./home/features/programs/claude-code/default.nix { };
     in {
       homeConfigurations = {
         mac = let
@@ -35,7 +42,7 @@
           };
         in home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = {
-            inherit inputs system user pkgs-stable;
+            inherit inputs system user pkgs-stable claude-code;
           };
           pkgs = nixpkgs-unstable.legacyPackages.${system};
 

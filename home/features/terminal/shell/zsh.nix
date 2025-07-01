@@ -36,6 +36,16 @@
       # Ghostty
       ghostty = "/Applications/Ghostty.app/Contents/MacOS/ghostty";
 
+      # Git
+      gl = "git pull --rebase";
+      ga = "git add";
+      gaa = "git add .";
+      gp = "git push";
+      gst = "git status";
+      gco = "git checkout";
+      gc = "git commit --signoff -S -n -m \"$(claude -p \"Look at the staged git changes and create a conventional commit message (e.g., 'feat: Add new feature', 'fix: Resolve bug', 'refactor: Refactor old code', 'docs: Update documentation'). Only respond with the complete message, including the type and scope if applicable, and no affirmation.\")\"";
+
+
       # Tmux
       tl = "tmux list-sessions";
       ta = "tmux attach-session -t";
@@ -81,8 +91,8 @@
         "fzf"
         "golang"
         "gh"
-        "git"
-        "git-extras"
+        # "git"
+        # "git-extras"
         "gitfast"
         "history"
         "podman"

@@ -1,6 +1,7 @@
-{ pkgs, pkgs-stable, system, user, ... }:
+{ pkgs, pkgs-stable, system, user, claude-code, ... }:
 {
-  imports = [./spicetify.nix ];
+  imports = [./spicetify.nix ./claude-code.nix ];
+
 
   home.packages = with pkgs;
     builtins.filter (pkg: pkg != null) [
@@ -20,6 +21,7 @@
       gh
       glab
       kubectl
+      ice-bar
       lazydocker
       manix
       neovim
@@ -28,6 +30,7 @@
       podman
       podman-compose
       podman-tui
+      sesh
       sops
       stow
       stylua
