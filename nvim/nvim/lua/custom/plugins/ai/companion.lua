@@ -7,6 +7,7 @@ local constants = {
 return {
   {
     "codecompanion.nvim",
+    enabled = false,  -- Disable CodeCompanion
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",

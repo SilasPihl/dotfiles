@@ -88,7 +88,16 @@
                   rm -f "$COMMIT_MSG_FILE"'
           '';
           context = "files";
-          subprocess = true;
+          output = "terminal";
+        }
+        {
+          key = "<c-c>";
+          description = "Claude AI commit";
+          command = ''
+            claude -p "Look at the staged git changes and create a conventional commit message (e.g., 'feat: Add new feature', 'fix: Resolve bug', 'refactor: Refactor old code', 'docs: Update documentation'). Only respond with the complete message, including the type and scope if applicable, and no affirmation." | xargs -I {} git commit --signoff -S -n -m "{}"
+          '';
+          context = "files";
+          output = "terminal";
         }
       ];
       git = {

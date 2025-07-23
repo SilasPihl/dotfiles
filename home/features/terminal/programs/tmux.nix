@@ -80,6 +80,9 @@
             --preview-window 'right:55%' \
             --preview 'sesh preview {}'
         )\""
+        
+        # Toggle between last two sessions
+        bind l switch-client -l
         bind , command-prompt -I "#W" "rename-window '%%'"
         bind x kill-window
         bind & kill-window

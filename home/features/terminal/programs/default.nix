@@ -12,6 +12,7 @@
     ./lazygit.nix
     ./nix-index.nix
     ./ripgrep.nix
+    ./sesh.nix
     # ./tailspin.nix # https://github.com/bensadeh/tailspin/issues/177#issue-2631369690
     ./tealdeer.nix
     ./tmux.nix

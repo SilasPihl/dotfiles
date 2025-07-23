@@ -1,11 +1,6 @@
 return {
   "saghen/blink.cmp",
   version = "v0.*",
-  dependencies = {
-    {
-      "giuxtaposition/blink-cmp-copilot",
-    },
-  },
   opts = {
     keymap = {
       preset = "default",
@@ -16,19 +11,8 @@ return {
       ["<C-p>"] = { "scroll_documentation_up", "fallback" },
     },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer", "codecompanion", "copilot" },
+      default = { "lsp", "path", "snippets", "buffer" },
       providers = {
-        codecompanion = {
-          name = "CodeCompanion",
-          module = "codecompanion.providers.completion.blink",
-          enabled = true,
-        },
-        copilot = {
-          name = "copilot",
-          module = "blink-cmp-copilot",
-          score_offset = 100,
-          async = true,
-        },
       },
     },
     completion = {
