@@ -2,4 +2,4 @@
 
 {
   home.packages = [ claude-code ];
-} 
+}

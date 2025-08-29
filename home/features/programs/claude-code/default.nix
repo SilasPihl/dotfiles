@@ -1,10 +1,10 @@
-{ lib, buildNpmPackage, fetchzip, nodejs_20, }:
+{ lib, buildNpmPackage, fetchzip, nodejs_22, }:
 
 buildNpmPackage rec {
   pname = "claude-code";
-  version = "1.0.38";
+  version = "1.0.96";
 
-  nodejs = nodejs_20; # required for sandboxed Nix builds on Darwin
+  nodejs = nodejs_22; # required for sandboxed Nix builds on Darwin
 
   src = fetchzip {
     url =
