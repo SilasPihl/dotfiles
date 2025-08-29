@@ -19,7 +19,7 @@ I tried the following fix: https://github.com/NixOS/nix/issues/3261#issuecomment
 Another proposed solution was: https://github.com/NixOS/nix/issues/3261#issuecomment-1280014670. This resulted in the following:
 ```sh
 > nix run nix-darwin -- switch --flake ~/.config/nix-darwin                                          
-warning: creating lock file '/Users/sebastianballe/.config/nix-darwin/flake.lock': 
+warning: creating lock file '/Users/silaspihl/.config/nix-darwin/flake.lock': 
 • Added input 'nix-darwin':
     'github:LnL7/nix-darwin/a60ac02f9466f85f092e576fd8364dfc4406b5a6?narHash=sha256-I9Qd0LnAsEGHtKE9%2BuVR0iDFmsijWSy7GT0g3jihG4Q%3D' (2024-10-14)
 • Added input 'nix-darwin/nixpkgs':

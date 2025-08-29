@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   programs.git = {
     enable = true;
-    userName = "Sebastian Balle";
+    userName = "Silas Pihl";
     userEmail = "s.balle@sbconsultancy.dk";
     signing = {
       signByDefault = true;

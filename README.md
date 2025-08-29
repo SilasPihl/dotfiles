@@ -16,14 +16,14 @@ EOF
 ### DevOS Virtual Machine (`aarch64-linux`)
 
 ```bash
-sudo nixos-rebuild switch --flake github:sebastianballe/dotfiles#devos --impure
-nix run home-manager/master -- switch --flake github:sebastianballe/dotfiles#mac
+sudo nixos-rebuild switch --flake github:silaspihl/dotfiles#devos --impure
+nix run home-manager/master -- switch --flake github:silaspihl/dotfiles#mac
 ```
 
-### Sebastian's MacBook Pro Laptop (`aarch64-darwin`)
+### Silas Pihl's MacBook Pro Laptop (`aarch64-darwin`)
 
 ```bash
-nix run home-manager/master -- switch --flake github:sebastianballe/dotfiles#mac
+nix run home-manager/master -- switch --flake github:silaspihl/dotfiles#mac
 
 NAME=mac task home-manager:switch
 ```

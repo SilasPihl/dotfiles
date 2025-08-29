@@ -1,5 +1,5 @@
 {
-  description = "Sebastian NixOS and Home-Manager flake";
+  description = "Silas Pihl NixOS and Home-Manager flake";
 
   inputs = {
     nixpkgs = {
@@ -24,7 +24,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim, nix-index-database } @ inputs:
     let
-      user = "sebastianballe";
+      user = "silaspihl";
       
       # Custom packages
       pkgs-unstable = import nixpkgs-unstable {
