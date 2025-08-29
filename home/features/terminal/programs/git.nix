@@ -2,10 +2,10 @@
   programs.git = {
     enable = true;
     userName = "Silas Pihl";
-    userEmail = "s.balle@sbconsultancy.dk";
+    userEmail = "silaspihl@gmail.com";
     signing = {
       signByDefault = true;
-      key = "22D898A0ECB0003C";
+      key = "23E6EAD9D5C1D853";
     };
 
     aliases = {
@@ -23,37 +23,13 @@
         };
       }
       {
-        condition = "gitdir:~/git/leopharma/";
+        condition = "gitdir:~/repos/lix-one";
         contents = {
           user = {
-            email = "qbedk@leo-pharma.com";
+            email = "silas@lix.one";
           };
           commit = {
             gpgSign = false;
-          };
-        };
-      }
-      {
-        condition = "gitdir:~/git/genmab/";
-        contents = {
-          user = {
-            email = "sbal@genmab.com";
-            signingKey = "6631EEAFE1A5B9EA";
-          };
-          commit = {
-            gpgSign = true;
-          };
-        };
-      }
-      {
-        condition = "gitdir:~/git/lix-one/";
-        contents = {
-          user = {
-            email = "sbal@lix.one";
-            signingKey = "9863FCDF91EC9482";
-          };
-          commit = {
-            gpgSign = true;
           };
         };
       }
