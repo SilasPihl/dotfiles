@@ -7,13 +7,11 @@
       signByDefault = true;
       key = "23E6EAD9D5C1D853";
     };
-
     aliases = {
       st = "status";
       c = "commit --signoff --message";
       p = "push";
     };
-
     includes = [
       {
         contents = {
