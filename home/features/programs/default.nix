@@ -1,7 +1,6 @@
 { pkgs, pkgs-stable, system, user, claude-code, ... }:
 {
-  imports = [./spicetify.nix  ];
-  # imports = [./spicetify.nix ./claude-code.nix ];
+  imports = [./spicetify.nix ./claude-code.nix ];
 
 
   home.packages = with pkgs;

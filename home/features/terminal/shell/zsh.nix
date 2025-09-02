@@ -48,7 +48,6 @@
       gr = "git restore";
       grs = "git restore --staged";
 
-
       # Tmux
       tl = "tmux list-sessions";
       ta = "tmux attach-session -t";

@@ -45,5 +45,6 @@
 
   programs.gpg = {
     enable = true;
+    defaultCacheTtl = 7200;
   };
 }
