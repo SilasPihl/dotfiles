@@ -16,13 +16,9 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim, nix-index-database } @ inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim } @ inputs:
     let
       user = "silaspihl";
       
@@ -48,7 +44,6 @@
 
           modules = [
             { nixpkgs.config.allowUnfree = true; }
-            nix-index-database.hmModules.nix-index
             ./home/${user}.nix
           ];
         };
@@ -67,7 +62,6 @@
             modules = [
               ./nixos/configuration.nix
               { nixpkgs.config.allowUnfree = true; }
-              nix-index-database.nixosModules.nix-index
             ];
             specialArgs = { inherit inputs system user pkgs; };
           };
