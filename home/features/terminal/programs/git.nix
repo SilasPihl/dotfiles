@@ -31,6 +31,17 @@
           };
         };
       }
+      {
+        condition = "gitdir:~/repos/lix/*";
+        contents = {
+          user = {
+            email = "silas@lix.one";
+          };
+          commit = {
+            gpgSign = false;
+          };
+        };
+      }
     ];
 
     delta = {

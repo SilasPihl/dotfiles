@@ -47,6 +47,11 @@
       gd = "git diff";
       gr = "git restore";
       grs = "git restore --staged";
+      gitc = "git commit --signoff -S -n -m \"$(claude -p \"Look at the staged git changes and create a conventional commit message (e.g., 'feat: Add new feature', 'fix: Resolve bug', 'refactor: Refactor old code', 'docs: Update documentation'). Only respond with the complete message, including the type and scope if applicable, and no affirmation.\")\"";
+      
+      # Git worktree workflow helpers
+      gwl = "git worktree list";
+      gwcd = "cd $(git worktree list | fzf | awk '{print $1}')";  # Interactive worktree directory change
 
       # Tmux
       tl = "tmux list-sessions";
@@ -66,6 +71,11 @@
       cd = "z";
       v = "nvim";
       t = "task";
+      c = "cursor .";
+      down = "task compose:down";
+      up = "task compose:up";
+      tload = "task home-manager:switch";
+      tup = "tilt up";
     };
 
     history = {
@@ -155,6 +165,14 @@
       	 builtin cd -- "$cwd"
        fi
        rm -f -- "$tmp"
+      }
+
+      function gwrm() {
+        # Remove worktree by selecting from list
+        local worktree=$(git worktree list | grep -v "$(git rev-parse --show-toplevel)" | fzf | awk '{print $1}')
+        if [ -n "$worktree" ]; then
+          git worktree remove "$worktree"
+        fi
       }
 
       # Taskfile auto-completion

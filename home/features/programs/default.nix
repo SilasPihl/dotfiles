@@ -24,6 +24,7 @@
       #ice-bar
       #lazydocker
       #manix
+      monitorcontrol
       #neovim
       nodejs_22
       #ollama

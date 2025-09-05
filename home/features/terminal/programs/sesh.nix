@@ -2,7 +2,7 @@
   home.file.".config/sesh/sesh.toml".text = ''
     [[session]]
     name = "lix"
-    path = "~/git/lix-one/lix-one"
+    path = "~/repos/lix-one"
     windows = ["zsh", "claude", "backend", "frontend"]
 
     [[window]]
