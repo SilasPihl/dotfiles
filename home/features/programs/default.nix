@@ -20,6 +20,7 @@
       go-task
       gh
       #glab
+      insomnia
       kubectl
       #ice-bar
       #lazydocker
@@ -32,6 +33,7 @@
       podman
       podman-compose
       podman-tui
+      postman
       sesh
       sops
       stow

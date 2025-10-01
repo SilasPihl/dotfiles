@@ -47,7 +47,6 @@
       gd = "git diff";
       gr = "git restore";
       grs = "git restore --staged";
-      gitc = "git commit --signoff -S -n -m \"$(claude -p \"Look at the staged git changes and create a conventional commit message (e.g., 'feat: Add new feature', 'fix: Resolve bug', 'refactor: Refactor old code', 'docs: Update documentation'). Only respond with the complete message, including the type and scope if applicable, and no affirmation.\")\"";
       
       # Git worktree workflow helpers
       gwl = "git worktree list";
@@ -75,7 +74,9 @@
       down = "task compose:down";
       up = "task compose:up";
       tload = "task home-manager:switch";
-      tup = "tilt up";
+      tup = "task tilt:0";
+      tup1 = "task tilt:1";
+      tup2 = "task tilt:2";
     };
 
     history = {
@@ -133,6 +134,9 @@
       # Rust binary location
       export PATH="$HOME/.cargo/bin:$PATH"
 
+      # Homebrew shell environment (added for nix-darwin Homebrew installs)
+      export PATH=/opt/homebrew/bin:$PATH
+
       # Eza - Catppucin
       export LS_COLORS="$(vivid generate catppuccin-macchiato)"
 
@@ -173,6 +177,80 @@
         if [ -n "$worktree" ]; then
           git worktree remove "$worktree"
         fi
+      }
+
+      function gwadd() {
+        # Create new worktree next to repo root and cd into it
+        local branch_name="$1"
+        local dest_path="$2"
+
+        if [ -z "$branch_name" ]; then
+          echo "Usage: gwadd <branch-name> [path]"
+          return 1
+        fi
+
+        if ! command -v git >/dev/null 2>&1; then
+          echo "gwadd: git is not in PATH" >&2
+          return 1
+        fi
+
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "gwadd: not inside a git repository" >&2
+          return 1
+        fi
+
+        local repo_root repo_name parent_dir
+        repo_root="$(git rev-parse --show-toplevel)" || return 1
+        repo_name="''${repo_root:t}"
+        parent_dir="''${repo_root:h}"
+
+        if [ -z "$dest_path" ]; then
+          dest_path="$parent_dir/$repo_name-$branch_name"
+        fi
+
+        if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+          git worktree add "$dest_path" "$branch_name" || return $?
+        else
+          git worktree add -b "$branch_name" "$dest_path" || return $?
+        fi
+
+        builtin cd -- "$dest_path"
+      }
+
+      function grsoft() {
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "Not a git repository." >&2
+          return 1
+        fi
+
+        local target="$1"
+        if [ -z "$target" ]; then
+          git reset --soft main
+          return
+        fi
+
+        if [[ "$target" =~ ^[0-9]+$ ]]; then
+          git reset --soft "HEAD~$target"
+        else
+          echo "Usage: grsoft [number]" >&2
+          return 1
+        fi
+      }
+
+      function gitc() {
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "Not a git repository." >&2
+          return 1
+        fi
+
+        local message
+        if [ "$#" -eq 0 ]; then
+          message="Quick commit"
+        else
+          message="$*"
+        fi
+
+        git commit --signoff -S -n -m "$message"
       }
 
       # Taskfile auto-completion

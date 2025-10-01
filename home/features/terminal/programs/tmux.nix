@@ -94,6 +94,16 @@
         # Kill current pane without confirmation
         bind q kill-pane
         
+        # Break pane to new window and join pane from window
+        bind b break-pane -d
+        bind J choose-window "join-pane -h -s %%"
+        
+        # Create new window with specific name for agents
+        bind A command-prompt -p "Agent name:" "new-window -n 'agent-%%' -c '#{pane_current_path}'"
+        
+        # Move current window to different position
+        bind M command-prompt -p "Move window to:" "move-window -t %%"
+        
         # Pane navigation (keeping your existing Alt+vim keys)
         bind -n M-h run-shell "if [ $(tmux display-message -p '#{pane_at_left}') -ne 1 ]; then tmux select-pane -L; else tmux select-window -p; fi"
         bind -n M-l run-shell "if [ $(tmux display-message -p '#{pane_at_right}') -ne 1 ]; then tmux select-pane -R; else tmux select-window -n; fi"

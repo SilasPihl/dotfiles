@@ -21,24 +21,14 @@
         };
       }
       {
-        condition = "gitdir:~/repos/lix-one";
+        condition = "gitdir:~/repos/lix/";
         contents = {
           user = {
             email = "silas@lix.one";
+            signingKey = "F0CDD8E0DAE1C768";
           };
           commit = {
-            gpgSign = false;
-          };
-        };
-      }
-      {
-        condition = "gitdir:~/repos/lix/*";
-        contents = {
-          user = {
-            email = "silas@lix.one";
-          };
-          commit = {
-            gpgSign = false;
+            gpgSign = true;
           };
         };
       }
