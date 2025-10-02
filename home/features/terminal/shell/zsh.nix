@@ -225,7 +225,7 @@
 
         local target="$1"
         if [ -z "$target" ]; then
-          git reset --soft main
+          git reset --soft $(git merge-base HEAD main)
           return
         fi
 
