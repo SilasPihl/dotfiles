@@ -9,7 +9,7 @@ buildNpmPackage rec {
   src = fetchzip {
     url =
       "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-    hash = "sha256-Emx9dS/G7iTwjC22+nDc9FloM/SNi95aHw2NLxSc4CM=";
+    hash = "sha256-LUbDPFa0lY74MBU4hvmYVntt6hVZy6UUZFN0iB4Eno8=";
   };
 
   npmDepsHash = "sha256-mxMEO1r5KzHw7d3NRJSWtkc9vnnd5XbgD2D5MYP1zO0=";
