@@ -21,7 +21,7 @@
       bpipe = "batpipe";
 
       # Nix
-      dev = "nix develop";
+      dev = "dev_with_retry";
       cleanup = "sudo nix-collect-garbage --delete-older-than 3d && nix-collect-garbage -d";
 
       # Remove this annoying fd alias coming from maybe common-aliases plugin or hm fd module
@@ -251,6 +251,35 @@
         fi
 
         git commit --signoff -S -n -m "$message"
+      }
+
+      function dev_with_retry() {
+        # Check if another nix develop is running
+        local other_nix_pids=$(pgrep -f "nix develop" | grep -v "^$$\$")
+
+        if [ -n "$other_nix_pids" ]; then
+          echo "Waiting for other nix develop processes to finish..." >&2
+
+          # Wait up to 30 seconds for other nix processes to finish
+          local max_wait=30
+          local waited=0
+
+          while [ $waited -lt $max_wait ]; do
+            other_nix_pids=$(pgrep -f "nix develop" | grep -v "^$$\$")
+            if [ -z "$other_nix_pids" ]; then
+              break
+            fi
+            sleep 1
+            waited=$((waited + 1))
+          done
+
+          if [ $waited -ge $max_wait ]; then
+            echo "Warning: Other nix develop processes still running after ''${max_wait}s, proceeding anyway..." >&2
+          fi
+        fi
+
+        # Now run nix develop normally
+        nix develop "$@"
       }
 
       # Taskfile auto-completion
