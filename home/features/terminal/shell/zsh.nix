@@ -74,9 +74,11 @@
       down = "task compose:down";
       up = "task compose:up";
       tload = "task home-manager:switch";
-      tup = "task tilt:0";
+      tup = "task tilt:up";
+      tup0 = "task tilt:0";
       tup1 = "task tilt:1";
       tup2 = "task tilt:2";
+      tup3 = "task tilt:3";
     };
 
     history = {
