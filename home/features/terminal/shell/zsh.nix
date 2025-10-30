@@ -30,7 +30,7 @@
       fd = lib.mkForce "fd";
 
       # Lazy
-      lg = "lazygit";
+      # lg is provided by programs.lazygit with directory change support
       ld = "lazydocker";
 
       # Ghostty
@@ -79,6 +79,12 @@
       tup1 = "task tilt:1";
       tup2 = "task tilt:2";
       tup3 = "task tilt:3";
+
+      # Navigation shortcuts
+      cdf = "cd src/frontend && npm i && npm run build";
+
+      # Zoxide
+      cda = "ls -d */ | xargs -I {} zoxide add {}";
     };
 
     history = {
@@ -126,6 +132,8 @@
     };
 
     initContent = ''
+      # Unalias lg if it was set by oh-my-zsh plugins (to allow lazygit function)
+      unalias lg 2>/dev/null || true
 
       # Export the PATH for Nix integration
       export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH

@@ -1,6 +1,6 @@
-{ pkgs, pkgs-stable, system, user, claude-code, ... }:
+{ pkgs, pkgs-stable, system, user, claude-code, hammerspoon, ... }:
 {
-  imports = [./spicetify.nix ./claude-code.nix ];
+  imports = [ ./spicetify.nix ./claude-code.nix ./hammerspoon.nix ];
 
 
   home.packages = with pkgs;
@@ -20,6 +20,7 @@
       go-task
       gh
       #glab
+      hammerspoon
       insomnia
       kubectl
       #ice-bar
@@ -29,7 +30,7 @@
       #neovim
       nodejs_22
       #ollama
-      #raycast
+      #raycast  # Managed via Homebrew for faster updates
       podman
       podman-compose
       podman-tui

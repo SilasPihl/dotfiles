@@ -28,6 +28,7 @@
         config.allowUnfree = true;
       };
       claude-code = pkgs-unstable.callPackage ./home/features/programs/claude-code/default.nix { };
+      hammerspoon = pkgs-unstable.callPackage ./pkgs/hammerspoon.nix { };
     in {
       homeConfigurations = {
         mac = let
@@ -38,7 +39,7 @@
           };
         in home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = {
-            inherit inputs system user pkgs-stable claude-code;
+            inherit inputs system user pkgs-stable claude-code hammerspoon;
           };
           pkgs = nixpkgs-unstable.legacyPackages.${system};
 
