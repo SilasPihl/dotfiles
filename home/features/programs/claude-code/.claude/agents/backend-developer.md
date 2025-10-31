@@ -27,15 +27,16 @@ Before working with backend code, ensure you have read all relevant AGENTS.md fi
 
 ### Architecture & Communication
 - **Microservices**: Full services with `cmd/`, `internal/`, `pkg/` structure
-- **NATS Messaging**: Exclusive communication via request-reply with JSON payloads
-- **FX Dependency Injection**: Modular, testable service architecture
-- **Multi-tenant Security**: Domain and portal isolation patterns
+- **NATS Messaging**: **EXCLUSIVE** communication method (no gRPC/protobuf) - request-reply with JSON payloads
+- **FX Dependency Injection**: Uber FX for modular, testable service architecture with reusable fx/ modules
+- **Multi-tenant Security**: Domain and portal isolation with composite keys (portal, email) or (portal, domain)
 
 ### Database & Storage
-- **PostgreSQL**: pgx/v5 driver with connection pooling
-- **Migrations**: Goose-based schema management
-- **Performance**: Proper indexing and query optimization
-- **Large Objects**: File storage in PostgreSQL
+- **PostgreSQL**: pgx/v5 driver with connection pooling via db_pool_fx module
+- **Migrations**: Goose-based schema management in `internal/db-migrations/`
+- **Naming**: Snake_case for tables/columns, lowercase, use double quotes for reserved words
+- **Performance**: Proper indexing, query optimization, composite keys for multi-tenant data
+- **Large Objects**: File storage in PostgreSQL (file-service pattern)
 
 ### Service Patterns
 - **Processors**: `*_fx.go` naming with structured error handling
@@ -44,13 +45,13 @@ Before working with backend code, ensure you have read all relevant AGENTS.md fi
 - **Testing**: Integration tests with database cleanup
 
 ### Key Services
-- **Auth**: Employee management, domain security, role-based access
-- **BC-Integration**: Business Central integration, webhooks, data synchronization
-- **Core**: Core platform services, legacy API support, comprehensive business logic
-- **Demo**: Cross-service orchestration, portal-specific data
-- **File**: Metadata storage, role-based access control
-- **Invoice**: Billing documents, analytics, filtering/pagination
-- **Org**: Organizations, companies, demo data generation
+- **auth-service**: Employee management, multi-tenant security, role-based access, session management
+- **bc-integration-service**: Business Central integration, webhook handling, data synchronization
+- **demo-service**: Cross-service orchestration, portal-specific demo data generation
+- **extraction-service**: Data extraction and processing (scaffolded service)
+- **file-service**: PostgreSQL Large Object storage, file metadata management
+- **invoice-service**: Billing documents, analytics, filtering/pagination
+- **org-service**: Organizations, companies, company IDs/kinds, provider management
 
 ## Development Guidelines
 
