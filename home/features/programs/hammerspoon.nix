@@ -68,6 +68,26 @@
         moveMouseToScreen(scr)
     end
 
+    local function moveWindowToScreen(scr)
+        local win = hs.window.focusedWindow()
+        if not win then
+            hs.alert.show("No focused window")
+            return
+        end
+        win:moveToScreen(scr)
+        hs.alert.show("Window → " .. scr:name())
+    end
+
+    local function moveWindowTo(key)
+        local scr = findScreenByKey(key)
+        if not scr then
+            hs.alert.show("Screen not found: " .. key)
+            print("Available screens: " .. allScreenNames())
+            return
+        end
+        moveWindowToScreen(scr)
+    end
+
     -- ---------- Named Screen Mappings ----------
     -- Replace "ASUS", "DELL", "LG" with your actual screen names if needed.
     -- You can also leave them as partials (e.g., "Asus", "Dell", "LG").
@@ -79,9 +99,15 @@
         d = ":builtin", -- Option+D → your built-in Mac display
     }
 
-    -- ---------- Named Screen Hotkeys (Option + key) ----------
+    -- ---------- Named Screen Hotkeys ----------
+    -- Option + key = move mouse to screen
     for key, target in pairs(targetByKey) do
         hs.hotkey.bind({ "alt" }, key, function() gotoScreen(target) end)
+    end
+
+    -- Ctrl + Option + key = move current window to screen
+    for key, target in pairs(targetByKey) do
+        hs.hotkey.bind({ "ctrl", "alt" }, key, function() moveWindowTo(target) end)
     end
 
     -- (Optional) Show all detected screen names with Option+Shift+S
