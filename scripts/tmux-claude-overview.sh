@@ -6,9 +6,10 @@ set -euo pipefail
 
 # Function to get pane info
 get_claude_panes() {
-    # List all panes with format: session:window.pane pane_title
-    tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_title} #{pane_current_path}" | \
-        grep -i "claude" || true
+    # List all panes from sessions named "claude" that are running node (Claude Code)
+    # Format: session:window.pane window_name pane_title path command
+    tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | \
+        grep "^claude:" | grep " node$" || true
 }
 
 # Function to capture pane output with more lines
@@ -47,17 +48,23 @@ main() {
     local fzf_input
     fzf_input=$(while IFS= read -r pane_line; do
         local target=$(echo "$pane_line" | awk '{print $1}')
-        local title=$(echo "$pane_line" | cut -d' ' -f2)
-        local path=$(echo "$pane_line" | cut -d' ' -f3-)
+        local window_name=$(echo "$pane_line" | awk '{print $2}')
+        # Get pane title (may contain spaces) - everything from field 3 to second-to-last field
+        local pane_title=$(echo "$pane_line" | awk '{for(i=3;i<NF-1;i++) printf "%s ", $i; print $(NF-1)}')
+        local path=$(echo "$pane_line" | awk '{print $(NF-1)}')
+        local command=$(echo "$pane_line" | awk '{print $NF}')
 
-        # Extract everything after /git/
-        local short_path=$(echo "$path" | sed 's|.*/git/||')
+        # Extract project name from path (last directory)
+        local project=$(basename "$path")
+
+        # Clean up pane title - remove leading ✳ symbol
+        local clean_title=$(echo "$pane_title" | sed 's/^✳ *//')
 
         # Detect status
         local status=$(detect_status "$target")
 
-        # Format as table: Status | Session:Pane | Name | Project
-        printf "%s │ %-15s │ %-8s │ %s\n" "$status" "$target" "$title" "$short_path"
+        # Format as table: Status | Window:Pane | Task | Project | [hidden: full target for selection]
+        printf "%s │ %-15s │ %-30s │ %-20s │ %s\n" "$status" "$window_name:${target##*.}" "$clean_title" "$project" "$target"
     done <<< "$claude_panes")
 
     # Use fzf for selection with preview
@@ -67,13 +74,14 @@ main() {
         --cycle \
         --preview-window=right:70%:wrap:+150 \
         --ansi \
-        --preview='tmux capture-pane -t $(echo {} | awk -F"│" "{print \$2}" | xargs) -p -e -S - | grep -v "^[[:space:]]*$" | tail -n 200 | bat --color=always --style=plain' \
-        --header="  │ Session:Pane    │ Name     │ Project" \
-        --bind='ctrl-r:reload(bash -c '\''source <(declare -f detect_status); tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{pane_title} #{pane_current_path}" | grep -i "claude" | while IFS= read -r line; do target=$(echo "$line" | awk "{print \$1}"); title=$(echo "$line" | cut -d" " -f2); path=$(echo "$line" | cut -d" " -f3-); short_path=$(echo "$path" | sed "s|.*/git/||"); status=$(detect_status "$target"); printf "%s │ %-15s │ %-8s │ %s\n" "$status" "$target" "$title" "$short_path"; done'\'')' \
+        --preview='tmux capture-pane -t $(echo {} | awk -F"│" "{print \$5}" | xargs) -p -e -S - | grep -v "^[[:space:]]*$" | tail -n 200 | bat --color=always --style=plain' \
+        --header="  │ Window:Pane     │ Task                           │ Project" \
+        --bind='ctrl-r:reload(bash -c '\''source <(declare -f detect_status); tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | grep "^claude:" | grep " node$" | while IFS= read -r line; do target=$(echo "$line" | awk "{print \$1}"); window_name=$(echo "$line" | awk "{print \$2}"); pane_title=$(echo "$line" | awk "{for(i=3;i<NF-1;i++) printf \"%s \", \$i; print \$(NF-1)}"); path=$(echo "$line" | awk "{print \$(NF-1)}"); project=$(basename "$path"); clean_title=$(echo "$pane_title" | sed "s/^✳ *//"); status=$(detect_status "$target"); printf "%s │ %-15s │ %-30s │ %-20s │ %s\n" "$status" "$window_name:${target##*.}" "$clean_title" "$project" "$target"; done'\'')' \
         || true)
 
     if [ -n "$selected" ]; then
-        local target=$(echo "$selected" | awk -F'│' '{print $2}' | xargs)
+        # Extract the hidden target from the last column
+        local target=$(echo "$selected" | awk -F'│' '{print $5}' | xargs)
         local session=$(echo "$target" | cut -d: -f1)
         local window_pane=$(echo "$target" | cut -d: -f2)
         local window=$(echo "$window_pane" | cut -d. -f1)
