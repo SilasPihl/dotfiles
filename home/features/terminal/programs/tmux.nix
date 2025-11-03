@@ -107,7 +107,7 @@
         bind M command-prompt -p "Move window to:" "move-window -t %%"
 
         # Claude overview - find all Claude panes
-        bind C display-popup -E -w 90% -h 90% "~/repos/dotfiles/scripts/tmux-claude-overview.sh"
+        bind C display-popup -E -w 98% -h 98% "~/repos/dotfiles/scripts/tmux-claude-overview.sh"
 
         # Which-key style help menu
         bind ? display-popup -E -w 70 -h 70% -b rounded "~/repos/dotfiles/scripts/tmux-which-key.sh"
