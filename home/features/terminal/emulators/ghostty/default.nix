@@ -13,7 +13,7 @@ in
     installBatSyntax = true;
     installVimSyntax = true;
     settings = {
-      theme = "catppuccin-macchiato";
+      theme = "Catppuccin Macchiato";
       window-decoration = false;
       macos-titlebar-style = "hidden";
       macos-window-shadow = true;
