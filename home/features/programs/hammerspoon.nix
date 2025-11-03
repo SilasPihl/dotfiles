@@ -74,8 +74,47 @@
             hs.alert.show("No focused window")
             return
         end
-        win:moveToScreen(scr)
-        hs.alert.show("Window → " .. scr:name())
+
+        local currentScreen = win:screen()
+        local frame = win:frame()
+        local screenFrame = scr:frame()
+
+        -- Tolerance for comparing window positions (in pixels)
+        local tolerance = 10
+
+        local function isApprox(a, b)
+            return math.abs(a - b) < tolerance
+        end
+
+        -- Check if window is already on target screen
+        if currentScreen == scr then
+            -- Cycle through: full → left half → right half → full
+            local isFullWidth = isApprox(frame.x, screenFrame.x) and
+                               isApprox(frame.w, screenFrame.w)
+            local isLeftHalf = isApprox(frame.x, screenFrame.x) and
+                              isApprox(frame.w, screenFrame.w / 2)
+            local isRightHalf = isApprox(frame.x, screenFrame.x + screenFrame.w / 2) and
+                               isApprox(frame.w, screenFrame.w / 2)
+
+            if isFullWidth then
+                -- Move to left half
+                win:moveToUnit({x=0, y=0, w=0.5, h=1})
+                hs.alert.show("← Left half")
+            elseif isLeftHalf then
+                -- Move to right half
+                win:moveToUnit({x=0.5, y=0, w=0.5, h=1})
+                hs.alert.show("Right half →")
+            else
+                -- Move to full (including from right half or any other position)
+                win:moveToUnit({x=0, y=0, w=1, h=1})
+                hs.alert.show("⬛ Maximized")
+            end
+        else
+            -- Move to new screen and maximize
+            win:moveToScreen(scr)
+            win:moveToUnit({x=0, y=0, w=1, h=1})
+            hs.alert.show("Window → " .. scr:name() .. " (maximized)")
+        end
     end
 
     local function moveWindowTo(key)
