@@ -58,6 +58,20 @@
         hs.alert.show("Mouse → " .. scr:name())
     end
 
+    local function moveMouseToFocusedWindow()
+        local win = hs.window.focusedWindow()
+        if not win then
+            hs.alert.show("No focused window")
+            return
+        end
+        local frame = win:frame()
+        hs.mouse.setAbsolutePosition({
+            x = frame.x + frame.w / 2,
+            y = frame.y + frame.h / 2
+        })
+        hs.alert.show("Mouse → " .. win:title())
+    end
+
     local function gotoScreen(key)
         local scr = findScreenByKey(key)
         if not scr then
@@ -148,6 +162,9 @@
     for key, target in pairs(targetByKey) do
         hs.hotkey.bind({ "ctrl", "alt" }, key, function() moveWindowTo(target) end)
     end
+
+    -- Option + M = move mouse to focused window
+    hs.hotkey.bind({ "alt" }, "m", function() moveMouseToFocusedWindow() end)
 
     -- (Optional) Show all detected screen names with Option+Shift+S
     hs.hotkey.bind({ "alt", "shift" }, "s", function()
