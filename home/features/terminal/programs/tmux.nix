@@ -22,6 +22,8 @@
           set -g @catppuccin_window_left_separator ""
           set -g @catppuccin_window_right_separator ""
           set -g @catppuccin_window_middle_separator "█"
+          set -g @catppuccin_window_text "#W"
+          set -g @catppuccin_window_current_text "#W"
           set -g @catppuccin_status_modules_right "directory date_time"
           set -g @catppuccin_status_left_separator " "
           set -g @catppuccin_status_right_separator ""
@@ -106,6 +108,9 @@
 
         # Claude overview - find all Claude panes
         bind C display-popup -E -w 90% -h 90% "~/repos/dotfiles/scripts/tmux-claude-overview.sh"
+
+        # Claude live chooser - interactive session switcher with live preview
+        bind W run-shell "~/repos/dotfiles/scripts/tmux-claude-live-chooser.sh"
 
         # Which-key style help menu
         bind ? display-popup -E -w 70 -h 70% -b rounded "~/repos/dotfiles/scripts/tmux-which-key.sh"
