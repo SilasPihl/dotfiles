@@ -21,7 +21,7 @@
       bpipe = "batpipe";
 
       # Nix
-      dev = "dev_with_retry";
+      dev = "nix develop";
       cleanup = "sudo nix-collect-garbage --delete-older-than 3d && nix-collect-garbage -d";
 
       # Remove this annoying fd alias coming from maybe common-aliases plugin or hm fd module
@@ -236,7 +236,7 @@
 
         local target="$1"
         if [ -z "$target" ]; then
-          git reset --soft $(git merge-base HEAD main)
+          git reset --soft $(git merge-base HEAD origin/main)
           return
         fi
 
@@ -271,8 +271,8 @@
         if [ -n "$other_nix_pids" ]; then
           echo "Waiting for other nix develop processes to finish..." >&2
 
-          # Wait up to 30 seconds for other nix processes to finish
-          local max_wait=30
+          # Wait up to 120 seconds for other nix processes to finish
+          local max_wait=120
           local waited=0
 
           while [ $waited -lt $max_wait ]; do

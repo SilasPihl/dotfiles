@@ -63,8 +63,8 @@ main() {
         # Detect status
         local status=$(detect_status "$target")
 
-        # Format as table: Status | Window:Pane | Task | Project | [hidden: full target for selection]
-        printf "%s │ %-15s │ %-30s │ %-20s │ %s\n" "$status" "$window_name:${target##*.}" "$clean_title" "$project" "$target"
+        # Format as table: Status | Window:Pane | Project | [hidden: full target for selection]
+        printf "%s │ %-15s │ %-20s %s\n" "$status" "$window_name:${target##*.}" "$project"
     done <<< "$claude_panes")
 
     # Use fzf for selection with preview
@@ -74,14 +74,14 @@ main() {
         --cycle \
         --preview-window=right:70%:wrap:+150 \
         --ansi \
-        --preview='tmux capture-pane -t $(echo {} | awk -F"│" "{print \$5}" | xargs) -p -e -S - | grep -v "^[[:space:]]*$" | tail -n 200 | bat --color=always --style=plain' \
-        --header="  │ Window:Pane     │ Task                           │ Project" \
-        --bind='ctrl-r:reload(bash -c '\''source <(declare -f detect_status); tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | grep "^claude:" | grep " node$" | while IFS= read -r line; do target=$(echo "$line" | awk "{print \$1}"); window_name=$(echo "$line" | awk "{print \$2}"); pane_title=$(echo "$line" | awk "{for(i=3;i<NF-1;i++) printf \"%s \", \$i; print \$(NF-1)}"); path=$(echo "$line" | awk "{print \$(NF-1)}"); project=$(basename "$path"); clean_title=$(echo "$pane_title" | sed "s/^✳ *//"); status=$(detect_status "$target"); printf "%s │ %-15s │ %-30s │ %-20s │ %s\n" "$status" "$window_name:${target##*.}" "$clean_title" "$project" "$target"; done'\'')' \
+        --preview='tmux capture-pane -t $(echo {} | awk "{print \$NF}") -p -e -S - | grep -v "^[[:space:]]*$" | tail -n 200 | bat --color=always --style=plain' \
+        --header="  │ Window:Pane     │ Project" \
+        --bind='ctrl-r:reload(bash -c '\''source <(declare -f detect_status); tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | grep "^claude:" | grep " node$" | while IFS= read -r line; do target=$(echo "$line" | awk "{print \$1}"); window_name=$(echo "$line" | awk "{print \$2}"); path=$(echo "$line" | awk "{print \$(NF-1)}"); project=$(basename "$path"); status=$(detect_status "$target"); printf "%s │ %-15s │ %-20s %s\n" "$status" "$window_name:${target##*.}" "$project" "$target"; done'\'')' \
         || true)
 
     if [ -n "$selected" ]; then
-        # Extract the hidden target from the last column
-        local target=$(echo "$selected" | awk -F'│' '{print $5}' | xargs)
+        # Extract the hidden target from the last field
+        local target=$(echo "$selected" | awk '{print $NF}')
         local session=$(echo "$target" | cut -d: -f1)
         local window_pane=$(echo "$target" | cut -d: -f2)
         local window=$(echo "$window_pane" | cut -d. -f1)
