@@ -71,7 +71,7 @@
       v = "nvim";
       t = "task";
       c = "cursor .";
-      claudedanger = "claude --dangerously-skip-permissions";
+      ccd = "claude --dangerously-skip-permissions";
       down = "task compose:down";
       up = "task compose:up";
       tload = "task home-manager:switch";
