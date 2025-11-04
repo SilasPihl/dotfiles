@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # tmux-claude-overview.sh
-# Find and overview all tmux panes running Claude (named "claude")
+# Find and overview all tmux panes running Claude Code (node processes)
 
 set -euo pipefail
 
 # Function to get pane info
 get_claude_panes() {
-    # List all panes from sessions named "claude" that are running node (Claude Code)
+    # List all panes running node (Claude Code) from any session
     # Format: session:window.pane window_name pane_title path command
     tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | \
-        grep "^claude:" | grep " node$" || true
+        grep " node$" || true
 }
 
 # Function to capture pane output with more lines
@@ -40,7 +40,7 @@ main() {
     claude_panes=$(get_claude_panes)
 
     if [ -z "$claude_panes" ]; then
-        echo "No Claude panes found (searching for panes named 'claude')"
+        echo "No Claude panes found (searching all sessions for node processes)"
         exit 0
     fi
 
@@ -60,11 +60,16 @@ main() {
         # Clean up pane title - remove leading ✳ symbol
         local clean_title=$(echo "$pane_title" | sed 's/^✳ *//')
 
+        # Extract session and pane for building location with all info
+        local session=$(echo "$target" | cut -d: -f1)
+        local pane=$(echo "$target" | cut -d. -f2)
+        local location="${session}:${window_name}:${project}:${pane}"
+
         # Detect status
         local status=$(detect_status "$target")
 
-        # Format as table: Status | Window:Pane | Project | [hidden: full target for selection]
-        printf "%s │ %-15s │ %-20s %s\n" "$status" "$window_name:${target##*.}" "$project"
+        # Format as table: Status | Location | [hidden: full target for selection]
+        printf "%s │ %-50s %s\n" "$status" "$location" "$target"
     done <<< "$claude_panes")
 
     # Use fzf for selection with preview
@@ -72,11 +77,11 @@ main() {
     selected=$(echo "$fzf_input" | fzf \
         --layout=reverse \
         --cycle \
-        --preview-window=right:70%:wrap:+150 \
+        --preview-window=right:65%:wrap:+150 \
         --ansi \
         --preview='tmux capture-pane -t $(echo {} | awk "{print \$NF}") -p -e -S - | grep -v "^[[:space:]]*$" | tail -n 200 | bat --color=always --style=plain' \
-        --header="  │ Window:Pane     │ Project" \
-        --bind='ctrl-r:reload(bash -c '\''source <(declare -f detect_status); tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | grep "^claude:" | grep " node$" | while IFS= read -r line; do target=$(echo "$line" | awk "{print \$1}"); window_name=$(echo "$line" | awk "{print \$2}"); path=$(echo "$line" | awk "{print \$(NF-1)}"); project=$(basename "$path"); status=$(detect_status "$target"); printf "%s │ %-15s │ %-20s %s\n" "$status" "$window_name:${target##*.}" "$project" "$target"; done'\'')' \
+        --header="  │ Location" \
+        --bind='ctrl-r:reload(bash -c '\''source <(declare -f detect_status); tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_title} #{pane_current_path} #{pane_current_command}" | grep " node$" | while IFS= read -r line; do target=$(echo "$line" | awk "{print \$1}"); window_name=$(echo "$line" | awk "{print \$2}"); path=$(echo "$line" | awk "{print \$(NF-1)}"); project=$(basename "$path"); session=$(echo "$target" | cut -d: -f1); pane=$(echo "$target" | cut -d. -f2); location="${session}:${window_name}:${project}:${pane}"; status=$(detect_status "$target"); printf "%s │ %-50s %s\n" "$status" "$location" "$target"; done'\'')' \
         || true)
 
     if [ -n "$selected" ]; then
