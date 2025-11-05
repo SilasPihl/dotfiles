@@ -22,11 +22,15 @@ capture_pane_output() {
 # Function to detect if Claude is waiting for input
 detect_status() {
     local target=$1
-    local last_lines=$(tmux capture-pane -t "$target" -p | tail -n 5)
+    local last_lines=$(tmux capture-pane -t "$target" -p | tail -n 10)
 
+    # Check for thinking/processing patterns (Claude Code status messages)
+    if echo "$last_lines" | grep -qE '\* (Forming|Thinking|Processing|Generating|Writing|Reading|Searching|Analyzing)|esc to interrupt|●|⠋|⠙|⠹|⠸|⠼|⠴|⠦|⠧|⠇|⠏'; then
+        echo "💭"
     # Check for common waiting patterns
-    if echo "$last_lines" | grep -qE '\(y/n\)|\(yes/no\)|\? *$|Continue\?|Proceed\?|Should I|confirm'; then
+    elif echo "$last_lines" | grep -qE '\(y/n\)|\(yes/no\)|\? *$|Continue\?|Proceed\?|Should I|confirm'; then
         echo "⏳"
+    # Check for running/building
     elif echo "$last_lines" | grep -qE 'Ionizing|Running|Building'; then
         echo "⚡"
     else

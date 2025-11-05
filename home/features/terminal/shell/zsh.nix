@@ -71,6 +71,7 @@
       v = "nvim";
       t = "task";
       c = "cursor .";
+      cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
       down = "task compose:down";
       up = "task compose:up";
