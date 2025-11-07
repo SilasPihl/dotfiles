@@ -171,5 +171,72 @@
         hs.alert.show("Screens: " .. allScreenNames())
         print("Screens: " .. allScreenNames())
     end)
+
+    -- ---------- Window Cycling on Current Screen ----------
+    -- Cycle through all windows on the current screen
+    local function cycleWindowsOnCurrentScreen()
+        local currentWin = hs.window.focusedWindow()
+        if not currentWin then
+            hs.alert.show("No focused window")
+            return
+        end
+
+        local currentScreen = currentWin:screen()
+
+        -- Get all visible windows on the current screen
+        local windowsOnScreen = hs.fnutils.filter(
+            hs.window.orderedWindows(),
+            function(win)
+                return win:screen() == currentScreen and
+                       win:isStandard() and
+                       win:isVisible()
+            end
+        )
+
+        -- Find next window in the list
+        if #windowsOnScreen > 1 then
+            -- Find current window index
+            local currentIndex = hs.fnutils.indexOf(windowsOnScreen, currentWin)
+            local nextIndex = (currentIndex % #windowsOnScreen) + 1
+            windowsOnScreen[nextIndex]:focus()
+            hs.alert.show("→ " .. windowsOnScreen[nextIndex]:application():name())
+        else
+            hs.alert.show("Only one window on this screen")
+        end
+    end
+
+    -- Cycle through windows of current app on current screen
+    local function cycleAppWindowsOnCurrentScreen()
+        local currentWin = hs.window.focusedWindow()
+        if not currentWin then
+            hs.alert.show("No focused window")
+            return
+        end
+
+        local currentApp = currentWin:application()
+        local currentScreen = currentWin:screen()
+
+        local appWindowsOnScreen = hs.fnutils.filter(
+            currentApp:allWindows(),
+            function(win)
+                return win:screen() == currentScreen and win:isStandard()
+            end
+        )
+
+        if #appWindowsOnScreen > 1 then
+            local currentIndex = hs.fnutils.indexOf(appWindowsOnScreen, currentWin)
+            local nextIndex = (currentIndex % #appWindowsOnScreen) + 1
+            appWindowsOnScreen[nextIndex]:focus()
+            hs.alert.show("→ " .. appWindowsOnScreen[nextIndex]:title())
+        else
+            hs.alert.show("Only one " .. currentApp:name() .. " window on this screen")
+        end
+    end
+
+    -- Option + Tab = cycle through all windows on current screen
+    hs.hotkey.bind({ "alt" }, "tab", cycleWindowsOnCurrentScreen)
+
+    -- Option + ` = cycle through windows of same app on current screen
+    hs.hotkey.bind({ "alt" }, "`", cycleAppWindowsOnCurrentScreen)
   '';
 }
