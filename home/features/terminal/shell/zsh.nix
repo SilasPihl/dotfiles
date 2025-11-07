@@ -50,6 +50,7 @@
       
       # Git worktree workflow helpers
       gwl = "git worktree list";
+      gwt = "git worktree";
       gwcd = "cd $(git worktree list | fzf | awk '{print $1}')";  # Interactive worktree directory change
 
       # Tmux
@@ -71,6 +72,7 @@
       v = "nvim";
       t = "task";
       c = "cursor .";
+      cl = "clear";
       cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
       down = "task compose:down";
@@ -134,6 +136,9 @@
     };
 
     initContent = ''
+      # Save builtin cd as cdd before oh-my-zsh aliases take effect
+      alias cdd='builtin cd'
+
       # Unalias lg if it was set by oh-my-zsh plugins (to allow lazygit function)
       unalias lg 2>/dev/null || true
 

@@ -106,6 +106,10 @@
         # Move current window to different position
         bind M command-prompt -p "Move window to:" "move-window -t %%"
 
+        # Move window left/right (swap with adjacent window)
+        bind H swap-window -t -1 \; select-window -t -1
+        bind L swap-window -t +1 \; select-window -t +1
+
         # Claude overview - find all Claude panes
         bind C display-popup -E -w 98% -h 98% "~/repos/dotfiles/scripts/tmux-claude-overview.sh"
 
@@ -126,6 +130,12 @@
         # Toggles to sync panes
         bind -n M-e setw synchronize-panes on \; display "Sync is ON"
         bind -n M-E setw synchronize-panes off \; display "Sync is OFF"
+
+        # Pane titles
+        set -g pane-border-status top
+        set -g pane-border-format "#{?pane_active,#[fg=yellow],#[fg=white]} #T "
+        bind T command-prompt -p "Pane title:" "select-pane -T '%%'"
+
 
         # Apply Tc
         set -ga terminal-overrides ",xterm-256color:RGB:smcup@:rmcup@"
