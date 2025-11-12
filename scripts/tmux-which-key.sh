@@ -45,6 +45,7 @@ keybinds=(
     "M-z|Toggle pane zoom|Pane|$BLUE"
     "M-e|Sync panes ON|Pane|$BLUE"
     "M-E|Sync panes OFF|Pane|$BLUE"
+    "T|Rename pane title|Pane|$BLUE"
 
     # Special Features
     "C|Claude overview (find Claude sessions)|Special|$CYAN"

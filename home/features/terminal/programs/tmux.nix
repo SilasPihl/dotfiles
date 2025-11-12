@@ -45,6 +45,9 @@
 
 
     extraConfig = ''
+        # Automatically renumber windows sequentially
+        set -g renumber-windows on
+
         # Window management with leader key + vim motions
         # Create new window
         bind c new-window -c "#{pane_current_path}"
