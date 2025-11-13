@@ -254,6 +254,20 @@
         fi
       }
 
+      function grremote() {
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "Not a git repository." >&2
+          return 1
+        fi
+
+        local reset_type="--soft"
+        if [[ "$1" == "-f" ]]; then
+          reset_type="--hard"
+        fi
+
+        git reset "$reset_type" @{u}
+      }
+
       function gitc() {
         if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           echo "Not a git repository." >&2
