@@ -41,13 +41,15 @@
       ga = "git add";
       gaa = "git add .";
       gp = "git push";
+      gpf = "git push --force-with-lease";
       gst = "git status";
       gco = "git checkout";
       gc = "git commit --signoff -S -n -m \"$(claude -p \"Look at the staged git changes and create a conventional commit message (e.g., 'feat: Add new feature', 'fix: Resolve bug', 'refactor: Refactor old code', 'docs: Update documentation'). Only respond with the complete message, including the type and scope if applicable, and no affirmation.\")\"";
       gd = "git diff";
       gr = "git restore";
       grs = "git restore --staged";
-      
+      grrevert = "git restore --source=HEAD -- .";
+
       # Git worktree workflow helpers
       gwl = "git worktree list";
       gwt = "git worktree";
@@ -127,6 +129,8 @@
       ];
 
       extraConfig = ''
+        # Disable automatic title setting to preserve manual tmux pane titles
+        DISABLE_AUTO_TITLE="true"
 
         # History completion
         zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'

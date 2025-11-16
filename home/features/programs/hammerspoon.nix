@@ -173,12 +173,10 @@
     end)
 
     -- ---------- Window Cycling on Current Screen ----------
-    -- Cycle through all windows on the current screen
+    -- Cycle through all windows on the screen where mouse is located
     local function cycleWindowsOnCurrentScreen()
+        local currentScreen = hs.mouse.getCurrentScreen()
         local currentWin = hs.window.focusedWindow()
-        if not currentWin then return end
-
-        local currentScreen = currentWin:screen()
 
         -- Get all visible windows on the current screen
         local windowsOnScreen = hs.fnutils.filter(
@@ -190,12 +188,16 @@
             end
         )
 
-        -- Find next window in the list
-        if #windowsOnScreen > 1 then
-            local currentIndex = hs.fnutils.indexOf(windowsOnScreen, currentWin)
-            local nextIndex = (currentIndex % #windowsOnScreen) + 1
-            windowsOnScreen[nextIndex]:focus()
+        -- Show alert if no other windows to cycle to
+        if #windowsOnScreen <= 1 then
+            hs.alert.show("only me here", currentScreen)
+            return
         end
+
+        -- Find next window in the list
+        local currentIndex = hs.fnutils.indexOf(windowsOnScreen, currentWin) or 0
+        local nextIndex = (currentIndex % #windowsOnScreen) + 1
+        windowsOnScreen[nextIndex]:focus()
     end
 
     -- Cycle through windows of current app on current screen
@@ -220,10 +222,7 @@
         end
     end
 
-    -- Option + Tab = cycle through all windows on current screen
-    hs.hotkey.bind({ "alt" }, "tab", cycleWindowsOnCurrentScreen)
-
-    -- Option + 1 = cycle through windows of same app on current screen
-    hs.hotkey.bind({ "alt" }, "1", cycleAppWindowsOnCurrentScreen)
+    -- Option + 1 = cycle through all windows on current screen
+    hs.hotkey.bind({ "alt" }, "1", cycleWindowsOnCurrentScreen)
   '';
 }
