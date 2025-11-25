@@ -198,10 +198,17 @@
       }
 
       function gwrm() {
-        # Remove worktree by selecting from list
-        local worktree=$(git worktree list | grep -v "$(git rev-parse --show-toplevel)" | fzf | awk '{print $1}')
-        if [ -n "$worktree" ]; then
-          git worktree remove "$worktree"
+        # Remove worktree and its branch by selecting from list
+        local selection=$(git worktree list | grep -v "$(git rev-parse --show-toplevel)" | fzf)
+        if [ -n "$selection" ]; then
+          local worktree=$(echo "$selection" | awk '{print $1}')
+          local branch=$(echo "$selection" | awk '{print $3}' | sed 's/\[//' | sed 's/\]//')
+
+          git worktree remove "$worktree" || return 1
+
+          if [ -n "$branch" ]; then
+            git branch -D "$branch"
+          fi
         fi
       }
 
