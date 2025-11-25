@@ -132,6 +132,11 @@
         # Disable automatic title setting to preserve manual tmux pane titles
         DISABLE_AUTO_TITLE="true"
 
+        # Prevent programs from changing the pane title
+        # Override precmd and preexec to do nothing with titles
+        precmd_functions=()
+        preexec_functions=()
+
         # History completion
         zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
         zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
@@ -201,12 +206,11 @@
       }
 
       function gwadd() {
-        # Create new worktree next to repo root and cd into it
-        local branch_name="$1"
-        local dest_path="$2"
+        # Create new worktree up one folder with silas/ branch prefix and cd into it
+        local worktree_name="$1"
 
-        if [ -z "$branch_name" ]; then
-          echo "Usage: gwadd <branch-name> [path]"
+        if [ -z "$worktree_name" ]; then
+          echo "Usage: gwadd <worktree-name>"
           return 1
         fi
 
@@ -220,14 +224,9 @@
           return 1
         fi
 
-        local repo_root repo_name parent_dir
-        repo_root="$(git rev-parse --show-toplevel)" || return 1
-        repo_name="''${repo_root:t}"
-        parent_dir="''${repo_root:h}"
-
-        if [ -z "$dest_path" ]; then
-          dest_path="$parent_dir/$repo_name-$branch_name"
-        fi
+        local branch_name dest_path
+        branch_name="silas/$worktree_name"
+        dest_path="../wt-$worktree_name"
 
         if git show-ref --verify --quiet "refs/heads/$branch_name"; then
           git worktree add "$dest_path" "$branch_name" || return $?
@@ -236,6 +235,65 @@
         fi
 
         builtin cd -- "$dest_path"
+      }
+
+      function gwtswitch() {
+        if ! command -v git &>/dev/null; then
+          echo "error: git is required but not installed" >&2
+          return 1
+        fi
+        if ! command -v fzf &>/dev/null; then
+          echo "error: fzf is required but not installed" >&2
+          return 1
+        fi
+        local repo_root
+        repo_root=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+        if [ -z "${repo_root}" ]; then
+          echo "error: cannot locate bare Git repository" >&2
+          return 1
+        fi
+        cd "${repo_root}/" || return 1
+        git fetch origin || return 1
+        local branch
+        branch=$(git branch -r | grep -v HEAD | sed 's|origin/||' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | fzf --print-query --prompt="Choose remote branch: " --height=40% --reverse | tail -1)
+        if [ -z "${branch}" ]; then
+          echo "operation cancelled"
+          return 0
+        fi
+        local branch_path
+        branch_path="branches/${branch}"
+        if [ -d "${branch_path}" ]; then
+          echo "navigating to existing worktree ..."
+          cd "${branch_path}/" || return 1
+          git status || return 1
+          return 0
+        fi
+        if git show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+          # remote branch exists
+          git worktree add "${branch_path}" "${branch}" || return 1
+          cd "${branch_path}/" || return 1
+        else
+          # no remote branch
+          if git show-ref --verify --quiet "refs/heads/${branch}"; then
+            # local branch exists
+            git worktree add "${branch_path}" "${branch}" || return 1
+          else
+          # no local branch -> create one
+            git worktree add -b "${branch}" "${branch_path}" || return 1
+          fi
+          cd "${branch_path}/" || return 1
+          git push -u origin "${branch}" || return 1
+        fi
+        git status
+      }
+
+      function gwtcd() {
+        local selection worktree
+        selection=$(git worktree list | grep -v '(bare)' | fzf --height=40% --reverse --prompt="Select worktree: ")
+        if [[ -n "$selection" ]]; then
+          worktree=$(echo "$selection" | awk '{print $1}')
+          cd "$worktree" || return 1
+        fi
       }
 
       function grsoft() {
