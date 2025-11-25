@@ -52,8 +52,8 @@
 
       # Git worktree workflow helpers
       gwl = "git worktree list";
-      gwt = "git worktree";
-      gwcd = "cd $(git worktree list | fzf | awk '{print $1}')";  # Interactive worktree directory change
+      gw = "git worktree";
+      gwcd_old = "cd $(git worktree list | fzf | awk '{print $1}')";  # Interactive worktree directory change
 
       # Tmux
       tl = "tmux list-sessions";
@@ -237,7 +237,7 @@
         builtin cd -- "$dest_path"
       }
 
-      function gwtswitch() {
+      function gwswitch() {
         if ! command -v git &>/dev/null; then
           echo "error: git is required but not installed" >&2
           return 1
@@ -246,48 +246,56 @@
           echo "error: fzf is required but not installed" >&2
           return 1
         fi
-        local repo_root
-        repo_root=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
-        if [ -z "${repo_root}" ]; then
-          echo "error: cannot locate bare Git repository" >&2
+
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "error: not inside a git repository" >&2
           return 1
         fi
-        cd "${repo_root}/" || return 1
+
+        local repo_root
+        repo_root=$(git rev-parse --show-toplevel) || return 1
+
         git fetch origin || return 1
+
         local branch
         branch=$(git branch -r | grep -v HEAD | sed 's|origin/||' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | fzf --print-query --prompt="Choose remote branch: " --height=40% --reverse | tail -1)
-        if [ -z "${branch}" ]; then
+        if [ -z "''${branch}" ]; then
           echo "operation cancelled"
           return 0
         fi
-        local branch_path
-        branch_path="branches/${branch}"
-        if [ -d "${branch_path}" ]; then
+
+        # Extract the part after silas/ if it exists, otherwise use full branch name
+        local worktree_name="''${branch}"
+        local branch_path="''${repo_root}/../wt-''${worktree_name}"
+
+        if [ -d "''${branch_path}" ]; then
           echo "navigating to existing worktree ..."
-          cd "${branch_path}/" || return 1
+          cd "''${branch_path}/" || return 1
           git status || return 1
           return 0
         fi
-        if git show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+
+        if git show-ref --verify --quiet "refs/remotes/origin/''${branch}"; then
           # remote branch exists
-          git worktree add "${branch_path}" "${branch}" || return 1
-          cd "${branch_path}/" || return 1
+          git worktree add "''${branch_path}" "''${branch}" || return 1
+          cd "''${branch_path}/" || return 1
         else
-          # no remote branch
-          if git show-ref --verify --quiet "refs/heads/${branch}"; then
-            # local branch exists
-            git worktree add "${branch_path}" "${branch}" || return 1
+          # no remote branch - check local or create with silas/ prefix
+          local full_branch="silas/''${worktree_name}"
+          if git show-ref --verify --quiet "refs/heads/''${full_branch}"; then
+            # local branch exists with silas/ prefix
+            git worktree add "''${branch_path}" "''${full_branch}" || return 1
           else
-          # no local branch -> create one
-            git worktree add -b "${branch}" "${branch_path}" || return 1
+            # no local branch -> create one with silas/ prefix
+            git worktree add -b "''${full_branch}" "''${branch_path}" || return 1
           fi
-          cd "${branch_path}/" || return 1
-          git push -u origin "${branch}" || return 1
+          cd "''${branch_path}/" || return 1
+          git push -u origin "''${full_branch}" || return 1
         fi
         git status
       }
 
-      function gwtcd() {
+      function gwcd() {
         local selection worktree
         selection=$(git worktree list | grep -v '(bare)' | fzf --height=40% --reverse --prompt="Select worktree: ")
         if [[ -n "$selection" ]]; then
