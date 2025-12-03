@@ -9,6 +9,18 @@
       #age
       #alejandra
       bat
+
+      # Documentation tools
+      (python3.withPackages (ps: with ps; [
+        mkdocs
+        mkdocs-drawio-file
+        mkdocs-glightbox
+        mkdocs-linkcheck
+        mkdocs-material
+        mkdocs-material-extensions
+        mkdocs-mermaid2-plugin
+        mkdocs-minify-plugin
+      ]))
       #cowsay
       #direnv
       discord
@@ -29,6 +41,7 @@
       monitorcontrol
       #neovim
       nodejs_22
+      pnpm
       #ollama
       #raycast  # Managed via Homebrew for faster updates
       podman
