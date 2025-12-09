@@ -11,10 +11,10 @@
       bat
 
       # Documentation tools
+      # Note: mkdocs-glightbox removed due to test failure with Python 3.13
       (python3.withPackages (ps: with ps; [
         mkdocs
         mkdocs-drawio-file
-        mkdocs-glightbox
         mkdocs-linkcheck
         mkdocs-material
         mkdocs-material-extensions

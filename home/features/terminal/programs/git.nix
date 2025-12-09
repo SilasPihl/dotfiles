@@ -1,16 +1,20 @@
 { pkgs, ... }: {
   programs.git = {
     enable = true;
-    userName = "Silas Pihl";
-    userEmail = "silaspihl@gmail.com";
     signing = {
       signByDefault = true;
       key = "23E6EAD9D5C1D853";
     };
-    aliases = {
-      st = "status";
-      c = "commit --signoff --message";
-      p = "push";
+    settings = {
+      user = {
+        name = "Silas Pihl";
+        email = "silaspihl@gmail.com";
+      };
+      alias = {
+        st = "status";
+        c = "commit --signoff --message";
+        p = "push";
+      };
     };
     includes = [
       {
@@ -33,14 +37,15 @@
         };
       }
     ];
+  };
 
-    delta = {
-      enable = true;
-      options = {
-        navigate = true; # use n and N to move between diff sections
-        diff-so-fancy = true;
-        line-numbers = true;
-      };
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true; # use n and N to move between diff sections
+      diff-so-fancy = true;
+      line-numbers = true;
     };
   };
 

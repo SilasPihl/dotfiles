@@ -87,7 +87,7 @@
       tup3 = "task tilt:3";
 
       # Navigation shortcuts
-      cdf = "cd src/frontend && npm i && npm run build";
+      cdf = "cd src/frontend && rm -rf node_modules && npm i && npm run build";
 
       # Zoxide
       cda = "ls -d */ | xargs -I {} zoxide add {}";
@@ -327,6 +327,26 @@
           git reset --soft "HEAD~$target"
         else
           echo "Usage: grsoft [number]" >&2
+          return 1
+        fi
+      }
+
+      function grhard() {
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "Not a git repository." >&2
+          return 1
+        fi
+
+        local target="$1"
+        if [ -z "$target" ]; then
+          git reset --hard $(git merge-base HEAD origin/main)
+          return
+        fi
+
+        if [[ "$target" =~ ^[0-9]+$ ]]; then
+          git reset --hard "HEAD~$target"
+        else
+          echo "Usage: grhard [number]" >&2
           return 1
         fi
       }
