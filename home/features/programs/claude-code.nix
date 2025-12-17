@@ -24,6 +24,17 @@ EOF
     preferences = {
       thinkingEnabled = true;
     };
+    # MCP servers for documentation lookup
+    mcpServers = {
+      context7 = {
+        command = "npx";
+        args = [ "-y" "@upstash/context7-mcp@latest" ];
+      };
+      next-devtools = {
+        command = "npx";
+        args = [ "-y" "next-devtools-mcp@latest" ];
+      };
+    };
     permissions = {
       allow = [
         "mcp__playwright__browser_type"
