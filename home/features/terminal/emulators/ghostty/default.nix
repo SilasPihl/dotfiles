@@ -19,6 +19,7 @@ in
       macos-window-shadow = true;
       clipboard-read = "allow";
       clipboard-write = "allow";
+      desktop-notifications = true;
     };
   };
 }

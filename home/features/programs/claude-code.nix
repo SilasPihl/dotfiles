@@ -160,38 +160,6 @@ EOF
       ];
       deny = [ ];
     };
-    hooks = {
-      Stop = [
-        {
-          hooks = [
-            {
-              type = "command";
-              command = "afplay /System/Library/Sounds/Glass.aiff";
-            }
-          ];
-        }
-      ];
-      SubagentStop = [
-        {
-          hooks = [
-            {
-              type = "command";
-              command = "afplay /System/Library/Sounds/Glass.aiff";
-            }
-          ];
-        }
-      ];
-      PreCompact = [
-        {
-          hooks = [
-            {
-              type = "command";
-              command = "afplay /System/Library/Sounds/Glass.aiff";
-            }
-          ];
-        }
-      ];
-    };
     statusLine = {
       type = "command";
       command = "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); project=$(echo \"$input\" | jq -r '.workspace.project_dir'); style=$(echo \"$input\" | jq -r '.output_style.name'); rel_path=$(echo \"$cwd\" | sed \"s|^$project||\" | sed 's|^/||'); if [ -z \"$rel_path\" ]; then rel_path=\".\"; fi; branch=$(cd \"$project\" 2>/dev/null && git branch --show-current 2>/dev/null || echo \"\"); printf \"\\033[2m%s\\033[0m \\033[36m%s\\033[0m\" \"$model\" \"$rel_path\"; if [ -n \"$branch\" ]; then printf \" \\033[35m%s\\033[0m\" \"$branch\"; fi; if [ \"$style\" != \"default\" ]; then printf \" \\033[33m[%s]\\033[0m\" \"$style\"; fi";
