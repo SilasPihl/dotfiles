@@ -20,6 +20,10 @@ EOF
 
   # Claude Code settings with PostToolUse hook
   claudeSettings = {
+    # Enable extended thinking by default
+    preferences = {
+      thinkingEnabled = true;
+    };
     permissions = {
       allow = [
         "mcp__playwright__browser_type"

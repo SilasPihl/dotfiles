@@ -213,11 +213,15 @@
       }
 
       function gwadd() {
-        # Create new worktree up one folder with silas/ branch prefix and cd into it
+        # Create new worktree up one folder and cd into it
+        # Usage: gwadd <worktree-name> [branch-name]
+        #   gwadd feature              -> creates silas/feature branch
+        #   gwadd feature sbal/feature -> checks out existing sbal/feature branch
         local worktree_name="$1"
+        local branch_arg="$2"
 
         if [ -z "$worktree_name" ]; then
-          echo "Usage: gwadd <worktree-name>"
+          echo "Usage: gwadd <worktree-name> [branch-name]"
           return 1
         fi
 
@@ -232,13 +236,19 @@
         fi
 
         local branch_name dest_path
-        branch_name="silas/$worktree_name"
         dest_path="../wt-$worktree_name"
 
-        if git show-ref --verify --quiet "refs/heads/$branch_name"; then
-          git worktree add "$dest_path" "$branch_name" || return $?
+        if [ -n "$branch_arg" ]; then
+          # Explicit branch provided - check it out
+          git worktree add "$dest_path" "$branch_arg" || return $?
         else
-          git worktree add -b "$branch_name" "$dest_path" || return $?
+          # No branch provided - use silas/ prefix convention
+          branch_name="silas/$worktree_name"
+          if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+            git worktree add "$dest_path" "$branch_name" || return $?
+          else
+            git worktree add -b "$branch_name" "$dest_path" || return $?
+          fi
         fi
 
         builtin cd -- "$dest_path"
