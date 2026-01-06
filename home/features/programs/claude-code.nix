@@ -44,7 +44,7 @@ EOF
 
       # Check for uncommitted changes
       if ! git -C "$cwd" --no-optional-locks diff-index --quiet HEAD -- 2>/dev/null; then
-        dirty="×"
+        dirty="✗"
       else
         dirty=""
       fi

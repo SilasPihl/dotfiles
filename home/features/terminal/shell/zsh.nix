@@ -432,15 +432,19 @@
       ZSH_THEME_GIT_PROMPT_DIRTY="%{$reset_color%})"
       ZSH_THEME_GIT_PROMPT_CLEAN="%{$reset_color%})"
 
-      function _git_dirty_indicator() {
+      function _prompt_symbol() {
         if git rev-parse --is-inside-work-tree &>/dev/null; then
           if [[ -n $(git status --porcelain 2>/dev/null) ]]; then
-            echo "%{$fg[yellow]%}✗ "
+            echo "%{$fg[yellow]%}✗%{$reset_color%} "
+          else
+            echo "%{$fg[green]%}❯%{$reset_color%} "
           fi
+        else
+          echo "%{$fg[green]%}❯%{$reset_color%} "
         fi
       }
 
-      PROMPT=$PROMPT$'\n''$(_git_dirty_indicator)'
+      PROMPT=$PROMPT$'\n''$(_prompt_symbol)'
 
       # Ensure Python virtual environment takes precedence
       if [ -n "$VIRTUAL_ENV" ]; then
