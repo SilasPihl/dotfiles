@@ -427,6 +427,21 @@
         export RPROMPT="%F{green}($NIX_FLAKE_NAME)%f";
       fi
 
+      # Put command input on new line for small terminal windows
+      # Move git dirty indicator (×) to second line with prompt
+      ZSH_THEME_GIT_PROMPT_DIRTY="%{$reset_color%})"
+      ZSH_THEME_GIT_PROMPT_CLEAN="%{$reset_color%})"
+
+      function _git_dirty_indicator() {
+        if git rev-parse --is-inside-work-tree &>/dev/null; then
+          if [[ -n $(git status --porcelain 2>/dev/null) ]]; then
+            echo "%{$fg[yellow]%}✗ "
+          fi
+        fi
+      }
+
+      PROMPT=$PROMPT$'\n''$(_git_dirty_indicator)'
+
       # Ensure Python virtual environment takes precedence
       if [ -n "$VIRTUAL_ENV" ]; then
         export PATH="$VIRTUAL_ENV/bin:$PATH"
