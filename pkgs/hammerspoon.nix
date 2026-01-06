@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://github.com/Hammerspoon/hammerspoon/releases/download/${version}/Hammerspoon-${version}.zip";
-    hash = "sha256-kII5AgyennGj2YKDwmugqS/kCyYLS3XqMBilDmlol2I=";
+    hash = "sha256-83s+tzeQRVISuxbPjVBjs6azTUzsSmURFDjGDFglYrM=";
     stripRoot = false;
   };
 
