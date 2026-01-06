@@ -18,7 +18,7 @@ let
 EOF
   '';
 
-  # Status line script for Claude Code (robbyrussell-style with model)
+  # Status line script for Claude Code (robbyrussell-style with metrics)
   claude-statusline = pkgs.writeShellScriptBin "claude-statusline" ''
     #!/bin/bash
 
@@ -55,13 +55,46 @@ EOF
       fi
     fi
 
+    # Separator
+    printf "\033[2m|\033[0m "
+
     # Context window usage percentage
     tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens')
     size=$(echo "$input" | jq -r '.context_window.context_window_size')
     if [ "$tokens" != "null" ] && [ "$size" != "null" ] && [ "$size" -gt 0 ]; then
       pct=$((tokens * 100 / size))
-      printf "\033[33m[%d%% ctx]\033[0m " "$pct"
+      printf "\033[33m%d%%\033[0m " "$pct"
     fi
+
+    # Separator
+    printf "\033[2m|\033[0m "
+
+    # Cost in USD
+    cost=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
+    printf "\033[32m\$%.2f\033[0m " "$cost"
+
+    # Separator
+    printf "\033[2m|\033[0m "
+
+    # Input/output tokens (formatted as K)
+    in_tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
+    out_tokens=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
+    in_k=$(awk "BEGIN {printf \"%.1f\", $in_tokens / 1000}")
+    out_k=$(awk "BEGIN {printf \"%.1f\", $out_tokens / 1000}")
+    printf "\033[2min:%sK out:%sK\033[0m " "$in_k" "$out_k"
+
+    # Separator
+    printf "\033[2m|\033[0m "
+
+    # Session duration
+    duration_ms=$(echo "$input" | jq -r '.cost.total_duration_ms // 0')
+    duration_s=$((duration_ms / 1000))
+    mins=$((duration_s / 60))
+    secs=$((duration_s % 60))
+    printf "\033[2m%dm%02ds\033[0m " "$mins" "$secs"
+
+    # Separator
+    printf "\033[2m|\033[0m "
 
     # Model name (dimmed)
     printf "\033[2m%s\033[0m" "$model"
