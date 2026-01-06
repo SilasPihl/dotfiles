@@ -18,11 +18,65 @@ let
 EOF
   '';
 
+  # Status line script for Claude Code (robbyrussell-style with model)
+  claude-statusline = pkgs.writeShellScriptBin "claude-statusline" ''
+    #!/bin/bash
+
+    # Read JSON input from stdin
+    input=$(cat)
+
+    # Get current directory (basename)
+    cwd=$(echo "$input" | jq -r '.workspace.current_dir')
+    dir=$(basename "$cwd")
+
+    # Get model name
+    model=$(echo "$input" | jq -r '.model.display_name')
+
+    # Arrow symbol
+    printf "→  "
+
+    # Directory in cyan
+    printf "\033[36m%s\033[0m " "$dir"
+
+    # Git info if in a repo
+    if git -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
+      branch=$(git -C "$cwd" --no-optional-locks branch --show-current 2>/dev/null || echo "detached")
+
+      # Check for uncommitted changes
+      if ! git -C "$cwd" --no-optional-locks diff-index --quiet HEAD -- 2>/dev/null; then
+        dirty="×"
+      else
+        dirty=""
+      fi
+
+      printf "git:(\033[31m%s\033[0m) " "$branch"
+      if [ -n "$dirty" ]; then
+        printf "\033[33m%s\033[0m " "$dirty"
+      fi
+    fi
+
+    # Context window usage percentage
+    tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens')
+    size=$(echo "$input" | jq -r '.context_window.context_window_size')
+    if [ "$tokens" != "null" ] && [ "$size" != "null" ] && [ "$size" -gt 0 ]; then
+      pct=$((tokens * 100 / size))
+      printf "\033[33m[%d%% ctx]\033[0m " "$pct"
+    fi
+
+    # Model name (dimmed)
+    printf "\033[2m%s\033[0m" "$model"
+  '';
+
   # Claude Code settings with PostToolUse hook
   claudeSettings = {
     # Enable extended thinking by default
     preferences = {
       thinkingEnabled = true;
+    };
+    # Status line configuration
+    statusLine = {
+      type = "command";
+      command = "${claude-statusline}/bin/claude-statusline";
     };
     # MCP servers for documentation lookup
     mcpServers = {
@@ -160,17 +214,14 @@ EOF
       ];
       deny = [ ];
     };
-    statusLine = {
-      type = "command";
-      command = "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); project=$(echo \"$input\" | jq -r '.workspace.project_dir'); style=$(echo \"$input\" | jq -r '.output_style.name'); tokens=$(echo \"$input\" | jq -r '.context_window.total_input_tokens'); ctx_size=$(echo \"$input\" | jq -r '.context_window.context_window_size'); rel_path=$(echo \"$cwd\" | sed \"s|^$project||\" | sed 's|^/||'); if [ -z \"$rel_path\" ]; then rel_path=\".\"; fi; branch=$(cd \"$project\" 2>/dev/null && git branch --show-current 2>/dev/null || echo \"\"); ctx_pct=$((tokens * 100 / ctx_size)); printf \"\\033[2m%s\\033[0m \\033[36m%s\\033[0m\" \"$model\" \"$rel_path\"; if [ -n \"$branch\" ]; then printf \" \\033[35m%s\\033[0m\" \"$branch\"; fi; if [ \"$style\" != \"default\" ]; then printf \" \\033[33m[%s]\\033[0m\" \"$style\"; fi; printf \" \\033[32m%d%%\\033[0m\" \"$ctx_pct\"";
-    };
   };
 
 in
 {
-  home.packages = [ 
-    claude-code 
+  home.packages = [
+    claude-code
     claude-notify
+    claude-statusline
   ];
 
   # Create Claude Code settings directory and file
