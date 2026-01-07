@@ -58,6 +58,7 @@
       #xclip
       #spotify
       #_1password-cli
+      yt-dlp
     ];
     #++ (with pkgs-stable; [ obsidian ]);
 }
