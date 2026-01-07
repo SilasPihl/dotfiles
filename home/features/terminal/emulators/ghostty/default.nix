@@ -17,6 +17,7 @@ in
       window-decoration = false;
       macos-titlebar-style = "hidden";
       macos-window-shadow = true;
+      macos-option-as-alt = true;
       clipboard-read = "allow";
       clipboard-write = "allow";
       desktop-notifications = true;

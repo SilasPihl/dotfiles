@@ -73,13 +73,13 @@
       cd = "z";
       v = "nvim";
       t = "task";
-      c = "cursor .";
+      # c is defined as a function in initContent for Hammerspoon integration
       cl = "clear";
       cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
       down = "task compose:down";
       up = "task compose:up";
-      tload = "task home-manager:switch";
+      tload = "task home-manager:switch && source ~/.zshrc";
       tup = "task tilt:up";
       tup0 = "task tilt:0";
       tup1 = "task tilt:1";
@@ -150,6 +150,30 @@
 
       # Unalias lg if it was set by oh-my-zsh plugins (to allow lazygit function)
       unalias lg 2>/dev/null || true
+
+      # Cursor: open in current dir and position on DELL (right 70%)
+      function c() {
+        (cursor "''${1:-.}" &>/dev/null &)
+        open -g "hammerspoon://launchCursor"
+      }
+
+      # Lazygit: zoom pane to full window, run lazygit, then restore
+      function lg() {
+        if [[ -n "$TMUX" ]]; then
+          # Zoom pane to fill window, run lazygit, then unzoom
+          tmux resize-pane -Z
+          lazygit "$@"
+          tmux resize-pane -Z
+        else
+          # Fallback with directory change support
+          export LAZYGIT_NEW_DIR_FILE=~/.lazygit/newdir
+          lazygit "$@"
+          if [ -f $LAZYGIT_NEW_DIR_FILE ]; then
+            cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
+            rm -f $LAZYGIT_NEW_DIR_FILE > /dev/null
+          fi
+        fi
+      }
 
       # Export the PATH for Nix integration
       export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
@@ -318,6 +342,41 @@
         if [[ -n "$selection" ]]; then
           worktree=$(echo "$selection" | awk '{print $1}')
           cd "$worktree" || return 1
+        fi
+      }
+
+      function gci() {
+        # Interactive checkout: shows PRs first, then recent branches
+        git fetch origin || return 1
+
+        # Build map of branch -> PR info
+        local -A prs
+        while IFS=$'\t' read -r num title branch; do
+          prs[$branch]="#$num $title"
+        done < <(gh pr list --state open --json number,title,headRefName --jq '.[] | [.number, .title, .headRefName] | @tsv')
+
+        # Collect branches sorted by date, PRs first
+        local pr_lines="" other_lines=""
+        while read -r branch; do
+          [[ "$branch" == "origin/HEAD" ]] && continue
+          local short="''${branch#origin/}"
+          if [[ -n "''${prs[$short]}" ]]; then
+            pr_lines+="[PR] ''${prs[$short]} [$short]"$'\n'
+          else
+            other_lines+="$short"$'\n'
+          fi
+        done < <(git branch -r --sort=-committerdate --format='%(refname:short)')
+
+        local selection
+        selection=$(printf "%s%s" "$pr_lines" "$other_lines" | grep -v '^$' | fzf --prompt="Checkout: " --height=40% --reverse)
+
+        if [ -n "$selection" ]; then
+          if [[ "$selection" == "[PR]"* ]]; then
+            local pr_number=$(echo "$selection" | grep -o '#[0-9]*' | tr -d '#')
+            gh pr checkout "$pr_number"
+          else
+            git checkout "$selection"
+          fi
         fi
       }
 

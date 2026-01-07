@@ -29,6 +29,9 @@ keybinds=(
     "x|Kill window|Window|$GREEN"
     "&|Kill window (confirm)|Window|$GREEN"
     ",|Rename window|Window|$GREEN"
+    "M|Move window to position|Window|$GREEN"
+    "H|Swap window left|Window|$GREEN"
+    "L|Swap window right|Window|$GREEN"
 
     # Session Management
     "s|Session switcher (sesh)|Session|$MAGENTA"
@@ -42,13 +45,22 @@ keybinds=(
     "M-l|Navigate right (or next window)|Pane|$BLUE"
     "M-j|Navigate down|Pane|$BLUE"
     "M-k|Navigate up|Pane|$BLUE"
-    "M-z|Toggle pane zoom|Pane|$BLUE"
+    "z|Toggle pane zoom|Pane|$BLUE"
+    "M-z|Toggle pane zoom (no prefix)|Pane|$BLUE"
+    "S-↑|Resize pane up|Pane|$BLUE"
+    "S-↓|Resize pane down|Pane|$BLUE"
+    "S-→|Resize pane right|Pane|$BLUE"
+    "S-←|Resize pane left|Pane|$BLUE"
+    "b|Break pane to new window|Pane|$BLUE"
+    "J|Join pane from window|Pane|$BLUE"
+    "T|Rename pane title|Pane|$BLUE"
     "M-e|Sync panes ON|Pane|$BLUE"
     "M-E|Sync panes OFF|Pane|$BLUE"
-    "T|Rename pane title|Pane|$BLUE"
 
     # Special Features
+    "A|Create named agent window|Special|$CYAN"
     "C|Claude overview (find Claude sessions)|Special|$CYAN"
+    "g|Lazygit popup|Special|$CYAN"
     "?|Show this help menu|Special|$CYAN"
 
     # Configuration

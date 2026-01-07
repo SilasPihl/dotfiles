@@ -224,5 +224,50 @@
 
     -- Option + 1 = cycle through all windows on current screen
     hs.hotkey.bind({ "alt" }, "1", cycleWindowsOnCurrentScreen)
+
+    -- ---------- App Launcher Helpers ----------
+    -- Launch app and position it on a specific screen with a specific size
+    local function launchAndPosition(appName, screenKey, position)
+        -- position: {x, y, w, h} in unit rect (0-1)
+        local targetScreen = findScreenByKey(screenKey)
+        if not targetScreen then
+            hs.alert.show("Screen not found: " .. screenKey)
+            return
+        end
+
+        local function positionWindow(win)
+            if win then
+                win:moveToScreen(targetScreen)
+                win:moveToUnit(position)
+            end
+        end
+
+        -- Launch/focus the app
+        hs.application.launchOrFocus(appName)
+
+        -- Simple approach: wait a bit, then position the focused window
+        hs.timer.doAfter(1.0, function()
+            local win = hs.window.focusedWindow()
+            if win then
+                positionWindow(win)
+                -- Move mouse to center of window
+                local frame = win:frame()
+                hs.mouse.setAbsolutePosition({
+                    x = frame.x + frame.w / 2,
+                    y = frame.y + frame.h / 2
+                })
+            end
+        end)
+    end
+
+    -- Cursor: launch on DELL, right 70%
+    function launchCursor()
+        launchAndPosition("Cursor", "DELL", {x=0.3, y=0, w=0.7, h=1})
+    end
+
+    -- ---------- URL Handler for CLI integration ----------
+    hs.urlevent.bind("launchCursor", function(eventName, params)
+        launchCursor()
+    end)
   '';
 }

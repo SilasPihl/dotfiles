@@ -119,12 +119,22 @@
         # Which-key style help menu
         bind ? display-popup -E -w 70 -h 70% -b rounded "~/repos/dotfiles/scripts/tmux-which-key.sh"
 
+        # Lazygit popup
+        bind g display-popup -E -d "#{pane_current_path}" -w 98% -h 98% "lazygit"
+
+        # Pane resizing (repeatable with -r)
+        bind -r S-Up resize-pane -U 5
+        bind -r S-Down resize-pane -D 5
+        bind -r S-Right resize-pane -R 5
+        bind -r S-Left resize-pane -L 5
+
         # Pane navigation (keeping your existing Alt+vim keys)
         bind -n M-h run-shell "if [ $(tmux display-message -p '#{pane_at_left}') -ne 1 ]; then tmux select-pane -L; else tmux select-window -p; fi"
         bind -n M-l run-shell "if [ $(tmux display-message -p '#{pane_at_right}') -ne 1 ]; then tmux select-pane -R; else tmux select-window -n; fi"
         bind -n M-j run-shell "if [ $(tmux display-message -p '#{pane_at_bottom}') -ne 1 ]; then tmux select-pane -D; fi"
         bind -n M-k run-shell "if [ $(tmux display-message -p '#{pane_at_top}') -ne 1 ]; then tmux select-pane -U; fi"
-        bind -n M-z run-shell "tmux resize-pane -Z"
+        bind -n M-z resize-pane -Z
+        bind z resize-pane -Z
         
         # Reload tmux config
         bind R source-file ~/.config/tmux/tmux.conf \; display "Configuration reloaded"
@@ -134,9 +144,14 @@
         bind -n M-e setw synchronize-panes on \; display "Sync is ON"
         bind -n M-E setw synchronize-panes off \; display "Sync is OFF"
 
-        # Pane titles
+        # Pane borders - thin lines, brighter for active
+        set -g pane-border-lines single
+        set -g pane-border-style "fg=#f5a97f"
+        set -g pane-active-border-style "fg=#eed49f,bold"
+
+        # Pane titles - active gets background highlight, centered with padding
         set -g pane-border-status top
-        set -g pane-border-format "#{?pane_active,#[fg=yellow],#[fg=white]} #T "
+        set -g pane-border-format "#{?pane_active,#[fg=#24273a bg=#eed49f bold]  #T  #[default],#[fg=#f5a97f]  #T  }"
         bind T command-prompt -p "Pane title:" "select-pane -T '%%'"
 
 
