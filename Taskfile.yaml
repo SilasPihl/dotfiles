@@ -4,4 +4,4 @@ tasks:
     desc: Switches home-manager configuration
     dir: "{{.ROOT_DIR}}"
     cmds:
-      - nix run home-manager/master -- switch --flake .#mac -b backup
+      - home-manager switch --flake .#mac -b backup
