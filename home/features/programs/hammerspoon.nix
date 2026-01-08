@@ -82,6 +82,14 @@
         moveMouseToScreen(scr)
     end
 
+    local function moveCursorToWindow(win)
+        local frame = win:frame()
+        hs.mouse.setAbsolutePosition({
+            x = frame.x + frame.w / 2,
+            y = frame.y + frame.h / 2
+        })
+    end
+
     local function moveWindowToScreen(scr)
         local win = hs.window.focusedWindow()
         if not win then
@@ -129,6 +137,9 @@
             win:moveToUnit({x=0, y=0, w=1, h=1})
             hs.alert.show("Window → " .. scr:name() .. " (maximized)")
         end
+
+        -- Move cursor to center of window after moving it
+        moveCursorToWindow(win)
     end
 
     local function moveWindowTo(key)
