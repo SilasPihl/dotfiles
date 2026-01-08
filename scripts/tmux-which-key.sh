@@ -56,6 +56,12 @@ keybinds=(
     "T|Rename pane title|Pane|$BLUE"
     "M-e|Sync panes ON|Pane|$BLUE"
     "M-E|Sync panes OFF|Pane|$BLUE"
+    "<|Swap pane up/left|Pane|$BLUE"
+    ">|Swap pane down/right|Pane|$BLUE"
+    "C-h|Swap with left pane|Pane|$BLUE"
+    "C-l|Swap with right pane|Pane|$BLUE"
+    "C-j|Swap with pane below|Pane|$BLUE"
+    "C-k|Swap with pane above|Pane|$BLUE"
 
     # Special Features
     "A|Create named agent window|Special|$CYAN"

@@ -30,6 +30,64 @@ NAME=mac task home-manager:switch
 
 Key repeat stroke on MacOS is slow. Increase it by following the guide: https://linkarzu.com/posts/2024-macos-workflow/macos-keyrepeat-rate/.
 
+## Manual Installations
+
+Some applications need to be installed manually (not managed by Nix):
+
+### Homebrew
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+#### Casks
+
+```bash
+brew install --cask android-platform-tools ngrok raycast visual-studio-code
+```
+
+### Direct Downloads
+
+| App | URL | Notes |
+|-----|-----|-------|
+| f.lux | https://justgetflux.com/news/pages/macquickstart/ | Display color temperature |
+| Ghostty | https://ghostty.org/ | Terminal emulator (config managed by Nix) |
+| Cursor | https://cursor.sh/ | AI code editor |
+| Docker | https://www.docker.com/products/docker-desktop/ | Docker Desktop |
+| Obsidian | https://obsidian.md/ | Notes |
+| Spotify | https://www.spotify.com/download/ | Music (spicetify config in Nix) |
+| Claude | https://claude.ai/download | AI assistant |
+| ChatGPT | https://openai.com/chatgpt/mac/ | AI assistant |
+| NordVPN | https://nordvpn.com/download/ | VPN |
+| Wispr Flow | https://www.wispr.ai/ | Voice typing |
+| Beeper | https://www.beeper.com/ | Unified messaging |
+| Nextcloud | https://nextcloud.com/install/ | Cloud sync |
+| Firefox | https://www.mozilla.org/firefox/ | Browser |
+| Google Chrome | https://www.google.com/chrome/ | Browser |
+| Vivaldi | https://vivaldi.com/ | Browser |
+| Zen | https://zen-browser.app/ | Browser |
+| Sublime Text | https://www.sublimetext.com/ | Text editor |
+| GitHub Desktop | https://desktop.github.com/ | Git GUI |
+| Adobe Acrobat | https://www.adobe.com/acrobat.html | PDF reader |
+| CapCut | https://www.capcut.com/ | Video editor |
+
+### App Store
+
+- 1Password
+- Xcode
+- Slack
+- WhatsApp
+- Microsoft Excel
+- Microsoft Teams
+- Microsoft Word
+- Notion
+- Reflect
+- Mem
+- Crystal
+- Exporter
+- Willow Voice
+- Locklizard Safeguard Viewer
+
 ## Claude Code MCP Servers
 
 ```bash

@@ -128,6 +128,14 @@
         bind -r S-Right resize-pane -R 5
         bind -r S-Left resize-pane -L 5
 
+        # Swap pane directionally (push pane in direction)
+        bind -r < swap-pane -U  # Move pane up/left
+        bind -r > swap-pane -D  # Move pane down/right
+        bind -r C-h swap-pane -s '{left-of}'
+        bind -r C-l swap-pane -s '{right-of}'
+        bind -r C-j swap-pane -s '{down-of}'
+        bind -r C-k swap-pane -s '{up-of}'
+
         # Pane navigation (keeping your existing Alt+vim keys)
         bind -n M-h run-shell "if [ $(tmux display-message -p '#{pane_at_left}') -ne 1 ]; then tmux select-pane -L; else tmux select-window -p; fi"
         bind -n M-l run-shell "if [ $(tmux display-message -p '#{pane_at_right}') -ne 1 ]; then tmux select-pane -R; else tmux select-window -n; fi"
