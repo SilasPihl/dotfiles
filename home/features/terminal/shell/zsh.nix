@@ -153,8 +153,7 @@
 
       # Cursor: open in current dir and position on DELL (right 70%)
       function c() {
-        setopt LOCAL_OPTIONS NO_MONITOR NO_NOTIFY
-        cursor "''${1:-.}" &>/dev/null &
+        (cursor "''${1:-.}" &>/dev/null &)
         open -g "hammerspoon://launchCursor"
       }
 
