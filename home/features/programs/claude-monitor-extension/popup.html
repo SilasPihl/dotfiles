@@ -103,12 +103,92 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+    .session-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .session-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      background: #262626;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .session-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .session-status.waiting_for_input { background: #eab308; }
+    .session-status.working { background: #ef4444; }
+    .session-status.idle { background: #22c55e; }
+    .session-cwd {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #ccc;
+    }
+    .session-status-label {
+      font-size: 10px;
+      color: #888;
+      text-transform: uppercase;
+    }
+    .no-sessions {
+      color: #666;
+      font-size: 12px;
+      text-align: center;
+      padding: 12px 0;
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .toggle {
+      position: relative;
+      width: 28px;
+      height: 16px;
+      background: #444;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle.active {
+      background: #22c55e;
+    }
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle.active::after {
+      transform: translateX(12px);
+    }
+    .toggle-label {
+      font-size: 10px;
+      color: #888;
+    }
   </style>
 </head>
 <body>
   <div class="header">
     <div class="status-dot" id="statusDot"></div>
-    <span class="title">Dev Hub</span>
+    <span class="title">Claude Monitor</span>
+    <div class="toggle-container">
+      <div class="toggle" id="autoRefreshToggle" title="Auto-refresh"></div>
+    </div>
     <button class="refresh-btn" id="refreshBtn" title="Refresh">↻</button>
   </div>
   <div id="content"></div>

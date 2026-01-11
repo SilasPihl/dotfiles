@@ -1,10 +1,10 @@
-// Dev Hub - Background Service Worker
-// Notification hub for development: Claude status, GitHub, and more
+// Claude Monitor - Background Service Worker
+// Monitor Claude Code sessions and prevent sleep while working
 const WS_URL = "ws://localhost:8765/ws";
 const RECONNECT_DELAY = 5000;
 
 let ws = null;
-let state = { blocked: true, sessions: 0, working: 0, waitingForInput: 0 };
+let state = { blocked: true, sessionCount: 0, working: 0, waitingForInput: 0, sessions: [] };
 let lastWaitingNotification = 0;
 
 // Keep service worker alive - MV3 suspends workers when idle
@@ -31,15 +31,22 @@ function updateBadge() {
   if (!ws || ws.readyState !== WebSocket.OPEN) {
     color = COLORS.offline;
     text = "?";
+  } else if (state.waitingForInput > 0 && state.working > 0) {
+    // Both waiting and working: "⏳2·1" (waiting·working)
+    color = COLORS.waiting;
+    text = `⏳${state.waitingForInput}·${state.working}`;
   } else if (state.waitingForInput > 0) {
     color = COLORS.waiting;
-    text = state.waitingForInput.toString();
+    text = `⏳${state.waitingForInput}`;
   } else if (state.working > 0) {
     color = COLORS.working;
-    text = state.working.toString();
+    text = `⚙${state.working}`;
+  } else if (state.sessionCount > 0) {
+    color = COLORS.idle;
+    text = `✓${state.sessionCount}`;
   } else {
     color = COLORS.idle;
-    text = state.sessions > 0 ? state.sessions.toString() : "";
+    text = "";
   }
 
   chrome.action.setBadgeBackgroundColor({ color });
@@ -81,7 +88,7 @@ function connect() {
     ws = new WebSocket(WS_URL);
 
     ws.onopen = () => {
-      console.log("[Claude Status] Connected to server");
+      console.log("[Claude Monitor] Connected to server");
       updateBadge();
     };
 
@@ -90,18 +97,18 @@ function connect() {
     };
 
     ws.onclose = () => {
-      console.log("[Claude Status] Disconnected, reconnecting...");
+      console.log("[Claude Monitor] Disconnected, reconnecting...");
       ws = null;
       updateBadge();
       setTimeout(connect, RECONNECT_DELAY);
     };
 
     ws.onerror = (error) => {
-      console.error("[Claude Status] WebSocket error:", error);
+      console.error("[Claude Monitor] WebSocket error:", error);
       ws.close();
     };
   } catch (error) {
-    console.error("[Claude Status] Connection failed:", error);
+    console.error("[Claude Monitor] Connection failed:", error);
     setTimeout(connect, RECONNECT_DELAY);
   }
 }
@@ -114,8 +121,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       connected: ws && ws.readyState === WebSocket.OPEN,
     });
   } else if (request.type === "reconnect") {
-    // Force reconnect
+    // Force reconnect - remove handlers before closing to avoid race condition
     if (ws) {
+      ws.onclose = null;
+      ws.onerror = null;
       ws.close();
     }
     ws = null;

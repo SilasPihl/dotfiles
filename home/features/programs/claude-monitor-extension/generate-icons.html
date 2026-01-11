@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Claude Monitor Icons</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
+    h1 { color: #333; }
+    .icons { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .icon-group { text-align: center; background: white; padding: 16px; border-radius: 8px; }
+    canvas { border: 1px solid #ddd; margin: 4px; display: block; }
+    .label { font-size: 11px; color: #666; margin-top: 4px; }
+    button { padding: 12px 24px; font-size: 16px; cursor: pointer; background: #D97757; color: white; border: none; border-radius: 6px; }
+    button:hover { background: #c56647; }
+    .instructions { background: #e8f4e8; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Claude Monitor Icons</h1>
+
+  <div class="instructions">
+    <strong>Instructions:</strong>
+    <ol>
+      <li>Click "Download All Icons" below</li>
+      <li>Extract the downloaded files to the <code>icons/</code> folder</li>
+      <li>Reload the extension in Chrome</li>
+    </ol>
+  </div>
+
+  <button onclick="downloadAll()">Download All Icons</button>
+
+  <h2>Preview</h2>
+  <div class="icons" id="icons"></div>
+
+  <script>
+    const sizes = [16, 48, 128];
+    const container = document.getElementById('icons');
+    const canvases = {};
+
+    // Claude's orange color
+    const CLAUDE_ORANGE = '#D97757';
+
+    sizes.forEach(size => {
+      const group = document.createElement('div');
+      group.className = 'icon-group';
+      group.innerHTML = `<strong>${size}x${size}</strong>`;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // Big orange "C" - rotated to open right
+      ctx.strokeStyle = CLAUDE_ORANGE;
+      ctx.lineWidth = size * 0.18;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      const cRadius = size * 0.35;
+      ctx.arc(size/2, size/2, cRadius, Math.PI/2 - 0.7, -Math.PI/2 + 0.7);
+      ctx.stroke();
+
+      canvases[size] = canvas;
+
+      const label = document.createElement('div');
+      label.className = 'label';
+      label.textContent = `icon-${size}.png`;
+
+      group.appendChild(canvas);
+      group.appendChild(label);
+      container.appendChild(group);
+    });
+
+    function downloadAll() {
+      sizes.forEach(size => {
+        const canvas = canvases[size];
+        const link = document.createElement('a');
+        link.download = `icon-${size}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>

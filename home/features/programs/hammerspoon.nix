@@ -156,10 +156,9 @@
                 hs.alert.show("⬛ Maximized")
             end
         else
-            -- Move to new screen and maximize
-            win:moveToScreen(scr)
-            win:moveToUnit({x=0, y=0, w=1, h=1})
-            hs.alert.show("Window → " .. scr:name() .. " (maximized)")
+            -- Move to new screen, preserving size
+            win:moveToScreen(scr, true, true)  -- noResize=true, ensureInScreenBounds=true
+            hs.alert.show("Window → " .. scr:name())
         end
 
         -- Move cursor to center of window after moving it
@@ -185,7 +184,6 @@
         e = { screen = "DELL", zone = "top" },         -- Option+E → DELL top
         d = { screen = "DELL", zone = "bottom" },      -- Option+D → DELL bottom
         s = { screen = ":ipad", zone = nil },          -- Option+S → iPad (Sidecar)
-        f = { screen = ":builtin", zone = nil },       -- Option+F → built-in Mac display
     }
 
     -- ---------- Named Screen Hotkeys ----------

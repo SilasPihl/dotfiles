@@ -1,10 +1,13 @@
+import { spawn, ChildProcess } from "child_process";
 import {
   HookPayload,
   Session,
+  SessionInfo,
   StateMessage,
   StatusResponse,
   USER_INPUT_TOOLS,
   SESSION_TIMEOUT_MS,
+  TOOL_APPROVAL_WAIT_MS,
 } from "./types.js";
 
 type Listener = (message: StateMessage) => void;
@@ -13,12 +16,46 @@ class SessionState {
   private sessions: Map<string, Session> = new Map();
   private listeners: Set<Listener> = new Set();
   private cleanupInterval: NodeJS.Timeout | null = null;
+  private pendingToolInterval: NodeJS.Timeout | null = null;
+  private caffeinateProcess: ChildProcess | null = null;
 
   constructor() {
     this.cleanupInterval = setInterval(
       () => this.cleanupStaleSessions(),
       30_000
     );
+    // Check for tools waiting on approval every 500ms
+    this.pendingToolInterval = setInterval(
+      () => this.checkPendingTools(),
+      500
+    );
+  }
+
+  private updateCaffeinate(): void {
+    const workingCount = Array.from(this.sessions.values()).filter(
+      (s) => s.status === "working"
+    ).length;
+
+    if (workingCount > 0 && !this.caffeinateProcess) {
+      // Start caffeinate to prevent sleep
+      this.caffeinateProcess = spawn("caffeinate", ["-d", "-i"], {
+        stdio: "ignore",
+        detached: false,
+      });
+      this.caffeinateProcess.on("error", (err) => {
+        console.error("[caffeinate] Failed to start:", err.message);
+        this.caffeinateProcess = null;
+      });
+      this.caffeinateProcess.on("exit", () => {
+        this.caffeinateProcess = null;
+      });
+      console.log("[caffeinate] Started - preventing sleep while working");
+    } else if (workingCount === 0 && this.caffeinateProcess) {
+      // Stop caffeinate
+      this.caffeinateProcess.kill();
+      this.caffeinateProcess = null;
+      console.log("[caffeinate] Stopped - sleep allowed");
+    }
   }
 
   subscribe(callback: Listener): () => void {
@@ -32,6 +69,7 @@ class SessionState {
     for (const listener of this.listeners) {
       listener(message);
     }
+    this.updateCaffeinate();
   }
 
   private getStateMessage(): StateMessage {
@@ -40,12 +78,21 @@ class SessionState {
     const waitingForInput = sessions.filter(
       (s) => s.status === "waiting_for_input"
     ).length;
+
+    // Convert to SessionInfo for the message
+    const sessionInfos: SessionInfo[] = sessions.map((s) => ({
+      id: s.id,
+      status: s.status,
+      cwd: s.cwd,
+    }));
+
     return {
       type: "state",
       blocked: working === 0,
-      sessions: sessions.length,
+      sessionCount: sessions.length,
       working,
       waitingForInput,
+      sessions: sessionInfos,
     };
   }
 
@@ -79,12 +126,26 @@ class SessionState {
         this.ensureSession(session_id, payload.cwd);
         const toolSession = this.sessions.get(session_id)!;
         if (payload.tool_name && USER_INPUT_TOOLS.includes(payload.tool_name)) {
+          // Known user-input tools → immediately mark as waiting
           toolSession.status = "waiting_for_input";
           toolSession.waitingForInputSince = new Date();
+          toolSession.pendingToolSince = undefined;
         } else {
+          // Other tools → mark pending, will switch to waiting if approval takes too long
           toolSession.status = "working";
+          toolSession.pendingToolSince = new Date();
         }
         toolSession.lastActivity = new Date();
+        break;
+      }
+
+      case "PostToolUse": {
+        this.ensureSession(session_id, payload.cwd);
+        const postToolSession = this.sessions.get(session_id)!;
+        // Tool completed, clear pending state
+        postToolSession.pendingToolSince = undefined;
+        postToolSession.status = "working";
+        postToolSession.lastActivity = new Date();
         break;
       }
 
@@ -92,6 +153,8 @@ class SessionState {
         this.ensureSession(session_id, payload.cwd);
         const idleSession = this.sessions.get(session_id)!;
         idleSession.status = "idle";
+        idleSession.pendingToolSince = undefined;
+        idleSession.waitingForInputSince = undefined;
         idleSession.lastActivity = new Date();
         break;
       }
@@ -125,6 +188,26 @@ class SessionState {
     }
   }
 
+  private checkPendingTools(): void {
+    const now = Date.now();
+    let changed = false;
+    for (const session of this.sessions.values()) {
+      if (
+        session.pendingToolSince &&
+        session.status === "working" &&
+        now - session.pendingToolSince.getTime() > TOOL_APPROVAL_WAIT_MS
+      ) {
+        // Tool has been pending too long, likely waiting for approval
+        session.status = "waiting_for_input";
+        session.waitingForInputSince = session.pendingToolSince;
+        changed = true;
+      }
+    }
+    if (changed) {
+      this.broadcast();
+    }
+  }
+
   getStatus(): StatusResponse {
     const sessions = Array.from(this.sessions.values());
     return {
@@ -135,6 +218,11 @@ class SessionState {
 
   destroy(): void {
     if (this.cleanupInterval) clearInterval(this.cleanupInterval);
+    if (this.pendingToolInterval) clearInterval(this.pendingToolInterval);
+    if (this.caffeinateProcess) {
+      this.caffeinateProcess.kill();
+      this.caffeinateProcess = null;
+    }
     this.sessions.clear();
     this.listeners.clear();
   }
