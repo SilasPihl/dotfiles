@@ -18,6 +18,21 @@ let
 EOF
   '';
 
+  # Claude Blocker server startup script
+  # Run the pre-built TypeScript server from the dotfiles repo
+  claude-blocker = pkgs.writeShellScriptBin "claude-blocker" ''
+    #!/bin/bash
+    BLOCKER_DIR="$HOME/repos/dotfiles/home/features/programs/claude-blocker"
+
+    # Check if dist exists, if not build it
+    if [ ! -d "$BLOCKER_DIR/dist" ]; then
+      echo "Building claude-blocker..."
+      cd "$BLOCKER_DIR" && npm install && npm run build
+    fi
+
+    exec ${pkgs.nodejs_22}/bin/node "$BLOCKER_DIR/dist/index.js" "$@"
+  '';
+
   # Status line script for Claude Code (robbyrussell-style with metrics)
   claude-statusline = pkgs.writeShellScriptBin "claude-statusline" ''
     #!/bin/bash
@@ -58,12 +73,16 @@ EOF
     # Separator
     printf "\033[2m|\033[0m "
 
-    # Context window usage percentage
-    tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens')
+    # Context window usage percentage (using current_usage, not cumulative total)
     size=$(echo "$input" | jq -r '.context_window.context_window_size')
-    if [ "$tokens" != "null" ] && [ "$size" != "null" ] && [ "$size" -gt 0 ]; then
-      pct=$((tokens * 100 / size))
+    usage=$(echo "$input" | jq '.context_window.current_usage')
+    if [ "$usage" != "null" ] && [ "$size" != "null" ] && [ "$size" -gt 0 ]; then
+      # Current context = input_tokens + cache tokens (both creation and read count toward context)
+      current_tokens=$(echo "$usage" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens')
+      pct=$((current_tokens * 100 / size))
       printf "\033[33m%d%%\033[0m " "$pct"
+    else
+      printf "\033[33m0%%\033[0m "
     fi
 
     # Separator
@@ -121,6 +140,42 @@ EOF
         command = "npx";
         args = [ "-y" "next-devtools-mcp@latest" ];
       };
+    };
+    # Claude Blocker hooks - send session state to localhost server
+    # Start the server with: claude-blocker
+    # Check status with: curl http://localhost:8765/status
+    hooks = {
+      SessionStart = [{
+        hooks = [{
+          type = "command";
+          command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
+        }];
+      }];
+      SessionEnd = [{
+        hooks = [{
+          type = "command";
+          command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
+        }];
+      }];
+      UserPromptSubmit = [{
+        hooks = [{
+          type = "command";
+          command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
+        }];
+      }];
+      PreToolUse = [{
+        matcher = "*";
+        hooks = [{
+          type = "command";
+          command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
+        }];
+      }];
+      Stop = [{
+        hooks = [{
+          type = "command";
+          command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
+        }];
+      }];
     };
     permissions = {
       allow = [
@@ -255,6 +310,7 @@ in
     claude-code
     claude-notify
     claude-statusline
+    claude-blocker
   ];
 
   # Create Claude Code settings directory and file

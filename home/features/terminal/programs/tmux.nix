@@ -119,6 +119,9 @@
         # Which-key style help menu
         bind ? display-popup -E -w 70 -h 70% -b rounded "~/repos/dotfiles/scripts/tmux-which-key.sh"
 
+        # Quick command popup - runs command and shows output (any key to close)
+        bind t command-prompt -p "Run:" "display-popup -E -w 60% -h 40% -d '#{pane_current_path}' 'zsh -ic \"%%\"; echo; read -k1'"
+
         # Lazygit popup
         bind g display-popup -E -d "#{pane_current_path}" -w 98% -h 98% "lazygit"
 
@@ -129,12 +132,11 @@
         bind -r S-Left resize-pane -L 5
 
         # Swap pane directionally (push pane in direction)
-        bind -r < swap-pane -U  # Move pane up/left
-        bind -r > swap-pane -D  # Move pane down/right
-        bind -r C-h swap-pane -s '{left-of}'
-        bind -r C-l swap-pane -s '{right-of}'
-        bind -r C-j swap-pane -s '{down-of}'
-        bind -r C-k swap-pane -s '{up-of}'
+        # Alt+Shift+Arrow to swap panes
+        bind -n M-S-Left swap-pane -s '{left-of}'
+        bind -n M-S-Right swap-pane -s '{right-of}'
+        bind -n M-S-Down swap-pane -s '{down-of}'
+        bind -n M-S-Up swap-pane -s '{up-of}'
 
         # Pane navigation (keeping your existing Alt+vim keys)
         bind -n M-h run-shell "if [ $(tmux display-message -p '#{pane_at_left}') -ne 1 ]; then tmux select-pane -L; else tmux select-window -p; fi"

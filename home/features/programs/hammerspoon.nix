@@ -52,10 +52,20 @@
         return nil
     end
 
-    local function moveMouseToScreen(scr)
+    local function moveMouseToScreen(scr, zone)
         local f = scr:fullFrame()
-        hs.mouse.setAbsolutePosition({ x = f.x + f.w / 2, y = f.y + f.h / 2 })
-        hs.alert.show("Mouse → " .. scr:name())
+        local x = f.x + f.w / 2
+        local y
+        if zone == "top" then
+            y = f.y + f.h / 4
+        elseif zone == "bottom" then
+            y = f.y + f.h * 3 / 4
+        else
+            y = f.y + f.h / 2
+        end
+        hs.mouse.setAbsolutePosition({ x = x, y = y })
+        local zoneLabel = zone and (" (" .. zone .. ")") or ""
+        hs.alert.show("Mouse → " .. scr:name() .. zoneLabel)
     end
 
     local function moveMouseToFocusedWindow()
@@ -72,14 +82,14 @@
         hs.alert.show("Mouse → " .. win:title())
     end
 
-    local function gotoScreen(key)
+    local function gotoScreen(key, zone)
         local scr = findScreenByKey(key)
         if not scr then
             hs.alert.show("Screen not found: " .. key)
             print("Available screens: " .. allScreenNames())
             return
         end
-        moveMouseToScreen(scr)
+        moveMouseToScreen(scr, zone)
     end
 
     local function moveCursorToWindow(win)
@@ -90,7 +100,7 @@
         })
     end
 
-    local function moveWindowToScreen(scr)
+    local function moveWindowToScreen(scr, zone)
         local win = hs.window.focusedWindow()
         if not win then
             hs.alert.show("No focused window")
@@ -108,7 +118,21 @@
             return math.abs(a - b) < tolerance
         end
 
-        -- Check if window is already on target screen
+        -- If zone is specified (top/bottom), always move to that zone
+        if zone == "top" or zone == "bottom" then
+            win:moveToScreen(scr)
+            if zone == "top" then
+                win:moveToUnit({x=0, y=0, w=1, h=0.5})
+                hs.alert.show("Window → " .. scr:name() .. " (top)")
+            else
+                win:moveToUnit({x=0, y=0.5, w=1, h=0.5})
+                hs.alert.show("Window → " .. scr:name() .. " (bottom)")
+            end
+            moveCursorToWindow(win)
+            return
+        end
+
+        -- No zone: use cycling behavior for full-screen displays
         if currentScreen == scr then
             -- Cycle through: full → left half → right half → full
             local isFullWidth = isApprox(frame.x, screenFrame.x) and
@@ -142,36 +166,37 @@
         moveCursorToWindow(win)
     end
 
-    local function moveWindowTo(key)
+    local function moveWindowTo(key, zone)
         local scr = findScreenByKey(key)
         if not scr then
             hs.alert.show("Screen not found: " .. key)
             print("Available screens: " .. allScreenNames())
             return
         end
-        moveWindowToScreen(scr)
+        moveWindowToScreen(scr, zone)
     end
 
     -- ---------- Named Screen Mappings ----------
-    -- Replace "ASUS", "DELL", "LG" with your actual screen names if needed.
-    -- You can also leave them as partials (e.g., "Asus", "Dell", "LG").
+    -- Each entry: { screen = "name", zone = "top"/"bottom"/nil }
     local targetByKey = {
-        q = "ASUS",     -- Option+Q → your ASUS display
-        w = "DELL",     -- Option+W → your DELL display
-        e = "LG",       -- Option+E → your LG display
-        s = ":ipad",    -- Option+S → your iPad (Sidecar) display
-        d = ":builtin", -- Option+D → your built-in Mac display
+        q = { screen = "LG FHD", zone = "top" },       -- Option+Q → LG FHD top
+        a = { screen = "LG FHD", zone = "bottom" },    -- Option+A → LG FHD bottom
+        w = { screen = "ULTRAGEAR", zone = nil },      -- Option+W → ULTRAGEAR (main)
+        e = { screen = "DELL", zone = "top" },         -- Option+E → DELL top
+        d = { screen = "DELL", zone = "bottom" },      -- Option+D → DELL bottom
+        s = { screen = ":ipad", zone = nil },          -- Option+S → iPad (Sidecar)
+        f = { screen = ":builtin", zone = nil },       -- Option+F → built-in Mac display
     }
 
     -- ---------- Named Screen Hotkeys ----------
-    -- Option + key = move mouse to screen
+    -- Option + key = move mouse to screen/zone
     for key, target in pairs(targetByKey) do
-        hs.hotkey.bind({ "alt" }, key, function() gotoScreen(target) end)
+        hs.hotkey.bind({ "alt" }, key, function() gotoScreen(target.screen, target.zone) end)
     end
 
-    -- Ctrl + Option + key = move current window to screen
+    -- Ctrl + Option + key = move current window to screen/zone
     for key, target in pairs(targetByKey) do
-        hs.hotkey.bind({ "ctrl", "alt" }, key, function() moveWindowTo(target) end)
+        hs.hotkey.bind({ "ctrl", "alt" }, key, function() moveWindowTo(target.screen, target.zone) end)
     end
 
     -- Option + M = move mouse to focused window
@@ -271,9 +296,9 @@
         end)
     end
 
-    -- Cursor: launch on DELL, right 70%
+    -- Cursor: launch on ULTRAGEAR (main), right 70%
     function launchCursor()
-        launchAndPosition("Cursor", "DELL", {x=0.3, y=0, w=0.7, h=1})
+        launchAndPosition("Cursor", "ULTRAGEAR", {x=0.3, y=0, w=0.7, h=1})
     end
 
     -- ---------- URL Handler for CLI integration ----------

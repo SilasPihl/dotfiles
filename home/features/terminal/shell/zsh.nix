@@ -80,6 +80,7 @@
       down = "task compose:down";
       up = "task compose:up";
       tload = "task home-manager:switch && source ~/.zshrc";
+      sz = "source ~/.zshrc";
       tup = "task tilt:up";
       tup0 = "task tilt:0";
       tup1 = "task tilt:1";
