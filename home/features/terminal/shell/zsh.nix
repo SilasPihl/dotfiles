@@ -77,7 +77,8 @@
       cl = "clear";
       cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
-      down = "task compose:down";
+      down = "docker compose rm -sf db dbadmin centrifugo flagd nats-1 nats-2 nats-3 redisinsight";
+      downf = "task compose:down";
       up = "task compose:up";
       tload = "task home-manager:switch && source ~/.zshrc";
       sz = "source ~/.zshrc";
