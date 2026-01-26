@@ -11,7 +11,8 @@ let lastWaitingNotification = 0;
 chrome.alarms.create("keepalive", { periodInMinutes: 0.4 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "keepalive") {
-    if (!ws || ws.readyState !== WebSocket.OPEN) {
+    // Only reconnect if truly disconnected (not if still connecting)
+    if (!ws || (ws.readyState !== WebSocket.OPEN && ws.readyState !== WebSocket.CONNECTING)) {
       connect();
     }
   }
@@ -82,7 +83,8 @@ function handleMessage(data) {
 }
 
 function connect() {
-  if (ws && ws.readyState === WebSocket.OPEN) return;
+  // Check for both OPEN and CONNECTING to avoid duplicate connections
+  if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
 
   try {
     ws = new WebSocket(WS_URL);

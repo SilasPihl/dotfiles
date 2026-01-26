@@ -32,11 +32,13 @@ class SessionState {
   }
 
   private updateCaffeinate(): void {
-    const workingCount = Array.from(this.sessions.values()).filter(
-      (s) => s.status === "working"
+    // Keep caffeinate on for any active session (working or waiting for input)
+    // Only allow sleep when all sessions are idle or closed
+    const activeCount = Array.from(this.sessions.values()).filter(
+      (s) => s.status !== "idle"
     ).length;
 
-    if (workingCount > 0 && !this.caffeinateProcess) {
+    if (activeCount > 0 && !this.caffeinateProcess) {
       // Start caffeinate to prevent sleep
       this.caffeinateProcess = spawn("caffeinate", ["-d", "-i"], {
         stdio: "ignore",
@@ -49,12 +51,12 @@ class SessionState {
       this.caffeinateProcess.on("exit", () => {
         this.caffeinateProcess = null;
       });
-      console.log("[caffeinate] Started - preventing sleep while working");
-    } else if (workingCount === 0 && this.caffeinateProcess) {
+      console.log("[caffeinate] Started - preventing sleep while session active");
+    } else if (activeCount === 0 && this.caffeinateProcess) {
       // Stop caffeinate
       this.caffeinateProcess.kill();
       this.caffeinateProcess = null;
-      console.log("[caffeinate] Stopped - sleep allowed");
+      console.log("[caffeinate] Stopped - all sessions idle, sleep allowed");
     }
   }
 
