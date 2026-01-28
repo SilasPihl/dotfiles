@@ -16,6 +16,10 @@ buildNpmPackage rec {
 
   postPatch = ''
     cp ${./package-lock.json} package-lock.json
+    # Remove npm deprecation warning (we intentionally use npm via nix)
+    substituteInPlace cli.js --replace-warn \
+      'Ul2="Claude Code has switched from npm to native installer. Run \`claude install\` or see https://docs.anthropic.com/en/docs/claude-code/getting-started for more options."' \
+      'Ul2=""'
   '';
 
   dontNpmBuild = true;
