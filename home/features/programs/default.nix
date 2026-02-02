@@ -1,6 +1,6 @@
 { pkgs, pkgs-stable, system, user, claude-code, hammerspoon, ... }:
 {
-  imports = [ ./spicetify.nix ./claude-code.nix ./hammerspoon.nix ];
+  imports = [ ./spicetify.nix ./claude-code.nix ./hammerspoon.nix ./opencode.nix ];
 
 
   home.packages = with pkgs;

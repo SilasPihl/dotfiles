@@ -7,6 +7,7 @@
     ./eza.nix
     ./fd.nix
     ./fzf.nix
+    ./k9s.nix
     ./git.nix
     # ./git-cliff.nix # Include once AI automated flow for new commits is introduced
     ./lazygit.nix
