@@ -109,9 +109,9 @@
         # Move current window to different position
         bind M command-prompt -p "Move window to:" "move-window -t %%"
 
-        # Move window left/right (swap with adjacent window)
-        bind H swap-window -t -1 \; select-window -t -1
-        bind L swap-window -t +1 \; select-window -t +1
+        # Move window left/right (swap with adjacent window, repeatable)
+        bind -r H swap-window -d -t -1
+        bind -r L swap-window -d -t +1
 
         # Claude overview - find all Claude panes
         bind C display-popup -E -w 98% -h 98% "~/repos/dotfiles/scripts/tmux-claude-overview.sh"
