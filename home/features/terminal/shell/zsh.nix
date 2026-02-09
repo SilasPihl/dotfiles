@@ -77,7 +77,7 @@
       cl = "clear";
       cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
-      down = "docker compose rm -sf db dbadmin centrifugo flagd nats-1 nats-2 nats-3 redisinsight";
+      down = "docker compose rm -sf db dbadmin centrifugo flagd nats-1 nats-2 nats-3 redisinsight && docker volume ls -q --filter name=lixcloud_ | /usr/bin/grep -vE 'redis|valkey' | xargs docker volume rm -f 2>/dev/null; true";
       downf = "task compose:down";
       up = "task compose:up";
       tload = "task home-manager:switch && source ~/.zshrc";
