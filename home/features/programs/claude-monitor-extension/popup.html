@@ -9,7 +9,7 @@
       box-sizing: border-box;
     }
     body {
-      width: 240px;
+      width: 280px;
       padding: 12px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 13px;
@@ -144,6 +144,67 @@
       font-size: 12px;
       text-align: center;
       padding: 12px 0;
+    }
+    .shortcuts-divider {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 12px 0;
+    }
+    .shortcut-category {
+      margin-bottom: 4px;
+    }
+    .shortcut-category-header {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #888;
+      cursor: pointer;
+      padding: 4px 0;
+      user-select: none;
+    }
+    .shortcut-category-header:hover {
+      color: #ccc;
+    }
+    .shortcut-arrow {
+      font-size: 8px;
+      transition: transform 0.15s;
+      display: inline-block;
+    }
+    .shortcut-arrow.open {
+      transform: rotate(90deg);
+    }
+    .shortcut-items {
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      padding-left: 4px;
+    }
+    .shortcut-items.open {
+      display: flex;
+    }
+    .shortcut-item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 11px;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    .shortcut-item:hover {
+      background: #262626;
+    }
+    .shortcut-key {
+      font-family: "SF Mono", Monaco, Menlo, monospace;
+      color: #c6a0f6;
+      white-space: nowrap;
+      min-width: 40px;
+    }
+    .shortcut-desc {
+      color: #777;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .toggle-container {
       display: flex;

@@ -1,5 +1,154 @@
 // Dev Hub - Popup Script
 
+const SHORTCUTS = [
+  {
+    name: "Git",
+    items: [
+      ["gl", "git pull --rebase"],
+      ["ga", "git add"],
+      ["gaa", "git add ."],
+      ["gp", "git push"],
+      ["gpf", "push --force-with-lease"],
+      ["gst", "git status"],
+      ["gco", "git checkout"],
+      ["gc", "commit (AI message)"],
+      ["gd", "git diff"],
+      ["gr", "git restore"],
+      ["grs", "git restore --staged"],
+      ["grrevert", "restore all from HEAD"],
+      ["lg", "lazygit (tmux zoom)"],
+      ["gitc", "quick commit [msg]"],
+      ["gci", "interactive checkout"],
+      ["grsoft", "soft reset [n]"],
+      ["grhard", "hard reset [n]"],
+      ["grremote", "reset to remote [-f]"],
+    ],
+  },
+  {
+    name: "Git Worktree",
+    items: [
+      ["gw", "git worktree"],
+      ["gwl", "git worktree list"],
+      ["gwadd", "new worktree <name> [branch]"],
+      ["gwrm", "remove worktree (fzf)"],
+      ["gwswitch", "switch worktree (fzf)"],
+      ["gwcd", "cd to worktree (fzf)"],
+    ],
+  },
+  {
+    name: "Tmux",
+    items: [
+      ["tl", "list sessions"],
+      ["ta", "attach session -t"],
+      ["tk", "kill session -t"],
+      ["td", "detach"],
+      ["tn", "new session -s"],
+    ],
+  },
+  {
+    name: "Docker / Tilt",
+    items: [
+      ["up", "compose up"],
+      ["down", "compose down (selective)"],
+      ["downf", "compose down (full)"],
+      ["tup", "tilt up"],
+      ["tup0-3", "tilt up (config 0-3)"],
+      ["ld", "lazydocker"],
+    ],
+  },
+  {
+    name: "Navigation",
+    items: [
+      ["cd", "z (zoxide)"],
+      ["cdd", "builtin cd"],
+      ["cda", "add subdirs to zoxide"],
+      ["cdf", "cd frontend + rebuild"],
+      ["y", "yazi (dir tracking)"],
+      ["ls", "eza"],
+      ["lt", "eza tree (-lTag)"],
+      ["lt1-3", "eza tree (level 1-3)"],
+    ],
+  },
+  {
+    name: "Tools",
+    items: [
+      ["v", "nvim"],
+      ["t", "task"],
+      ["c", "cursor (+ hammerspoon)"],
+      ["cc", "claude"],
+      ["ccd", "claude (skip perms)"],
+      ["cl", "clear"],
+      ["cat", "bat"],
+      ["grep", "rg (ripgrep)"],
+      ["dev", "nix develop"],
+    ],
+  },
+  {
+    name: "System",
+    items: [
+      ["sz", "source ~/.zshrc"],
+      ["tload", "home-manager switch + sz"],
+      ["cleanup", "nix garbage collect"],
+    ],
+  },
+];
+
+function renderShortcuts() {
+  return `
+    <hr class="shortcuts-divider">
+    <div class="section">
+      <div class="section-header">Shortcuts</div>
+      ${SHORTCUTS.map(
+        (cat, i) => `
+        <div class="shortcut-category">
+          <div class="shortcut-category-header" data-cat="${i}">
+            <span class="shortcut-arrow" id="arrow-${i}">&#9654;</span>
+            ${cat.name}
+          </div>
+          <div class="shortcut-items" id="cat-${i}">
+            ${cat.items
+              .map(
+                ([key, desc]) => `
+              <div class="shortcut-item">
+                <span class="shortcut-key">${key}</span>
+                <span class="shortcut-desc">${desc}</span>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `
+      ).join("")}
+    </div>
+  `;
+}
+
+function initShortcutToggles() {
+  // Load saved state
+  const saved = JSON.parse(localStorage.getItem("shortcutCats") || "{}");
+  SHORTCUTS.forEach((_, i) => {
+    if (saved[i]) {
+      document.getElementById(`cat-${i}`)?.classList.add("open");
+      document.getElementById(`arrow-${i}`)?.classList.add("open");
+    }
+  });
+
+  document.querySelectorAll(".shortcut-category-header").forEach((header) => {
+    header.addEventListener("click", () => {
+      const idx = header.dataset.cat;
+      const items = document.getElementById(`cat-${idx}`);
+      const arrow = document.getElementById(`arrow-${idx}`);
+      items?.classList.toggle("open");
+      arrow?.classList.toggle("open");
+      // Persist
+      const state = JSON.parse(localStorage.getItem("shortcutCats") || "{}");
+      state[idx] = items?.classList.contains("open");
+      localStorage.setItem("shortcutCats", JSON.stringify(state));
+    });
+  });
+}
+
 // Status priority for sorting (lower = higher priority)
 const STATUS_PRIORITY = {
   waiting_for_input: 0,
@@ -65,7 +214,9 @@ function render() {
             <code>claude-blocker</code>
           </div>
         </div>
+        ${renderShortcuts()}
       `;
+      initShortcutToggles();
       return;
     }
 
@@ -105,7 +256,9 @@ function render() {
         </div>
         ${renderSessionList(state.sessions)}
       </div>
+      ${renderShortcuts()}
     `;
+    initShortcutToggles();
   });
 }
 

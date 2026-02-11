@@ -3,7 +3,7 @@
   "name": "Claude Monitor",
   "version": "1.0.0",
   "description": "Monitor Claude Code sessions - see working/waiting status, prevent sleep while working",
-  "permissions": ["notifications", "alarms", "storage"],
+  "permissions": ["notifications", "alarms", "storage", "tabs"],
   "host_permissions": ["http://localhost:8765/*"],
   "background": {
     "service_worker": "background.js"
@@ -20,5 +20,12 @@
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

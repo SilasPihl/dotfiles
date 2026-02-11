@@ -63,12 +63,22 @@ function showNotification(title, message) {
   });
 }
 
+function broadcastToTabs() {
+  const connected = ws && ws.readyState === WebSocket.OPEN;
+  chrome.tabs.query({}, (tabs) => {
+    for (const tab of tabs) {
+      chrome.tabs.sendMessage(tab.id, { type: "STATE_UPDATE", state, connected }).catch(() => {});
+    }
+  });
+}
+
 function handleMessage(data) {
   const msg = JSON.parse(data);
   if (msg.type === "state") {
     const prevWaiting = state.waitingForInput;
     state = msg;
     updateBadge();
+    broadcastToTabs();
 
     // Notify when Claude starts waiting for input
     const now = Date.now();
@@ -92,6 +102,7 @@ function connect() {
     ws.onopen = () => {
       console.log("[Claude Monitor] Connected to server");
       updateBadge();
+      broadcastToTabs();
     };
 
     ws.onmessage = (event) => {
@@ -102,6 +113,7 @@ function connect() {
       console.log("[Claude Monitor] Disconnected, reconnecting...");
       ws = null;
       updateBadge();
+      broadcastToTabs();
       setTimeout(connect, RECONNECT_DELAY);
     };
 
