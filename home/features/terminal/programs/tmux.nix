@@ -119,8 +119,8 @@
         # Which-key style help menu
         bind ? display-popup -E -w 70 -h 70% -b rounded "~/repos/dotfiles/scripts/tmux-which-key.sh"
 
-        # Quick command popup - runs command and shows output (any key to close)
-        bind t command-prompt -p "Run:" "display-popup -E -w 60% -h 40% -d '#{pane_current_path}' 'zsh -ic \"%%\"; echo; read -k1'"
+        # Quick command popup - runs command and shows output
+        bind t command-prompt -p "Run:" "display-popup -E -w 60% -h 40% -d '#{pane_current_path}' 'zsh -ic \"%%\"'"
 
         # Lazygit popup
         bind g display-popup -E -d "#{pane_current_path}" -w 98% -h 98% "lazygit"
