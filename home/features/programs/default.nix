@@ -31,6 +31,7 @@
       #fortune
       go-task
       gh
+      git-town
       #glab
       hammerspoon
       insomnia

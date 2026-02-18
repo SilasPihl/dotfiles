@@ -41,25 +41,16 @@ keybinds=(
     "v|Split vertical (right)|Pane|$BLUE"
     "h|Split horizontal (down)|Pane|$BLUE"
     "q|Kill pane|Pane|$BLUE"
-    "M-h|Navigate left (or prev window)|Pane|$BLUE"
-    "M-l|Navigate right (or next window)|Pane|$BLUE"
-    "M-j|Navigate down|Pane|$BLUE"
-    "M-k|Navigate up|Pane|$BLUE"
+    "C-h/l/j/k|Navigate panes (vim-tmux)|Pane|$BLUE"
+    "p/n|Previous/next window|Pane|$BLUE"
     "z|Toggle pane zoom|Pane|$BLUE"
-    "M-z|Toggle pane zoom (no prefix)|Pane|$BLUE"
-    "S-↑|Resize pane up|Pane|$BLUE"
-    "S-↓|Resize pane down|Pane|$BLUE"
-    "S-→|Resize pane right|Pane|$BLUE"
-    "S-←|Resize pane left|Pane|$BLUE"
+    "S-↑↓←→|Resize pane|Pane|$BLUE"
     "b|Break pane to new window|Pane|$BLUE"
     "J|Join pane from window|Pane|$BLUE"
     "T|Rename pane title|Pane|$BLUE"
-    "M-e|Sync panes ON|Pane|$BLUE"
-    "M-E|Sync panes OFF|Pane|$BLUE"
-    "M-S-←|Swap with left pane|Pane|$BLUE"
-    "M-S-→|Swap with right pane|Pane|$BLUE"
-    "M-S-↓|Swap with pane below|Pane|$BLUE"
-    "M-S-↑|Swap with pane above|Pane|$BLUE"
+    "e|Sync panes ON|Pane|$BLUE"
+    "E|Sync panes OFF|Pane|$BLUE"
+    "C-S-←→↑↓|Swap pane directionally|Pane|$BLUE"
 
     # Special Features
     "A|Create named agent window|Special|$CYAN"
@@ -69,7 +60,6 @@ keybinds=(
 
     # Configuration
     "R|Reload tmux config|Config|$YELLOW"
-    "M-R|Reload tmux config (no prefix)|Config|$YELLOW"
 )
 
 # Build menu with colors and nice formatting

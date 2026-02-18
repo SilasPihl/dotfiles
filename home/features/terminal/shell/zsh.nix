@@ -347,6 +347,168 @@
         fi
       }
 
+      # Fork workflow: experiment in a new worktree, review, apply back
+      function gwfork() {
+        local name="$1"
+        if [ -z "$name" ]; then
+          echo "Usage: gwfork <name>"
+          return 1
+        fi
+
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "gwfork: not a git repo" >&2
+          return 1
+        fi
+
+        local current_branch=$(git branch --show-current)
+        local current_path=$(git rev-parse --show-toplevel)
+        local branch_name="silas/$name"
+        local dest_path="../wt-$name"
+
+        if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+          echo "gwfork: branch $branch_name already exists" >&2
+          return 1
+        fi
+
+        git worktree add -b "$branch_name" "$dest_path" || return $?
+
+        # Store parent info in shared git config
+        git config "gwfork.$branch_name.parent" "$current_branch"
+        git config "gwfork.$branch_name.parentPath" "$current_path"
+
+        local abs_path=$(builtin cd "$dest_path" && pwd)
+        if [[ -n "$TMUX" ]]; then
+          tmux new-window -n "fork:$name" -c "$abs_path"
+        else
+          builtin cd -- "$abs_path"
+        fi
+
+        echo "Forked $current_branch -> $branch_name"
+      }
+
+      function gwdiff() {
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "gwdiff: not a git repo" >&2
+          return 1
+        fi
+
+        local current_branch=$(git branch --show-current)
+        local parent=$(git config "gwfork.$current_branch.parent")
+
+        if [ -z "$parent" ]; then
+          echo "gwdiff: not a fork (no parent found for $current_branch)" >&2
+          return 1
+        fi
+
+        if [[ -n "$TMUX" ]]; then
+          tmux split-window -h "git diff $parent..HEAD"
+        else
+          git diff "$parent..HEAD"
+        fi
+      }
+
+      function gwback() {
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "gwback: not a git repo" >&2
+          return 1
+        fi
+
+        local current_branch=$(git branch --show-current)
+        local parent=$(git config "gwfork.$current_branch.parent")
+        local parent_path=$(git config "gwfork.$current_branch.parentPath")
+
+        if [ -z "$parent" ] || [ -z "$parent_path" ]; then
+          echo "gwback: not a fork (no parent found for $current_branch)" >&2
+          return 1
+        fi
+
+        if [ ! -d "$parent_path" ]; then
+          echo "gwback: parent worktree not found at $parent_path" >&2
+          return 1
+        fi
+
+        # Warn about uncommitted changes
+        if ! git diff --quiet || ! git diff --cached --quiet; then
+          echo "Warning: uncommitted changes won't be included"
+          echo ""
+        fi
+
+        local changed_files=$(git diff --name-only "$parent..HEAD")
+        local commit_count=$(git rev-list --count "$parent..HEAD")
+
+        if [ -z "$changed_files" ] && [ "$commit_count" -eq 0 ]; then
+          echo "No changes vs $parent."
+          return 0
+        fi
+
+        echo "Changes vs $parent ($commit_count commits):"
+        echo "$changed_files" | head -20
+        local total=$(echo "$changed_files" | wc -l | tr -d ' ')
+        [ "$total" -gt 20 ] && echo "... and $((total - 20)) more"
+        echo ""
+
+        echo "Apply to $parent_path:"
+        echo "  1) All files (patch)"
+        echo "  2) Pick files (fzf)"
+        echo "  3) Pick commits (cherry-pick)"
+        echo "  4) Cancel"
+        read -r "choice?> "
+
+        case "$choice" in
+          1)
+            git diff "$parent..HEAD" | (cd "$parent_path" && git apply)
+            if [ $? -eq 0 ]; then
+              echo "Applied all changes."
+            else
+              echo "Some changes failed to apply." >&2
+              return 1
+            fi
+            ;;
+          2)
+            local selected=$(echo "$changed_files" | fzf --multi --prompt="Pick files: " --height=40% --reverse)
+            if [ -n "$selected" ]; then
+              echo "$selected" | while read -r file; do
+                git diff "$parent..HEAD" -- "$file" | (cd "$parent_path" && git apply)
+              done
+              echo "Applied selected files."
+            else
+              echo "No files selected."
+              return 0
+            fi
+            ;;
+          3)
+            local commits=$(git log --oneline --reverse "$parent..HEAD" | fzf --multi --prompt="Pick commits: " --height=40% --reverse | awk '{print $1}')
+            if [ -n "$commits" ]; then
+              (cd "$parent_path" && echo "$commits" | while read -r hash; do
+                git cherry-pick --no-commit "$hash" || { echo "Cherry-pick $hash failed" >&2; return 1; }
+              done)
+              echo "Cherry-picked to $parent_path (staged, not committed)."
+            else
+              echo "No commits selected."
+              return 0
+            fi
+            ;;
+          *)
+            echo "Cancelled."
+            return 0
+            ;;
+        esac
+
+        echo ""
+        read -r "cleanup?Remove fork $current_branch? [y/N] "
+        if [[ "$cleanup" =~ ^[Yy]$ ]]; then
+          local fork_path=$(git rev-parse --show-toplevel)
+          builtin cd "$parent_path"
+          git worktree remove "$fork_path" 2>/dev/null
+          git branch -D "$current_branch" 2>/dev/null
+          git config --remove-section "gwfork.$current_branch" 2>/dev/null
+          echo "Cleaned up fork."
+        else
+          builtin cd "$parent_path"
+          echo "Switched to parent worktree."
+        fi
+      }
+
       function gci() {
         # Interactive checkout: shows PRs first, then recent branches
         git fetch origin || return 1
@@ -382,6 +544,16 @@
         fi
       }
 
+      function __gr_base_ref() {
+        local parent
+        parent=$(git town config get-parent 2>/dev/null)
+        if [ -n "$parent" ]; then
+          echo "$parent"
+        else
+          echo "origin/main"
+        fi
+      }
+
       function grsoft() {
         if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           echo "Not a git repository." >&2
@@ -390,6 +562,11 @@
 
         local target="$1"
         if [ -z "$target" ]; then
+          git reset --soft $(git merge-base HEAD $(__gr_base_ref))
+          return
+        fi
+
+        if [[ "$target" == "-m" ]]; then
           git reset --soft $(git merge-base HEAD origin/main)
           return
         fi
@@ -397,7 +574,7 @@
         if [[ "$target" =~ ^[0-9]+$ ]]; then
           git reset --soft "HEAD~$target"
         else
-          echo "Usage: grsoft [number]" >&2
+          echo "Usage: grsoft [-m | number]" >&2
           return 1
         fi
       }
@@ -410,6 +587,11 @@
 
         local target="$1"
         if [ -z "$target" ]; then
+          git reset --hard $(git merge-base HEAD $(__gr_base_ref))
+          return
+        fi
+
+        if [[ "$target" == "-m" ]]; then
           git reset --hard $(git merge-base HEAD origin/main)
           return
         fi
@@ -417,7 +599,7 @@
         if [[ "$target" =~ ^[0-9]+$ ]]; then
           git reset --hard "HEAD~$target"
         else
-          echo "Usage: grhard [number]" >&2
+          echo "Usage: grhard [-m | number]" >&2
           return 1
         fi
       }

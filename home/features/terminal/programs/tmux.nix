@@ -131,28 +131,21 @@
         bind -r S-Right resize-pane -R 5
         bind -r S-Left resize-pane -L 5
 
-        # Swap pane directionally (push pane in direction)
-        # Alt+Shift+Arrow to swap panes
-        bind -n M-S-Left swap-pane -s '{left-of}'
-        bind -n M-S-Right swap-pane -s '{right-of}'
-        bind -n M-S-Down swap-pane -s '{down-of}'
-        bind -n M-S-Up swap-pane -s '{up-of}'
+        # Swap pane directionally (Ctrl+Shift+Arrow, no prefix)
+        bind -n C-S-Left swap-pane -s '{left-of}'
+        bind -n C-S-Right swap-pane -s '{right-of}'
+        bind -n C-S-Down swap-pane -s '{down-of}'
+        bind -n C-S-Up swap-pane -s '{up-of}'
 
-        # Pane navigation (keeping your existing Alt+vim keys)
-        bind -n M-h run-shell "if [ $(tmux display-message -p '#{pane_at_left}') -ne 1 ]; then tmux select-pane -L; else tmux select-window -p; fi"
-        bind -n M-l run-shell "if [ $(tmux display-message -p '#{pane_at_right}') -ne 1 ]; then tmux select-pane -R; else tmux select-window -n; fi"
-        bind -n M-j run-shell "if [ $(tmux display-message -p '#{pane_at_bottom}') -ne 1 ]; then tmux select-pane -D; fi"
-        bind -n M-k run-shell "if [ $(tmux display-message -p '#{pane_at_top}') -ne 1 ]; then tmux select-pane -U; fi"
-        bind -n M-z resize-pane -Z
+        # Zoom pane
         bind z resize-pane -Z
-        
+
         # Reload tmux config
         bind R source-file ~/.config/tmux/tmux.conf \; display "Configuration reloaded"
-        bind -n M-R source-file ~/.config/tmux/tmux.conf \; display "Configuration reloaded"
 
         # Toggles to sync panes
-        bind -n M-e setw synchronize-panes on \; display "Sync is ON"
-        bind -n M-E setw synchronize-panes off \; display "Sync is OFF"
+        bind e setw synchronize-panes on \; display "Sync is ON"
+        bind E setw synchronize-panes off \; display "Sync is OFF"
 
         # Pane borders - thin lines, brighter for active
         set -g pane-border-lines single

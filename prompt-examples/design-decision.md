@@ -1,0 +1,1 @@
+Please create design decision documentation under @docs/src/development/design-decisions . Remember that we are working with mkdocs, so reference new files in mkdocs.yaml . Also use visual elements from mkdocs-material to aid readability (https://squidfunk.github.io/mkdocs-material/reference/). If necessary also see how other design decision documents are structured.
