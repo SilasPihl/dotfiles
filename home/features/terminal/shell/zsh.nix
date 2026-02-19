@@ -548,7 +548,7 @@
         local parent
         parent=$(git town config get-parent 2>/dev/null)
         if [ -n "$parent" ]; then
-          echo "$parent"
+          echo "origin/$parent"
         else
           echo "origin/main"
         fi
