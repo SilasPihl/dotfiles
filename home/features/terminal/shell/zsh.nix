@@ -46,8 +46,8 @@
       gco = "git checkout";
       gc = "git commit --signoff -S -n -m \"$(claude -p \"Look at the staged git changes and create a conventional commit message (e.g., 'feat: Add new feature', 'fix: Resolve bug', 'refactor: Refactor old code', 'docs: Update documentation'). Only respond with the complete message, including the type and scope if applicable, and no affirmation. Do not wrap in backticks or code blocks.\")\"";
       gd = "git diff";
-      gr = "git restore";
-      grs = "git restore --staged";
+      gre = "git restore";
+      gres = "git restore --staged";
       grrevert = "git restore --source=HEAD -- .";
 
       # Git worktree workflow helpers
@@ -554,7 +554,7 @@
         fi
       }
 
-      function grsoft() {
+      function grs() {
         if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           echo "Not a git repository." >&2
           return 1
@@ -574,12 +574,12 @@
         if [[ "$target" =~ ^[0-9]+$ ]]; then
           git reset --soft "HEAD~$target"
         else
-          echo "Usage: grsoft [-m | number]" >&2
+          echo "Usage: grs [-m | number]" >&2
           return 1
         fi
       }
 
-      function grhard() {
+      function grh() {
         if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           echo "Not a git repository." >&2
           return 1
@@ -599,12 +599,12 @@
         if [[ "$target" =~ ^[0-9]+$ ]]; then
           git reset --hard "HEAD~$target"
         else
-          echo "Usage: grhard [-m | number]" >&2
+          echo "Usage: grh [-m | number]" >&2
           return 1
         fi
       }
 
-      function grremote() {
+      function grr() {
         if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           echo "Not a git repository." >&2
           return 1

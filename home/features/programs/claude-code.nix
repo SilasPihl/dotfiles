@@ -170,6 +170,13 @@ EOF
           command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
         }];
       }];
+      PostToolUse = [{
+        matcher = "*";
+        hooks = [{
+          type = "command";
+          command = "curl -s -X POST http://localhost:8765/hook -H 'Content-Type: application/json' -d \"$(cat)\" > /dev/null 2>&1 &";
+        }];
+      }];
       Stop = [{
         hooks = [{
           type = "command";

@@ -49,16 +49,20 @@
       podman-compose
       podman-tui
       postman
+      ruff
       sesh
       sops
       stow
       #stylua
       #timetrap
+      uv
       #vim
       vivid
+      watch
       #xclip
       #spotify
       #_1password-cli
+      yq
       yt-dlp
     ];
     #++ (with pkgs-stable; [ obsidian ]);
